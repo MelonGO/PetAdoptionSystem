@@ -1,0 +1,53 @@
+#parse("common/header.html")
+<body>
+
+<div class="container-fluid middle-register">
+    <div class="row">
+        <h1 class="font-big">
+            注册
+        </h1>
+        <form role="form" action="registerUser" method="post" onsubmit="return(registerbtn_click())">
+            <div class="form-group">
+                <label for="username">用户名：</label>
+                <input type="text" class="form-control input-lg" name="username" id="username" value="">
+            </div>
+            <div class="form-group">
+                <label for="userpassword">密码：</label>
+                <input type="password" class="form-control input-lg " name="password" id="password" value="">
+            </div>
+            <div class="form-group">
+                <label for="address">角色：</label>
+                 <select class="form-control input-lg" name="role" id="role">
+                	<option value="user">普通用户</option>
+                	<option value="manager">管理员</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-info btn-block fa fa-check fa-2x"></button>
+        </form>
+    </div>
+    <div><p></p></div>
+</div>
+
+<script>
+    function registerbtn_click() {
+        var msg = "";
+        if ($("#username").val().length == 0) {
+            msg = "请输入你的用户名!";
+            alert(msg);
+            return false;
+        }
+        if ($("#password").val().length == 0) {
+            msg = "请输入您的密码!";
+            alert(msg);
+            return false;
+        }
+        alert("注册成功！");
+    }
+</script>
+
+
+
+
+#parse("common/footer.html")
+</body>
+</html>

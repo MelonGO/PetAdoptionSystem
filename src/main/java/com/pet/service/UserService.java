@@ -45,4 +45,22 @@ public class UserService {
 		return msgMap;
 	}
 	
+	public Map<String, Object> register(String username, String password, String role) {
+		Map<String, Object> msgMap = new HashMap<>();
+
+		User user = userDao.selectByName(username);
+		if (user != null) {
+			msgMap.put("msg", "该用户已经被注册!");
+			return msgMap;
+		}
+		User userNew = new User();
+		userNew.setName(username);
+		userNew.setPassword(password);
+		userNew.setRole(role);
+		userDao.addUser(userNew);
+		msgMap.put("msg", "注册成功!");
+		msgMap.put("user", userNew);
+		return msgMap;
+	}
+	
 }
