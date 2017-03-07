@@ -1,0 +1,50 @@
+#parse("common/header.html")
+<body>
+
+	<div class="container-fluid adopt-main">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+
+				<table class="table waiter-list">
+					<thead>
+						<tr>
+							<th>宠物种类</th>
+							<th>年龄</th>
+							<th>名字</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						#foreach($pet in $petList)
+						<tr>
+							<td>$!{pet.type}</td>
+							<td>$!{pet.age}</td>
+							<td>$!{pet.name}</td>
+							<td>
+								<button type="button" onclick=''
+									class="btn btn-warning pull-right">我要领养</button>
+							</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+
+				<div class="pageSelect">
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							#foreach($page in $pages)
+							<li><a href="adoption?page=$!{page}">$!{page}</a></li> 
+							#end
+						</ul>
+					</nav>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	#parse("common/footer.html")
+
+</body>
+</html>

@@ -24,7 +24,7 @@ public class LoginController {
 		return "login";
 	}
 	
-	@RequestMapping(path = { "/home" })
+	@RequestMapping(path = { "/loginUser" })
 	public String login(Model model, 
 			@RequestParam("username") String username,
 			@RequestParam("password") String password,
@@ -40,7 +40,7 @@ public class LoginController {
 		model.addAttribute("user", (User)map.get("user"));
 		session.setAttribute("user", (User)map.get("user"));
 		
-		return "home";
+		return "redirect:portal";
 	}
 	
 	@RequestMapping(value = {"/logout"})

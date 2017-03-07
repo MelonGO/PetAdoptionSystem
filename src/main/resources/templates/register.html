@@ -12,8 +12,12 @@
                 <input type="text" class="form-control input-lg" name="username" id="username" value="">
             </div>
             <div class="form-group">
-                <label for="userpassword">密码：</label>
+                <label for="password">密码：</label>
                 <input type="password" class="form-control input-lg " name="password" id="password" value="">
+            </div>
+            <div class="form-group">
+                <label for="confirm">确认密码：</label>
+                <input type="password" class="form-control input-lg " name="confirm" id="confirm" value="">
             </div>
             <div class="form-group">
                 <label for="address">角色：</label>
@@ -38,6 +42,16 @@
         }
         if ($("#password").val().length == 0) {
             msg = "请输入您的密码!";
+            alert(msg);
+            return false;
+        }
+        if ($("#confirm").val().length == 0) {
+            msg = "请再次确认密码!";
+            alert(msg);
+            return false;
+        }
+        if($("#confirm").val() != $("#password").val()){
+        	msg = "两次输入的密码不一样!";
             alert(msg);
             return false;
         }
