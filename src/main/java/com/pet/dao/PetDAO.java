@@ -10,11 +10,15 @@ import com.pet.model.Pet;
 
 @Mapper
 public interface PetDAO {
+	@Select({"select ", PetDaoConstants.SELECT_FIELDS, " from ", PetDaoConstants.TABLE_NAME, " where id=#{id}"})
+	Pet selectById(int petId);
 	
 	@Select({"select ", PetDaoConstants.SELECT_FIELDS, " from ", PetDaoConstants.TABLE_NAME, "limit #{page}, 5"})
     List<Pet> selectByPage(int page);
 	
 	@Select({"select count(*) from ", PetDaoConstants.TABLE_NAME})
     int allPetsNumber();
+	
+	
 	
 }

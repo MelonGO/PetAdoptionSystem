@@ -14,6 +14,10 @@ public class PetService {
 	@Autowired
 	private PetDAO petDao;
 	
+	public Pet selectById(int petId){
+    	return petDao.selectById(petId);
+    }
+	
 	public List<Pet> selectByPage(int page){
     	return petDao.selectByPage(page);
     }

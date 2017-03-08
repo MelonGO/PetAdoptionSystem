@@ -131,3 +131,13 @@ div.middle-register {
 	text-align: center;
 }
 
+/* ------------------------------以下为AdopterInfo.html------------------------------ */
+.adopter-info-main{
+	margin-top: 80px;
+	margin-bottom: 100px;
+	background-color: #FFFFFF;
+	width: 90%;
+	height: 100%;
+	min-height: 100%;
+	height: auto;
+}

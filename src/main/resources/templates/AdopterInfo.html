@@ -1,0 +1,46 @@
+#parse("common/header.html")
+<body>
+
+<div class="container-fluid adopter-info-main">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+			<h1 class="font-big">
+            	宠物信息
+        	</h1>
+        	<p>宠物种类：$!{pet.type}</p>
+        	<p>宠物年龄：$!{pet.age}</p>
+        	<p>宠物名字：$!{pet.name}</p>
+			<h1 class="font-big">
+            	填写领养人信息
+        	</h1>
+        	<form role="form" action="" method="post" onsubmit="return(btn_click())">
+            <div class="form-group">
+                <label for="username">用户名：</label>
+                <input type="text" class="form-control input-lg" name="username" id="username" value="$!{user.name}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="realname">真实姓名：</label>
+                <input type="text" class="form-control input-lg" name="realname" id="realname" value="">
+            </div>
+            <div class="form-group">
+                <label for="address">家庭住址：</label>
+                <input type="text" class="form-control input-lg" name="address" id="address" value="">
+            </div>
+            <div class="form-group">
+                <label for="sex">性别：</label>
+                 <select class="form-control input-lg" name="sex" id="sex">
+                	<option value="male">男</option>
+                	<option value="female">女</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-info btn-block fa fa-check fa-2x"></button>
+        	</form>
+			
+			</div>
+		</div>
+</div>
+
+#parse("common/footer.html")
+</body>
+</html>
