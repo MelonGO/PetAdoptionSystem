@@ -20,10 +20,6 @@ public class AdoptionController {
 
 	@RequestMapping(path = { "/adoption" })
 	public String adoption(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
-
-		List<Pet> petList = petService.selectByPage((page - 1) * 5);
-		model.addAttribute("petList", petList);
-
 		int num = petService.allPetsNumber();
 		List<Integer> pages = new ArrayList<Integer>();
 
@@ -35,6 +31,13 @@ public class AdoptionController {
 			pages.add(i + 1);
 		}
 		model.addAttribute("pages", pages);
+
+		model.addAttribute("previous", page - 1);
+		model.addAttribute("next", page + 1);
+		model.addAttribute("pageAmount", pageAmount);
+		
+		List<Pet> petList = petService.selectByPage((page - 1) * 5);
+		model.addAttribute("petList", petList);
 
 		return "adoption";
 	}

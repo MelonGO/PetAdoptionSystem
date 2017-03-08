@@ -32,8 +32,18 @@
 				<div class="pageSelect">
 					<nav aria-label="Page navigation">
 						<ul class="pagination">
+							#if($previous >= 1)
+							<li><a href="adoption?page=$!{previous}" aria-label="Previous"> 
+							<span aria-hidden="true">&laquo;</span></a></li> 
+							#end
+							
 							#foreach($page in $pages)
 							<li><a href="adoption?page=$!{page}">$!{page}</a></li> 
+							#end
+							
+							#if($next <= $pageAmount)
+							<li><a href="adoption?page=$!{next}" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span></a></li>
 							#end
 						</ul>
 					</nav>
