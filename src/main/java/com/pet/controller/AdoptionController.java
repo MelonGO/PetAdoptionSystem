@@ -30,8 +30,18 @@ public class AdoptionController {
 		if (num % 5 != 0) {
 			pageAmount++;
 		}
-		for (int i = 0; i < pageAmount; i++) {
-			pages.add(i + 1);
+
+		int tmp = page;
+		if (tmp % 5 == 0) {
+			tmp = tmp - 4;
+		} else {
+			tmp = tmp - tmp % 5 + 1;
+		}
+		for (int i = 0; i < 5; i++) {
+			if (tmp <= pageAmount) {
+				pages.add(tmp);
+				tmp++;
+			}
 		}
 		model.addAttribute("pages", pages);
 
@@ -49,7 +59,7 @@ public class AdoptionController {
 	public String wantAdopt(Model model, @RequestParam(value = "petId") int petId, HttpSession session) {
 		if (session.getAttribute("user") == null) {
 			return "redirect:login";
-			
+
 		} else {
 			User user = (User) session.getAttribute("user");
 			Pet pet = petService.selectById(petId);
