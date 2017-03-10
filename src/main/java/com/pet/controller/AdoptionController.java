@@ -37,12 +37,14 @@ public class AdoptionController {
 		} else {
 			tmp = tmp - tmp % 5 + 1;
 		}
+		
 		for (int i = 0; i < 5; i++) {
 			if (tmp <= pageAmount) {
 				pages.add(tmp);
 				tmp++;
 			}
 		}
+		
 		model.addAttribute("pages", pages);
 
 		model.addAttribute("previous", page - 1);
