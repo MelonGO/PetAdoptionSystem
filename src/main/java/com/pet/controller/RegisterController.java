@@ -11,32 +11,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pet.service.UserService;
 
+import tools.CreateMD5;
+
 @Controller
 public class RegisterController {
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@RequestMapping(path = { "/register" })
-	public String registerShow(){
+	public String registerShow() {
 		return "register";
 	}
-	
+
 	@RequestMapping(value = { "/registerUser" }, method = { RequestMethod.GET, RequestMethod.POST })
-	public String register(Model model, 
-			@RequestParam("username") String username,
-			@RequestParam("password") String password, 
-			@RequestParam("role") String role) {
-		
-		Map<String, Object> map = userService.register(username, password, role);
-		String msg = (String)map.get("msg");
-		if(map.get("user") == null){
+	public String register(Model model, @RequestParam("username") String username,
+			@RequestParam("password") String password, @RequestParam("role") String role) {
+
+		Map<String, Object> map = userService.register(username, CreateMD5.getMd5(password), role);
+		String msg = (String) map.get("msg");
+		if (map.get("user") == null) {
 			model.addAttribute("error", msg);
 			return "error";
 		}
-		
+
 		return "redirect:login";
-		
+
 	}
-	
+
 }
