@@ -1,6 +1,40 @@
 #parse("common/header.html")
 <body>
 
+<script type="text/javascript">
+window.onload=function(){
+	var xmlhttp = new XMLHttpRequest();
+	var nameinput = document.getElementById("username");
+    nameinput.onblur=function(){
+        xmlhttp.open("get", "checkName?username=" + this.value, true);
+        xmlhttp.send();
+        
+    }
+    
+  	//回调函数
+  	xmlhttp.onreadystatechange=function(){
+        if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+        {
+          
+          var responseTxt=xmlhttp.responseText;
+          if(responseTxt=="ok")
+          {
+             document.getElementById("msg").className="alert-success";
+             document.getElementById("msg").innerHTML="该用户名可以使用";
+          }
+          else
+          {
+             document.getElementById("msg").className="alert-danger";
+             document.getElementById("msg").innerHTML=responseTxt;
+          }
+           
+        }
+   } 
+	
+}
+
+</script>
+
 <div class="container-fluid middle-register">
     <div class="row">
         <h1 class="font-big">
@@ -10,6 +44,9 @@
             <div class="form-group">
                 <label for="username">用户名：</label>
                 <input type="text" class="form-control input-lg" name="username" id="username" value="">
+            </div>
+            <div class="" id="msg">
+            
             </div>
             <div class="form-group">
                 <label for="password">密码：</label>
@@ -55,7 +92,6 @@
             alert(msg);
             return false;
         }
-        alert("注册成功！");
     }
 </script>
 

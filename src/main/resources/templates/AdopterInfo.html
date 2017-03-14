@@ -13,14 +13,22 @@
 			<h1 class="font-big">
             	填写领养人信息
         	</h1>
-        	<form role="form" action="" method="post" onsubmit="return(btn_click())">
-            <div class="form-group">
-                <label for="username">用户名：</label>
-                <input type="text" class="form-control input-lg" name="username" id="username" value="$!{user.name}" readonly>
+        	<form role="form" action="submitAdopt" method="post" onsubmit="return(btn_click())">
+        	<div class="form-group" style="display:none">
+                <label for="petId">宠物ID：</label>
+                <input type="text" class="form-control input-lg" name="petId" id="petId" value="$!{pet.id}">
+            </div>
+            <div class="form-group" style="display:none">
+                <label for="userId">用户ID：</label>
+                <input type="text" class="form-control input-lg" name="userId" id="userId" value="$!{user.id}">
             </div>
             <div class="form-group">
-                <label for="realname">真实姓名：</label>
-                <input type="text" class="form-control input-lg" name="realname" id="realname" value="">
+                <label for="userName">用户名：</label>
+                <input type="text" class="form-control input-lg" name="userName" id="userName" value="$!{user.name}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="realName">真实姓名：</label>
+                <input type="text" class="form-control input-lg" name="realName" id="realName" value="">
             </div>
             <div class="form-group">
                 <label for="address">家庭住址：</label>
@@ -34,12 +42,28 @@
                 </select>
             </div>
             
-            <button type="submit" class="btn btn-info btn-block fa fa-check fa-2x"></button>
+            <button type="submit" class="btn btn-info btn-block">提交申请</button>
         	</form>
 			
 			</div>
 		</div>
 </div>
+
+<script>
+    function btn_click() {
+        var msg = "";
+        if ($("#realName").val().length == 0) {
+            msg = "请输入您的真实姓名!";
+            alert(msg);
+            return false;
+        }
+        if ($("#address").val().length == 0) {
+            msg = "请输入您的地址!";
+            alert(msg);
+            return false;
+        }
+    }
+</script>
 
 #parse("common/footer.html")
 </body>

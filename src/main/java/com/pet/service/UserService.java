@@ -63,4 +63,11 @@ public class UserService {
 		return msgMap;
 	}
 	
+	public User checkName(String username){
+		User user = userDao.selectByName(username);
+		
+		return user;
+		
+	}
+	
 }
