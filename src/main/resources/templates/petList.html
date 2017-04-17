@@ -1,0 +1,65 @@
+#parse("common/header.html")
+<body>
+
+	<div class="container-fluid petList-main">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<h1 class="font-big">
+            	宠物列表
+        		</h1>
+				<table class="table waiter-list">
+					<thead>
+						<tr>
+							<th>宠物种类</th>
+							<th>年龄</th>
+							<th>名字</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						#foreach($pet in $petList)
+						<tr>
+							<td>$!{pet.type}</td>
+							<td>$!{pet.age}</td>
+							<td>$!{pet.name}</td>
+							<td>
+								<button type="button" onclick="location.href='wantAdopt?petId=$!{pet.id}'"
+									class="btn btn-warning pull-right">我要领养</button>
+							</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+
+				<div class="pageSelect">
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							#if($previous >= 1)
+							<li><a href="petList?page=$!{previous}" aria-label="Previous"> 
+							<span aria-hidden="true">&laquo;</span></a></li> 
+							#end
+							
+							#foreach($page in $pages)
+							<li><a href="petList?page=$!{page}">$!{page}</a></li> 
+							#end
+							
+							#if($next <= $pageAmount)
+							<li><a href="petList?page=$!{next}" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span></a></li>
+							#end
+						</ul>
+					</nav>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript">
+
+
+</script>
+
+#parse("common/footer.html")
+</body>
+</html>
