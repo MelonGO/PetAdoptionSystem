@@ -1,60 +1,44 @@
 #parse("common/header.html")
 <body>
 
-	<div class="container-fluid adopt-main">
-		<div class="row">
-			<div class="col-sm-12 col-md-12 col-lg-12">
-
-				<table class="table waiter-list">
-					<thead>
-						<tr>
-							<th>宠物种类</th>
-							<th>年龄</th>
-							<th>名字</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						#foreach($pet in $petList)
-						<tr>
-							<td>$!{pet.type}</td>
-							<td>$!{pet.age}</td>
-							<td>$!{pet.name}</td>
-							<td>
-								<button type="button" onclick="location.href='wantAdopt?petId=$!{pet.id}'"
-									class="btn btn-warning pull-right">我要领养</button>
-							</td>
-						</tr>
-						#end
-					</tbody>
-				</table>
-
-				<div class="pageSelect">
-					<nav aria-label="Page navigation">
-						<ul class="pagination">
-							#if($previous >= 1)
-							<li><a href="adoption?page=$!{previous}" aria-label="Previous"> 
-							<span aria-hidden="true">&laquo;</span></a></li> 
-							#end
-							
-							#foreach($page in $pages)
-							<li><a href="adoption?page=$!{page}">$!{page}</a></li> 
-							#end
-							
-							#if($next <= $pageAmount)
-							<li><a href="adoption?page=$!{next}" aria-label="Next">
-							<span aria-hidden="true">&raquo;</span></a></li>
-							#end
-						</ul>
-					</nav>
-				</div>
-
-			</div>
+<div class="container-fluid adoption-main">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-12">
+			<h1 class="font-big">
+            	我的领养申请列表
+        	</h1>
+			<table class="table waiter-list">
+				<thead>
+					<tr>
+						<th>宠物种类</th>
+						<th>宠物年龄</th>
+						<th>宠物名字</th>
+						<th>申请时间</th>
+						<th>申请状态</th>
+					</tr>
+				</thead>
+				<tbody>
+				#foreach($kv in $myAdoptionMap.entrySet())
+				<tr>
+					<td>$kv.value.type</td>
+					<td>$kv.value.age</td>
+					<td>$kv.value.name</td>
+					<td>$kv.key.createTime</td>
+					#if($kv.key.state == 0)
+					<td>未通过</td>
+					#else
+					<td><button type="button" onclick="location.href='procedure?adoptInfoId=$kv.key.id'"
+								class="btn btn-warning pull-right">已通过</button></td>
+					#end
+				</tr>
+				#end
+				</tbody>
+			</table>
 		</div>
 	</div>
+</div>
 
 <script type="text/javascript">
-
 
 </script>
 

@@ -1,12 +1,12 @@
 package com.pet.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pet.model.AdoptInfo;
 import com.pet.model.Pet;
 import com.pet.model.User;
 import com.pet.service.AdoptInfoService;
 import com.pet.service.PetService;
+
+import tools.RequestUtil;
 
 @Controller
 public class AdoptionController {
@@ -29,7 +33,7 @@ public class AdoptionController {
 	@Autowired
 	AdoptInfoService adoptInfoService;
 
-	@RequestMapping(path = { "/adoption" })
+	@RequestMapping(path = { "/petList" })
 	public String adoption(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
 		int num = petService.allPetsNumber();
 		List<Integer> pages = new ArrayList<Integer>();
@@ -62,7 +66,7 @@ public class AdoptionController {
 		List<Pet> petList = petService.selectByPage((page - 1) * 5);
 		model.addAttribute("petList", petList);
 
-		return "adoption";
+		return "petList";
 	}
 
 	@RequestMapping(path = { "/wantAdopt" })
@@ -72,12 +76,18 @@ public class AdoptionController {
 
 		} else {
 			User user = (User) session.getAttribute("user");
+			String msg = adoptInfoService.findAlreadyExist(petId, user.getId());
+			if (msg.equals("exist")) {
+				model.addAttribute("error", "您已申请领养该宠物，请耐心等待申请结果!");
+				return "error";
+			}
+			
 			Pet pet = petService.selectById(petId);
 
 			model.addAttribute("pet", pet);
 			model.addAttribute("user", (User) session.getAttribute("user"));
 
-			return "AdopterInfo";
+			return "adopterInfo";
 		}
 
 	}
@@ -88,20 +98,61 @@ public class AdoptionController {
 											@RequestParam("userName") String userName,
 											@RequestParam("realName") String realName,
 											@RequestParam("address") String address,
-											@RequestParam("sex") String sex,
-											HttpServletResponse response,
-											HttpSession session) throws IOException {
-		
-		
+											@RequestParam("sex") String sex) throws IOException {
 		Map<String, Object> map = adoptInfoService.addAdoptInfo(petId, userId, userName, realName, address, sex);
 		String msg = (String) map.get("msg");
-		if (msg.equals("exist")) {
-			model.addAttribute("error", "您已申请领养该宠物，请耐心等待申请结果!");
+		if(!msg.equals("success")){
+			model.addAttribute("error", "申请提交失败!");
 			return "error";
 		}
 		
-		return "redirect:adoption";
+		return "redirect:petList";
 
+	}
+	
+	@RequestMapping(path = { "/myAdoption" })
+	public String myAdoption(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		
+		Map<AdoptInfo, Pet> myAdoptionMap = new HashMap<>();
+		
+		List<AdoptInfo> adoptInfoList = adoptInfoService.findUserAdoptInfo(user.getId());
+		for (int i = 0; i < adoptInfoList.size(); i++) {
+			AdoptInfo adoptInfo= adoptInfoList.get(i);
+			Pet pet = petService.selectById(adoptInfo.getPetId());
+			myAdoptionMap.put(adoptInfo, pet);
+		}
+		
+		model.addAttribute("myAdoptionMap", myAdoptionMap);
+		
+		return "adoption";
+		
+	}
+	
+	@RequestMapping(path = { "/adoptionManage" })
+	public String adoptionManage(Model model) {
+		Map<AdoptInfo, Pet> allAdoptionMap = new HashMap<>();
+		
+		List<AdoptInfo> allAdoptInfoList = adoptInfoService.getAll();
+		
+		for (int i = 0; i < allAdoptInfoList.size(); i++) {
+			AdoptInfo adoptInfo= allAdoptInfoList.get(i);
+			Pet pet = petService.selectById(adoptInfo.getPetId());
+			allAdoptionMap.put(adoptInfo, pet);
+		}
+		
+		model.addAttribute("allAdoptionMap", allAdoptionMap);
+		return "adoptionManage";
+	}
+	
+	@RequestMapping(path = { "/audit" })
+	@ResponseBody
+	public String audit(Model model,
+						HttpServletRequest request) {
+		Integer adoptInfoId = RequestUtil.getPositiveInteger(request, "adoptInfoId", null);
+		String result = RequestUtil.getString(request, "result", null);
+		
+		return result;
 	}
 
 }

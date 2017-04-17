@@ -20,12 +20,6 @@ public class AdoptInfoService {
 											String realName, String address, String sex) {
 		Map<String, Object> msgMap = new HashMap<>();
 
-		AdoptInfo adoptInfo = adoptInfoDao.selectByPetAndUser(petId, userId);
-		if (adoptInfo != null) {
-			msgMap.put("msg", "exist");
-			return msgMap;
-		}
-
 		AdoptInfo newAdopt = new AdoptInfo();
 		newAdopt.setPetId(petId);
 		newAdopt.setUserId(userId);
@@ -35,12 +29,24 @@ public class AdoptInfoService {
 		newAdopt.setSex(sex);
 
 		adoptInfoDao.addAdoptInfo(newAdopt);
-		msgMap.put("msg", "成功提交申请!");
+		msgMap.put("msg", "success");
 		return msgMap;
 	}
 
 	public List<AdoptInfo> getAll() {
 		return adoptInfoDao.getAll();
+	}
+	
+	public String findAlreadyExist(int petId, int userId) {
+		AdoptInfo adoptInfo = adoptInfoDao.selectByPetAndUser(petId, userId);
+		if (adoptInfo != null) {
+			return "exist";
+		}
+		return "none";
+	}
+	
+	public List<AdoptInfo> findUserAdoptInfo(int userId) {
+		return adoptInfoDao.selectByUser(userId);
 	}
 
 }

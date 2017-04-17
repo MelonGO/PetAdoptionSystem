@@ -2,7 +2,25 @@
 <body>
 
 <script type="text/javascript">
-window.onload=function(){
+
+$(document).ready(function(){
+	$("#username").blur(function(){
+		$.get("checkName", {username:$("#username").val()}, function(data){
+			  if(data=="ok"){
+				  $("#msg").removeClass("alert-danger");
+				  $("#msg").addClass("alert-success");
+				  $("#msg").html("该用户名可以使用");
+			  }
+			  else{
+				  $("#msg").removeClass("alert-success");
+				  $("#msg").addClass("alert-danger");
+				  $("#msg").html(data);
+			  }
+		});
+	});
+});
+
+/* window.onload=function(){
 	var xmlhttp = new XMLHttpRequest();
 	var nameinput = document.getElementById("username");
     nameinput.onblur=function(){
@@ -31,7 +49,7 @@ window.onload=function(){
         }
    } 
 	
-}
+} */
 
 </script>
 
@@ -60,7 +78,7 @@ window.onload=function(){
                 <label for="address">角色：</label>
                  <select class="form-control input-lg" name="role" id="role">
                 	<option value="user">普通用户</option>
-                	<option value="manager">管理员</option>
+                	<option value="admin">管理员</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-info btn-block fa fa-check fa-2x"></button>

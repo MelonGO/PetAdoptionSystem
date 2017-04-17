@@ -25,5 +25,8 @@ public interface AdoptInfoDAO {
 	
 	@Select({ "select ", AdoptInfoDaoConstants.SELECT_FIELDS, " from ", AdoptInfoDaoConstants.TABLE_NAME, " where pet_id=#{0} and user_id=#{1}" })
 	AdoptInfo selectByPetAndUser(int petId, int userId);
+	
+	@Select({ "select ", AdoptInfoDaoConstants.SELECT_FIELDS, " from ", AdoptInfoDaoConstants.TABLE_NAME, " where user_id=#{userId}" })
+	List<AdoptInfo> selectByUser(int userId);
 
 }
