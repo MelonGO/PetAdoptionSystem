@@ -50,7 +50,9 @@
     					<li><a href="adoptionManage">领养申请管理</a></li>
     					#end
     					<li><a href="myAdoption">我的领养</a></li>
+    					<li><a href="message">消息</a></li>
 	    				<li><a href="logout">登出</a></li>
+	    				
 	    			</ul>
 	    		</li>
 	    	</ul>
@@ -75,29 +77,43 @@
 	</nav>
 	
 	<div class="form-div" id="corInsertHref">
-    <form id="login-form" action="loginUser" method="post" onsubmit="return(loginbtn_click())">
-
-        <table>
-            <tr>
-                <td>用户名</td>
-                <td><input name="username" type="text" id="username">
-                </td>
-            </tr>
-            <tr>
-                <td>密&nbsp&nbsp&nbsp&nbsp码</td>
-                <td><input name="password" type="password" id="password"></td>
-            </tr>
-		</table>
-		<div class="buttons">
-				
-			<input value="登 录" type="submit" style="margin-right:50px; margin-top:20px;">
-	
-        </div>
-        <br class="clear">
-        
-      
-    </form>
+	    <div class="modal-header my-modal-header">
+	    	<h3 class="modal-title" id="myModalLabel">
+					登录
+			</h3>
+			<button id="closebtn" type="button" class="close loginclosebtn"  >
+				&times;
+			</button>
+			
+		</div>
+	    
+	    <div class="modal-body">
+	    <div id="loginmsg"></div>
+	    <form id="login-form" action="loginUser" method="post" onsubmit="return(loginbtn_click())">
+			
+	        <table>
+	        	<tr id="loginmsg"></tr>
+	            <tr>
+	                <td>用户名</td>
+	                <td><input name="username" type="text" id="loginusername" placeholder="请输入用户名"></td>
+	            </tr>
+	            <tr>
+	                <td>密&nbsp&nbsp&nbsp&nbsp码</td>
+	                <td><input name="password" type="password" id="password" placeholder="请输入密码"></td>
+	            </tr>
+			</table>
+			<div id="line"></div>
+			
+			<div class="buttons">	
+				<input type="button" value="关 闭"class="loginclosebtn" style="margin-right:7px; margin-top:20px;">
+				</input>		
+				<input id="loginbtn" value="登 录" type="submit" style="margin-right:50px; margin-top:20px;">
+	        </div>
+	        <br class="clear">
+	    </form>
+	    </div>
     </div>
+ 
     <div id="corBackground" class="corBackground"></div>
 	
 </head>

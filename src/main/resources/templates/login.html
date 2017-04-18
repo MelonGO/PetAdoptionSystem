@@ -10,7 +10,7 @@ $().load(function(){
         <table>
             <tr>
                 <td>用户名</td>
-                <td><input name="username" type="text" id="username">
+                <td><input name="username" type="text" id="loginusername">
                 </td>
             </tr>
             <tr>
@@ -20,7 +20,7 @@ $().load(function(){
 		</table>
 		<div class="buttons">
 				
-			<input value="登 录" type="submit" style="margin-right:50px; margin-top:20px;">
+			<input id="loginbtn" value="登 录" type="submit" style="margin-right:50px; margin-top:20px;">
 	
         </div>
         <br class="clear">
@@ -29,21 +29,8 @@ $().load(function(){
 
 </div>
 
-<script>
-    function loginbtn_click() {
-        var msg = "";
-        if ($("#username").val().length == 0) {
-            msg = "请输入您的用户名!";
-            alert(msg);
-            return false;
-        }
-        if ($("#password").val().length == 0) {
-            msg = "请输入您的密码!";
-            alert(msg);
-            return false;
-        }
-    }
-</script>
+
+
 #parse("common/footer.html")
 
 </body>
