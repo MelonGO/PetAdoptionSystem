@@ -152,6 +152,7 @@ public class AdoptionController {
 		Integer adoptInfoId = RequestUtil.getPositiveInteger(request, "adoptInfoId", null);
 		String result = RequestUtil.getString(request, "result", null);
 		
+		
 		return result;
 	}
 
