@@ -1,4 +1,31 @@
 #parse("common/header.html")
+
+<script>
+$(document).ready(function(){ 
+	var args = new Object();
+	args = GetUrlParms();
+	var value1 = args["msg"];
+	if(value1 == "notLogin"){
+		alert("请先登录!");
+	}
+});
+
+function GetUrlParms(){ 
+    var args=new Object();   
+    var query=location.search.substring(1);//获取查询串   
+    var pairs=query.split("&");//在逗号处断开   
+
+    for(var   i=0;i<pairs.length;i++){
+    	var pos=pairs[i].indexOf('=');//查找name=value   
+    	if(pos==-1)   continue;//如果没有找到就跳过   
+		var argname=pairs[i].substring(0,pos);//提取name   
+		var value=pairs[i].substring(pos+1);//提取value   
+		args[argname]=unescape(value);//存为属性   
+    }
+    return args;
+}
+</script>
+
 <body>
 
 	<div class="container-fluid petList-main">
@@ -40,7 +67,7 @@
 							#end
 							
 							#foreach($page in $pages)
-							<li><a href="petList?page=$!{page}">$!{page}</a></li> 
+							<li #if($current == $page) class="active" #end><a href="petList?page=$!{page}">$!{page}</a></li> 
 							#end
 							
 							#if($next <= $pageAmount)

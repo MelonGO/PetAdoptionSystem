@@ -2,7 +2,7 @@ package com.pet.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +59,7 @@ public class AdoptionController {
 
 		model.addAttribute("pages", pages);
 
+		model.addAttribute("current", page);
 		model.addAttribute("previous", page - 1);
 		model.addAttribute("next", page + 1);
 		model.addAttribute("pageAmount", pageAmount);
@@ -72,7 +73,7 @@ public class AdoptionController {
 	@RequestMapping(path = { "/wantAdopt" })
 	public String wantAdopt(Model model, @RequestParam(value = "petId") int petId, HttpSession session) {
 		if (session.getAttribute("user") == null) {
-			return "redirect:login";
+			return "redirect:petList?msg=notLogin";
 
 		} else {
 			User user = (User) session.getAttribute("user");
@@ -114,7 +115,7 @@ public class AdoptionController {
 	public String myAdoption(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		
-		Map<AdoptInfo, Pet> myAdoptionMap = new HashMap<>();
+		Map<AdoptInfo, Pet> myAdoptionMap = new LinkedHashMap<>();
 		
 		List<AdoptInfo> adoptInfoList = adoptInfoService.findUserAdoptInfo(user.getId());
 		for (int i = 0; i < adoptInfoList.size(); i++) {
@@ -131,7 +132,7 @@ public class AdoptionController {
 	
 	@RequestMapping(path = { "/adoptionManage" })
 	public String adoptionManage(Model model) {
-		Map<AdoptInfo, Pet> allAdoptionMap = new HashMap<>();
+		Map<AdoptInfo, Pet> allAdoptionMap = new LinkedHashMap<>();
 		
 		List<AdoptInfo> allAdoptInfoList = adoptInfoService.getAll();
 		
@@ -151,9 +152,34 @@ public class AdoptionController {
 						HttpServletRequest request) {
 		Integer adoptInfoId = RequestUtil.getPositiveInteger(request, "adoptInfoId", null);
 		String result = RequestUtil.getString(request, "result", null);
+
+		AdoptInfo adoptInfo = adoptInfoService.findAdoptInfoById(adoptInfoId);
+
+		if (result.equals("yes")) {
+			adoptInfo.setState(1);
+		} else {
+			adoptInfo.setState(-1);
+		}
+
+		Map<String, Object> msg = adoptInfoService.updateAdoptInfo(adoptInfo);
+
+		return (String) msg.get("msg");
+	}
+	
+	@RequestMapping(path = { "/procedure" })
+	public String procedure(Model model, 
+							@RequestParam("adoptInfoId") int adoptInfoId) {
+		AdoptInfo adoptInfo = adoptInfoService.findAdoptInfoById(adoptInfoId);
+		Pet pet = petService.selectById(adoptInfo.getPetId());
 		
+		model.addAttribute("adoptInfo", adoptInfo);
+		model.addAttribute("pet", pet);
 		
-		return result;
+		return "procedure";
 	}
 
+	
+	
+	
+	
 }
