@@ -13,7 +13,7 @@ public interface UserDAO {
    
 
     @Insert({"insert into ", UserDaoConstants.TABLE_NAME, "(", UserDaoConstants.INSERT_FIELDS,
-            ") values (#{name},#{password},#{role})"})
+            ") values (#{name},#{password},#{sex},#{role})"})
     @SelectKey(statement="select last_insert_id() as id", keyProperty="id", before=false, resultType=Integer.class,
             statementType = StatementType.PREPARED)
     int addUser(User user);

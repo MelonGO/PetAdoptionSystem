@@ -15,13 +15,15 @@
         	<p>宠物种类：$!{pet.type}</p>
         	<p>宠物年龄：$!{pet.age}</p>
         	<p>宠物名字：$!{pet.name}</p>
+			<p>宠物性别：$!{pet.sex}</p>
+			<p>宠物价格：$!{pet.price}</p>
 			<h2>
             	领养人信息
         	</h2>
-        	<p>用户名：$!{adoptInfo.userName}</p>
-        	<p>真实姓名：$!{adoptInfo.realName}</p>
-        	<p>家庭住址：$!{adoptInfo.address}</p>
-        	<p>性别: $!{adoptInfo.sex}</p>
+        	<p>用户名：$!{user.name}</p>
+        	<p>真实姓名：$!{recInfo.realName}</p>
+        	<p>家庭住址：$!{recInfo.address}</p>
+        	<p>性别: $!{user.sex}</p>
         	
         	<form role="form" action="addToShoppingCart" method="post" onsubmit="">
             <div class="form-group" style="display:none">
@@ -29,21 +31,22 @@
                 <input type="text" class="form-control input-lg" name="userId" id="userId" value="$!{adoptInfo.id}">
             </div>
             <div class="form-group">
-                <label for="transport">选择运输方式：</label>
-                 <select class="form-control input-lg" name="transport" id="transport">
-                	<option value="take">自取</option>
+          		<label for="transport">选择运输方式：</label>
+                <select class="form-control input-lg" name="transport" id="transport">
                 	<option value="mail">邮递</option>
+                	<option value="take">自取</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="item">附加宠物道具：</label>
-                 <select class="form-control input-lg" name="item" id="item">
-                	<option value="leash">狗绳</option>
-                	<option value="cage">笼子</option>
-                </select>
+            	<label for="item">附加道具：</label>
+                <div class="item">
+                	<label><input type="checkbox" value="">狗绳</label>
+                	<label><input type="checkbox" value="">笼子</label>
+                </div>
             </div>
             
             <button type="submit" class="btn btn-info btn-block">添加到购物车</button>
+            <p></p>
         	</form>
 			
 			</div>
