@@ -25,10 +25,12 @@
 					<td>$kv.value.name</td>
 					<td>$kv.key.createTime</td>
 					#if($kv.key.state == 0)
-					<td>未通过</td>
-					#else
+					<td>未审核</td>
+					#elseif($kv.key.state == 1)
 					<td><button type="button" onclick="location.href='procedure?adoptInfoId=$kv.key.id'"
-								class="btn btn-warning pull-right">已通过</button></td>
+								class="btn btn-success">已通过，去办手续</button></td>
+					#elseif($kv.key.state == -1)
+					<td>未通过</td>
 					#end
 				</tr>
 				#end
