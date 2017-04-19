@@ -4,6 +4,8 @@ public class User extends Base{
 	private String name;
 	private String password;
 	private String role;
+	private String sex;
+	
 	public String getName() {
 		return name;
 	}
@@ -23,6 +25,13 @@ public class User extends Base{
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 }

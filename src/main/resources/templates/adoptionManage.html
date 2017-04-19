@@ -13,37 +13,47 @@
 						<th>宠物种类</th>
 						<th>宠物年龄</th>
 						<th>宠物名字</th>
+						<th>宠物性别</th>
+						<th>宠物价格</th>
 						<th>申请人用户名</th>
-						<th>申请人真实姓名</th>
 						<th>申请人性别</th>
+						<th>申请人真实姓名</th>
 						<th>申请人地址</th>
+						<th>申请人电话</th>
 						<th>申请时间</th>
 						<th>申请状态</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-				#foreach($kv in $allAdoptionMap.entrySet())
+				#foreach($adoption in $allAdoptionList)
 				<tr>
-					<td>$kv.value.type</td>
-					<td>$kv.value.age</td>
-					<td>$kv.value.name</td>
-					<td>$kv.key.userName</td>
-					<td>$kv.key.realName</td>
-					<td>$kv.key.sex</td>
-					<td>$kv.key.address</td>
-					<td>$kv.key.createTime</td>
-					#if($kv.key.state == 0)
+					#set($index = $foreach.count - 1) 
+					#set($pet = $petList.get($index)) 
+					#set($userInfo = $userList.get($index)) 
+					#set($recInfo = $recInfoList.get($index)) 
+					<td>$pet.type</td>
+					<td>$pet.age</td>
+					<td>$pet.name</td>
+					<td>$pet.sex</td>
+					<td>$pet.price</td>
+					<td>$userInfo.name</td>
+					<td>$userInfo.sex</td>
+					<td>$recInfo.realName</td>
+					<td>$recInfo.address</td>
+					<td>$recInfo.phone</td>
+					<td>$adoption.createTime</td>
+					#if($adoption.state == 0)
 					<td>未审核</td>
-					#elseif($kv.key.state == 1)
+					#elseif($adoption.state == 1)
 					<td>已通过</td>
-					#elseif($kv.key.state == -1)
+					#elseif($adoption.state == -1)
 					<td>未通过</td>
 					#end
 					<td>
-					<button type="button" onclick='setAdoptInfoId($kv.key.id)'
+					<button type="button" onclick='setAdoptionId($adoption.id)'
                     		class="btn btn-warning" data-toggle="modal" data-target="#audit"
-                    		#if($kv.key.state != 0 ) disabled="disabled" #end>审核</button>
+                    		#if($adoption.state != 0 ) disabled="disabled" #end>审核</button>
 					</td>
 				</tr>
 				#end
@@ -78,13 +88,13 @@
 </div>
 
 <script type="text/javascript">
-var adoptInfoId;
-function setAdoptInfoId(id) {
-	adoptInfoId = id;
+var adoptionId;
+function setAdoptionId(id) {
+	adoptionId = id;
 }
 function auditAdoption(result){
 	var param = {};
-	param.adoptInfoId = adoptInfoId;
+	param.adoptionId = adoptionId;
 	if(result == "y"){
 		param.result = "yes";
 	}else{

@@ -3,9 +3,18 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){ 
+	var args = new Object();
+	args = GetUrlParms();
+	var value1 = args["msg"];
+	if(value1 == "success"){
+		alert("注册成功!");
+	}
+});
+
 $(document).ready(function(){
-	$("#username").blur(function(){
-		$.get("checkName", {username:$("#username").val()}, function(data){
+	$("#reg-username").blur(function(){
+		$.get("checkName", {username:$("#reg-username").val()}, function(data){
 			  if(data=="ok"){
 				  $("#msg").removeClass("alert-danger");
 				  $("#msg").addClass("alert-success");
@@ -60,19 +69,26 @@ $(document).ready(function(){
         </h1>
         <form role="form" action="registerUser" method="post" onsubmit="return(registerbtn_click())">
             <div class="form-group">
-                <label for="username">用户名：</label>
-                <input type="text" class="form-control input-lg" name="username" id="username" value="">
+                <label for="reg-username">用户名：</label>
+                <input type="text" class="form-control input-lg" name="reg-username" id="reg-username" value="">
             </div>
             <div class="" id="msg">
             
             </div>
             <div class="form-group">
-                <label for="password">密码：</label>
-                <input type="password" class="form-control input-lg " name="password" id="password" value="">
+                <label for="reg-password">密码：</label>
+                <input type="password" class="form-control input-lg " name="reg-password" id="reg-password" value="">
             </div>
             <div class="form-group">
                 <label for="confirm">确认密码：</label>
                 <input type="password" class="form-control input-lg " name="confirm" id="confirm" value="">
+            </div>
+            <div class="form-group">
+                <label for="sex">性别：</label>
+                 <select class="form-control input-lg" name="sex" id="sex">
+                	<option value="male">男</option>
+                	<option value="female">女</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="address">角色：</label>
@@ -90,12 +106,12 @@ $(document).ready(function(){
 <script>
     function registerbtn_click() {
         var msg = "";
-        if ($("#username").val().length == 0) {
+        if ($("#reg-username").val().length == 0) {
             msg = "请输入你的用户名!";
             alert(msg);
             return false;
         }
-        if ($("#password").val().length == 0) {
+        if ($("#reg-password").val().length == 0) {
             msg = "请输入您的密码!";
             alert(msg);
             return false;
@@ -105,7 +121,7 @@ $(document).ready(function(){
             alert(msg);
             return false;
         }
-        if($("#confirm").val() != $("#password").val()){
+        if($("#confirm").val() != $("#reg-password").val()){
         	msg = "两次输入的密码不一样!";
             alert(msg);
             return false;

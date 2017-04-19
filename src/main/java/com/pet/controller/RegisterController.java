@@ -27,18 +27,19 @@ public class RegisterController {
 	}
 
 	@RequestMapping(value = { "/registerUser" }, method = { RequestMethod.GET, RequestMethod.POST })
-	public String register(Model model, @RequestParam("username") String username,
-										@RequestParam("password") String password, 
+	public String register(Model model, @RequestParam("reg-username") String username,
+										@RequestParam("reg-password") String password, 
+										@RequestParam("sex") String sex, 
 										@RequestParam("role") String role) {
 		
-		Map<String, Object> map = userService.register(username, CreateMD5.getMd5(password), role);
+		Map<String, Object> map = userService.register(username, CreateMD5.getMd5(password), sex, role);
 		String msg = (String) map.get("msg");
 		if (map.get("user") == null) {
 			model.addAttribute("error", msg);
 			return "error";
 		}
 		
-		return "redirect:login";
+		return "redirect:register?msg=success";
 
 	}
 	
