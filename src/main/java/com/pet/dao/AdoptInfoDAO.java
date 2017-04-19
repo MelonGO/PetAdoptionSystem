@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import com.pet.dao.constants.AdoptInfoDaoConstants;
@@ -28,5 +29,12 @@ public interface AdoptInfoDAO {
 	
 	@Select({ "select ", AdoptInfoDaoConstants.SELECT_FIELDS, " from ", AdoptInfoDaoConstants.TABLE_NAME, " where user_id=#{userId}" })
 	List<AdoptInfo> selectByUser(int userId);
+	
+	@Select({ "select ", AdoptInfoDaoConstants.SELECT_FIELDS, " from ", AdoptInfoDaoConstants.TABLE_NAME, " where id=#{id}" })
+	AdoptInfo selectById(int id);
+	
+	@Update({ "update ", AdoptInfoDaoConstants.TABLE_NAME,
+	" set state=#{state} where id=#{id}" })
+	void updateAdoptInfo(AdoptInfo adoptInfo);
 
 }

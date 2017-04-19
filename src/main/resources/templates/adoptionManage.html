@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-lg-12">
 			<h1 class="font-big">
-            	领养申请管理
+            	领养管理
         	</h1>
 			<table class="table waiter-list">
 				<thead>
@@ -34,13 +34,16 @@
 					<td>$kv.key.address</td>
 					<td>$kv.key.createTime</td>
 					#if($kv.key.state == 0)
-					<td>未通过</td>
-					#else
+					<td>未审核</td>
+					#elseif($kv.key.state == 1)
 					<td>已通过</td>
+					#elseif($kv.key.state == -1)
+					<td>未通过</td>
 					#end
 					<td>
 					<button type="button" onclick='setAdoptInfoId($kv.key.id)'
-                    		class="btn btn-warning" data-toggle="modal" data-target="#audit">审核</button>
+                    		class="btn btn-warning" data-toggle="modal" data-target="#audit"
+                    		#if($kv.key.state != 0 ) disabled="disabled" #end>审核</button>
 					</td>
 				</tr>
 				#end

@@ -48,5 +48,17 @@ public class AdoptInfoService {
 	public List<AdoptInfo> findUserAdoptInfo(int userId) {
 		return adoptInfoDao.selectByUser(userId);
 	}
+	
+	public AdoptInfo findAdoptInfoById(int id){
+		return adoptInfoDao.selectById(id);
+	}
+	
+	public Map<String, Object> updateAdoptInfo(AdoptInfo adoptInfo){
+		Map<String, Object> msgMap = new HashMap<>();
+		
+		adoptInfoDao.updateAdoptInfo(adoptInfo);
+		msgMap.put("msg", "审核成功!");
+		return msgMap;
+	}
 
 }
