@@ -39,6 +39,11 @@ public class UserService {
 			} else {
 				msgMap.put("msg", "登陆成功!");
 				msgMap.put("user", user);
+				if(user.getRole().equals("admin")){
+					msgMap.put("role", "admin");
+				}else{
+					msgMap.put("role", "user");
+				}
 			}
 		}
 
@@ -68,6 +73,15 @@ public class UserService {
 		User user = userDao.selectByName(username);
 		
 		return user;
+		
+	}
+	
+	public boolean checkRole(String username){
+		User user = userDao.selectByName(username);
+		if(user.getRole().equals("admin")){
+			return true;
+		}
+		return false;
 		
 	}
 	
