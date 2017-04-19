@@ -15,8 +15,8 @@
 	background-color:rgba(255,255,255,0.27); 
 	border-radius:10px; 
 	border:1px solid #aaa; 	
-	height:250px;
-	width:424px; 
+	height:320px;
+	width:470px; 
 	margin:120px auto;
 	padding:30px 0 20px 0px; 
 	font-size:16px;
@@ -32,10 +32,6 @@
 	margin:10px; 
 	line-height:20px; 
 	font-size:16px;
-	}
-	
-.form-div input[type="checkbox"]{
-	margin:20px 0 20px 10px;
 	}
 	
 .form-div input[type="button"],.form-div input[type="submit"]{
@@ -75,7 +71,24 @@ input[type="text"]:focus, input[type="password"]:focus {
     border:1px solid #50afeb;
 	outline:none;
 }
-input[type="button"], input[type="submit"] {
+input[type="button"]:focus{
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+input[type="button"]{
+	padding:7px 15px;
+    text-align:center;
+    border-radius:5px;
+    overflow:hidden;
+    min-width:80px;
+    border:none;
+	color: #333;
+  	background-color: #eee;
+  	border-color: #ccc;
+	box-shadow:1px 1px 1px rgba(75,75,75,0.3);
+}
+input[type="submit"] {
     padding:7px 15px;
     background-color:#3c6db0;
     text-align:center;
@@ -86,11 +99,24 @@ input[type="button"], input[type="submit"] {
 	color:#FFF;
 	box-shadow:1px 1px 1px rgba(75,75,75,0.3);
 }
-input[type="button"]:hover, input[type="submit"]:hover {
+
+input[type="submit"]:hover {
     background-color:#5a88c8;
 }
+input[type="button"]:hover {
+   	color: #333;
+  	background-color: #e6e6e6;
+  	border-color: #adadad;
+}
 
-input[type="button"]:active, input[type="submit"]:active {
+input[type="button"]:active{
+	color: #333;
+  	background-color: #e6e6e6;
+  	border-color: #adadad;
+}
+
+
+input[type="submit"]:active {
     background-color:#5a88c8;
 }
 
@@ -100,10 +126,11 @@ input[type="button"]:active, input[type="submit"]:active {
 	float: left;
 	display: none;
 	background-color: #fff;
+	
 }
 #corBackground{
 	width: 100%;
-	height: 100%;
+	height: 2000px;
 	position: absolute;
 	background-color: #000;
 	top: 0;
@@ -119,6 +146,34 @@ input[type="button"]:active, input[type="submit"]:active {
 #btnlogin{
 	cursor:pointer;
 }
+
+#closebtn{
+	position:absolute;
+	float:right;
+	right:10px;
+	top:10px;
+	font-size:30px;
+}
+
+.my-modal-header{
+	padding:8px;
+}
+
+#loginmsg{
+	margin:5px;
+}
+
+#line{
+	margin:15px 0 0 0;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+
+
+
+
+
+
 
 
 
