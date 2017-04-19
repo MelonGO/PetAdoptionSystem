@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.pet.model.AdoptInfo;
+import com.pet.model.Adoption;
 import com.pet.model.Pet;
+import com.pet.model.Prop;
+import com.pet.model.ReceivingInfo;
 import com.pet.model.User;
-import com.pet.service.AdoptInfoService;
+import com.pet.service.AdoptionService;
 import com.pet.service.PetService;
+import com.pet.service.ReceivingInfoService;
+import com.pet.service.UserService;
 
 import tools.RequestUtil;
 
@@ -31,7 +35,13 @@ public class AdoptionController {
 	PetService petService;
 
 	@Autowired
-	AdoptInfoService adoptInfoService;
+	AdoptionService adoptInfoService;
+	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	ReceivingInfoService recInfoService;
 
 	@RequestMapping(path = { "/petList" })
 	public String adoption(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -65,7 +75,19 @@ public class AdoptionController {
 		model.addAttribute("pageAmount", pageAmount);
 
 		List<Pet> petList = petService.selectByPage((page - 1) * 5);
-		model.addAttribute("petList", petList);
+		
+		Map<Pet, String> petMap = new LinkedHashMap<>();
+		for (int i = 0; i < petList.size(); i++) {
+			Pet pet = petList.get(i);
+			Adoption adoptInfo = adoptInfoService.findByPetId(pet.getId());
+			if (adoptInfo != null) {
+				petMap.put(pet, "hasAdopt");
+			} else {
+				petMap.put(pet, "notAdopt");
+			}
+		}
+		
+		model.addAttribute("petMap", petMap);
 
 		return "petList";
 	}
@@ -84,9 +106,13 @@ public class AdoptionController {
 			}
 			
 			Pet pet = petService.selectById(petId);
-
 			model.addAttribute("pet", pet);
 			model.addAttribute("user", (User) session.getAttribute("user"));
+			
+			ReceivingInfo recInfo = recInfoService.findByUserId(user.getId());
+			if(recInfo != null){
+				model.addAttribute("recInfo", recInfo);
+			}
 
 			return "adopterInfo";
 		}
@@ -96,18 +122,17 @@ public class AdoptionController {
 	@RequestMapping(path = { "/submitAdopt" })
 	public String submitAdopt(Model model, @RequestParam("petId") int petId,
 											@RequestParam("userId") int userId,
-											@RequestParam("userName") String userName,
 											@RequestParam("realName") String realName,
 											@RequestParam("address") String address,
-											@RequestParam("sex") String sex) throws IOException {
-		Map<String, Object> map = adoptInfoService.addAdoptInfo(petId, userId, userName, realName, address, sex);
+											@RequestParam("phone") String phone) throws IOException {
+		Map<String, Object> map = adoptInfoService.addAdoption(petId, userId, realName, address, phone);
 		String msg = (String) map.get("msg");
 		if(!msg.equals("success")){
 			model.addAttribute("error", "申请提交失败!");
 			return "error";
 		}
 		
-		return "redirect:petList";
+		return "redirect:petList?msg=success";
 
 	}
 	
@@ -115,11 +140,11 @@ public class AdoptionController {
 	public String myAdoption(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		
-		Map<AdoptInfo, Pet> myAdoptionMap = new LinkedHashMap<>();
+		Map<Adoption, Pet> myAdoptionMap = new LinkedHashMap<>();
 		
-		List<AdoptInfo> adoptInfoList = adoptInfoService.findUserAdoptInfo(user.getId());
+		List<Adoption> adoptInfoList = adoptInfoService.findUserAdoption(user.getId());
 		for (int i = 0; i < adoptInfoList.size(); i++) {
-			AdoptInfo adoptInfo= adoptInfoList.get(i);
+			Adoption adoptInfo= adoptInfoList.get(i);
 			Pet pet = petService.selectById(adoptInfo.getPetId());
 			myAdoptionMap.put(adoptInfo, pet);
 		}
@@ -132,17 +157,27 @@ public class AdoptionController {
 	
 	@RequestMapping(path = { "/adoptionManage" })
 	public String adoptionManage(Model model) {
-		Map<AdoptInfo, Pet> allAdoptionMap = new LinkedHashMap<>();
+
+		List<Adoption> allAdoptionList = adoptInfoService.getAll();
 		
-		List<AdoptInfo> allAdoptInfoList = adoptInfoService.getAll();
+		List<Pet> petList = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
+		List<ReceivingInfo> recInfoList = new ArrayList<>();
 		
-		for (int i = 0; i < allAdoptInfoList.size(); i++) {
-			AdoptInfo adoptInfo= allAdoptInfoList.get(i);
+
+		for (int i = 0; i < allAdoptionList.size(); i++) {
+			Adoption adoptInfo = allAdoptionList.get(i);
 			Pet pet = petService.selectById(adoptInfo.getPetId());
-			allAdoptionMap.put(adoptInfo, pet);
+			petList.add(pet);
+			userList.add(userService.getUser(adoptInfo.getUserId()));
+			recInfoList.add(recInfoService.findByUserId(adoptInfo.getUserId()));
 		}
+
+		model.addAttribute("allAdoptionList", allAdoptionList);
+		model.addAttribute("petList", petList);
+		model.addAttribute("userList", userList);
+		model.addAttribute("recInfoList", recInfoList);
 		
-		model.addAttribute("allAdoptionMap", allAdoptionMap);
 		return "adoptionManage";
 	}
 	
@@ -150,30 +185,37 @@ public class AdoptionController {
 	@ResponseBody
 	public String audit(Model model,
 						HttpServletRequest request) {
-		Integer adoptInfoId = RequestUtil.getPositiveInteger(request, "adoptInfoId", null);
+		Integer adoptionId = RequestUtil.getPositiveInteger(request, "adoptionId", null);
 		String result = RequestUtil.getString(request, "result", null);
 
-		AdoptInfo adoptInfo = adoptInfoService.findAdoptInfoById(adoptInfoId);
+		Adoption adoption = adoptInfoService.findAdoptionById(adoptionId);
 
 		if (result.equals("yes")) {
-			adoptInfo.setState(1);
+			adoption.setState(1);
 		} else {
-			adoptInfo.setState(-1);
+			adoption.setState(-1);
 		}
 
-		Map<String, Object> msg = adoptInfoService.updateAdoptInfo(adoptInfo);
+		Map<String, Object> msg = adoptInfoService.updateAdoption(adoption);
 
 		return (String) msg.get("msg");
 	}
 	
 	@RequestMapping(path = { "/procedure" })
 	public String procedure(Model model, 
-							@RequestParam("adoptInfoId") int adoptInfoId) {
-		AdoptInfo adoptInfo = adoptInfoService.findAdoptInfoById(adoptInfoId);
+							@RequestParam("adoptionId") int adoptionId) {
+		Adoption adoptInfo = adoptInfoService.findAdoptionById(adoptionId);
+		
 		Pet pet = petService.selectById(adoptInfo.getPetId());
+		
+		ReceivingInfo recInfo = recInfoService.findByUserId(adoptInfo.getUserId());
 		
 		model.addAttribute("adoptInfo", adoptInfo);
 		model.addAttribute("pet", pet);
+		model.addAttribute("recInfo", recInfo);
+		
+		List<Prop> propList = new ArrayList<>();
+		model.addAttribute("propList", propList);
 		
 		return "procedure";
 	}

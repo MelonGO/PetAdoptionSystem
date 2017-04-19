@@ -8,22 +8,11 @@ $(document).ready(function(){
 	if(value1 == "notLogin"){
 		alert("请先登录!");
 	}
+	if(value1 == "success"){
+		alert("申请成功，请耐心等待审核!");
+	}
 });
 
-function GetUrlParms(){ 
-    var args=new Object();   
-    var query=location.search.substring(1);//获取查询串   
-    var pairs=query.split("&");//在逗号处断开   
-
-    for(var   i=0;i<pairs.length;i++){
-    	var pos=pairs[i].indexOf('=');//查找name=value   
-    	if(pos==-1)   continue;//如果没有找到就跳过   
-		var argname=pairs[i].substring(0,pos);//提取name   
-		var value=pairs[i].substring(pos+1);//提取value   
-		args[argname]=unescape(value);//存为属性   
-    }
-    return args;
-}
 </script>
 
 <body>
@@ -40,18 +29,27 @@ function GetUrlParms(){
 							<th>宠物种类</th>
 							<th>年龄</th>
 							<th>名字</th>
+							<th>性别</th>
+							<th>价格</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-						#foreach($pet in $petList)
+						#foreach($kv in $petMap.entrySet())
 						<tr>
-							<td>$!{pet.type}</td>
-							<td>$!{pet.age}</td>
-							<td>$!{pet.name}</td>
+							<td>$kv.key.type</td>
+							<td>$kv.key.age</td>
+							<td>$kv.key.name</td>
+							<td>$kv.key.sex</td>
+							<td>$kv.key.price</td>
 							<td>
-								<button type="button" onclick="location.href='wantAdopt?petId=$!{pet.id}'"
-									class="btn btn-warning pull-right">我要领养</button>
+								#if($kv.value == "notAdopt")
+								<button type="button" onclick="location.href='wantAdopt?petId=$kv.key.id'"
+									class="btn btn-warning">我要领养</button>
+								#else
+								<button type="button" class="btn btn-inverse" 
+									disabled="disabled">已被申领</button>
+								#end
 							</td>
 						</tr>
 						#end

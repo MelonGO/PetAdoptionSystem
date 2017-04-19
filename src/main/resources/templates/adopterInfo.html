@@ -10,6 +10,8 @@
         	<p>宠物种类：$!{pet.type}</p>
         	<p>宠物年龄：$!{pet.age}</p>
         	<p>宠物名字：$!{pet.name}</p>
+        	<p>宠物性别：$!{pet.sex}</p>
+        	<p>宠物价格：$!{pet.price}</p>
 			<h1 class="font-big">
             	填写领养人信息
         	</h1>
@@ -28,21 +30,19 @@
             </div>
             <div class="form-group">
                 <label for="realName">真实姓名：</label>
-                <input type="text" class="form-control input-lg" name="realName" id="realName" value="">
+                <input type="text" class="form-control input-lg" name="realName" id="realName" value="$!{recInfo.realName}">
             </div>
             <div class="form-group">
                 <label for="address">家庭住址：</label>
-                <input type="text" class="form-control input-lg" name="address" id="address" value="">
+                <input type="text" class="form-control input-lg" name="address" id="address" value="$!{recInfo.address}">
             </div>
             <div class="form-group">
-                <label for="sex">性别：</label>
-                 <select class="form-control input-lg" name="sex" id="sex">
-                	<option value="male">男</option>
-                	<option value="female">女</option>
-                </select>
+                <label for="phone">联系电话：</label>
+                <input type="text" class="form-control input-lg" name="phone" id="phone" value="$!{recInfo.phone}">
             </div>
             
             <button type="submit" class="btn btn-info btn-block">提交申请</button>
+            <p></p>
         	</form>
 			
 			</div>
@@ -59,6 +59,11 @@
         }
         if ($("#address").val().length == 0) {
             msg = "请输入您的地址!";
+            alert(msg);
+            return false;
+        }
+        if ($("#phone").val().length == 0) {
+            msg = "请输入您的联系电话!";
             alert(msg);
             return false;
         }
