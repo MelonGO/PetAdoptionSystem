@@ -37,8 +37,7 @@ public class LoginController {
 			model.addAttribute("error", msg);
 			return "Error";
 		}
-		
-		
+
 		model.addAttribute("user", (User) map.get("user"));
 		session.setAttribute("user", (User) map.get("user"));
 
