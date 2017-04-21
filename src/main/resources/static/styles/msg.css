@@ -1,0 +1,108 @@
+.notice {
+    width:20px;
+    height:20px;
+    line-height:20px;
+    font-size:10px;
+    color:#fff;
+    text-align:center;
+    background-color:#f00;
+    border-radius:50%;
+    position:absolute;
+    right:1px;
+    top:10px;
+
+}
+
+.msgBody{
+	padding-top:45px;
+	height:100%;
+	width: 70%;
+    min-height: 700px;    
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #d3d3d3;
+    border-width: 0 1px;
+    word-wrap: break-word;
+    word-break: break-word;
+	
+}
+
+.msgH2{
+	height: 30px;
+    padding: 15px 0 40px 50px;
+    font-size: 25px;
+    font-weight: normal;
+    line-height: 30px;
+   
+}
+
+.messageList{
+	
+	position: relative;
+    float: left;
+    width: 184px;
+}
+
+.msgType{
+	padding-left:0px;
+	float: left;
+	border-top: 1px solid #ddd;
+}
+
+.msgLi{
+	position: relative;
+    width: 185px;
+    height:55px;
+	float: left;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+    display: list-item;
+    
+}
+
+
+.msgLi span {
+	
+    float: left;
+    margin: 14px 8px 0 6px;
+
+}
+
+.msgLi i{
+	padding-left:40px;
+	float: left;
+    margin-top: 14px;
+    margin-bottom:17px;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+
+.myspan{
+	text-decoration: none;
+	font:bold;
+	font-size: 20px;
+}
+
+.main-box{
+	float: right;
+    width: 100%;
+    margin-left: -185px;
+}
+
+.msgContent{
+	margin-left:185px;
+	padding-left:40px;
+	padding-right:40px;
+	padding-top:30px;
+}
+
+.msgContent .mh{
+    height: 35px;
+    line-height:30px;
+    font-family:"微软雅黑";
+    font-size:22px;
+    font-weight:bold;
+    border-bottom: 2px solid #546cad;
+}
