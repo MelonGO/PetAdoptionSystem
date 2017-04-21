@@ -8,7 +8,7 @@
             	已领养的宠物
         	</h3>
         	<div class="rt">
-				<table class="table waiter-list ">
+				<table id="table1" class="table waiter-list ">
 					<thead>
 						<tr>
 							<th>宠物种类</th>
@@ -29,7 +29,8 @@
 						<td>$kv.value.sex</td>
 						<td>$kv.value.price</td>
 						<td>$kv.key.updateTime</td>
-						<td><button id="btnRecycle" type="button" data-toggle="modal" data-target="#recycleModal"class="btn btn-success">送回</button></td>
+						<td class="recyclePetId">$kv.key.id</td>
+						<td><button type="button" data-toggle="modal" data-whatever="$kv.value.name" data-target="#recycleModal" class="btn btn-success btnRecycle" >送回</button></td>
 						#end
 					</tr>
 					#end
@@ -50,16 +51,67 @@
 	            </div>
 	            <div class="modal-body">
 	            	<div id="a">
+	            	
+		            	<table id=recycleTable>
+		            		<tr>
+				                <td>宠物编号：</td>
+				                <td><input id="recyclePetID" name="recyclePetID" type="text"   disabled="disabled"></td>
+				            </tr>
+		            		<tr>
+				                <td>宠物名称：</td>
+				                <td><input id="recyclePetName" name="recyclePetName" type="text"  disabled="disabled"></td>
+				            </tr>
+				            <tr>
+				                <td>宠物年龄：</td>
+				                <td><input id="recyclePetAge" name="recyclePetAge" type="text" disabled="disabled" ></td>
+				                
+				            </tr>
+				            <tr>
+				                <td>宠物种类：</td>
+				                <td><input id="recyclePetType" name="recyclePetType" type="text" disabled="disabled" ></td>
+				            </tr>
+				            <tr>
+				                <td>领养时间：</td>
+				                <td><input id="recyclePetAdoptTime" name="recyclePetAdoptTime" type="text"  disabled="disabled"></td>
+				            </tr>
+				            <tr>
+				                <td>送回原因：</td>
+				                <td><input id="recycleReason" name="recycleReason" type="text"  placeholder="请输入送回宠物的原因"></td>
+				            </tr>            
+				            <tr>
+				                <td>是否助养：</td>
+				                <td>
+					                <input id="recycleSponsorship" name="recycleSponsorship" type="text" placeholder="请选择是否助养" list ="isSponsorship">            					                
+					                <datalist id ="isSponsorship" >
+							            <option>进行助养</option >
+							            <option>直接送回</option >
+							        </datalist>
+					                
+				                </td>
+				            </tr>
+				            <tr>
+				                <td>助养金额：</td>
+				                <td><input id="recycleMoney" name="recycleMoney" type="text"  placeholder="请输入助养金金额"></td>
+				            </tr>	
+				            <tr>
+				                <td>你的地址：</td>
+				                <td><input id="recycleAddress" name="address" type="text"  placeholder="请输入你的地址"></td>
+				            </tr>
+				            <tr>
+				                <td>联系方式：</td>
+				                <td><input id="recyclePhone" name="phone" type="text"  placeholder="请输入你的联系方式"></td>
+				            </tr>
+						</table>
 	            	</div>
-	            	宠物信息
 	            </div>
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	                <button type="button" class="btn btn-primary">确认</button>
+	                <button type="button" class="btn btn-primary " id="recycleConfirm">确认</button>
 	            </div>
 	        </div><!-- /.modal-content -->
 	    </div><!-- /.modal -->
 	</div>
+
 </div>
 
 #parse("common/footer.html")
