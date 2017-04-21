@@ -17,6 +17,7 @@
         	<p>宠物名字：$!{pet.name}</p>
 			<p>宠物性别：$!{pet.sex}</p>
 			<p>宠物价格：$!{pet.price}</p>
+			<hr>
 			<h2>
             	领养人信息
         	</h2>
@@ -24,11 +25,11 @@
         	<p>真实姓名：$!{recInfo.realName}</p>
         	<p>家庭住址：$!{recInfo.address}</p>
         	<p>性别: $!{user.sex}</p>
-        	
-        	<form role="form" action="addToShoppingCart" method="post" onsubmit="">
+        	<hr>
+        	<form role="form" action="shoppingCart" method="post" onsubmit="">
             <div class="form-group" style="display:none">
-                <label for="adoptInfoId">adoptInfoId：</label>
-                <input type="text" class="form-control input-lg" name="userId" id="userId" value="$!{adoptInfo.id}">
+                <label for="adoptionId">adoptionId:</label>
+                <input type="text" class="form-control input-lg" name="adoptionId" id="adoptionId" value="$!{adoption.id}">
             </div>
             <div class="form-group">
           		<label for="transport">选择运输方式：</label>
@@ -40,13 +41,14 @@
             <div class="form-group">
             	<label for="item">附加道具：</label>
                 <div class="item">
-                	<label><input type="checkbox" value="">狗绳</label>
-                	<label><input type="checkbox" value="">笼子</label>
+                	#foreach($prop in $propList)
+                	<label><input type="checkbox" name="prop[]" value="$prop.id">$prop.name ¥$prop.price &nbsp&nbsp</label>
+                	#end
                 </div>
             </div>
-            
+            <hr>
             <button type="submit" class="btn btn-info btn-block">添加到购物车</button>
-            <p></p>
+            <p><hr></p>
         	</form>
 			
 			</div>

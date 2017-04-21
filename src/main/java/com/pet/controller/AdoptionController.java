@@ -23,6 +23,7 @@ import com.pet.model.ReceivingInfo;
 import com.pet.model.User;
 import com.pet.service.AdoptionService;
 import com.pet.service.PetService;
+import com.pet.service.PropService;
 import com.pet.service.ReceivingInfoService;
 import com.pet.service.UserService;
 
@@ -42,6 +43,9 @@ public class AdoptionController {
 	
 	@Autowired
 	ReceivingInfoService recInfoService;
+	
+	@Autowired
+	PropService propService;
 
 	@RequestMapping(path = { "/petList" })
 	public String adoption(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -204,22 +208,36 @@ public class AdoptionController {
 	@RequestMapping(path = { "/procedure" })
 	public String procedure(Model model, 
 							@RequestParam("adoptionId") int adoptionId) {
-		Adoption adoptInfo = adoptInfoService.findAdoptionById(adoptionId);
+		Adoption adoption = adoptInfoService.findAdoptionById(adoptionId);
 		
-		Pet pet = petService.selectById(adoptInfo.getPetId());
+		Pet pet = petService.selectById(adoption.getPetId());
 		
-		ReceivingInfo recInfo = recInfoService.findByUserId(adoptInfo.getUserId());
+		ReceivingInfo recInfo = recInfoService.findByUserId(adoption.getUserId());
 		
-		model.addAttribute("adoptInfo", adoptInfo);
+		model.addAttribute("adoption", adoption);
 		model.addAttribute("pet", pet);
 		model.addAttribute("recInfo", recInfo);
 		
-		List<Prop> propList = new ArrayList<>();
+		List<Prop> propList = propService.getAllProps();
 		model.addAttribute("propList", propList);
 		
 		return "procedure";
 	}
-
+	
+	
+	@RequestMapping(path = { "/shoppingCart" })
+	@ResponseBody
+	public String shoppingCart(Model model,
+							@RequestParam("adoptionId") String adoptionId,
+							@RequestParam("transport") String transport,
+							@RequestParam(value = "prop[]", required = false) int[] prop) {
+		String props = "";
+		for (int n : prop) {
+			props = props + " " + n;
+		}
+		return "add to shoppingCart success! <hr>" + "adoptionId:" + adoptionId + 
+				"    transport:" + transport + "    propsId:" + props;
+	}
 	
 	
 	

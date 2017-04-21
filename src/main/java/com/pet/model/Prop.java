@@ -1,6 +1,6 @@
 package com.pet.model;
 
-public class Prop {
+public class Prop extends Base {
 	private int id;
 	private String name;
 	private Double price;

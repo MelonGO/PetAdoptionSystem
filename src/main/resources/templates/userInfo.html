@@ -1,0 +1,102 @@
+#parse("common/header.html")
+
+<script>
+$(document).ready(function(){ 
+	var args = new Object();
+	args = GetUrlParms();
+	var value1 = args["msg"];
+	if(value1 == "passwordWrong"){
+		alert("原密码错误，修改失败!");
+	}
+	if(value1 == "updateSuccess"){
+		alert("修改成功!");
+	}
+});
+
+</script>
+
+<body>
+
+<div class="container-fluid personal-info-main">
+	<div class="row">
+		<h1 class="font-big">
+            修改个人信息
+        </h1>
+        <hr>
+        <form role="form" action="updateUser" method="post" onsubmit="return(btn_click())">
+        	<div class="form-group" style="display:none">
+                <label for="userId">用户ID：</label>
+                <input type="text" class="form-control input-lg" name="userId" id="userId" value="$!{user.id}">
+            </div>
+            <div class="form-group">
+                <label for="username">用户名：</label>
+                <input type="text" disabled="disabled" class="form-control input-lg" name="username" id="username" value="$!{user.name}">
+            </div>
+            <div class="form-group">
+                <label for="oldPassword">原密码：</label>
+                <input type="password" class="form-control input-lg" name="oldPassword" id="oldPassword" value="">
+            </div>
+            <div class="form-group">
+                <label for="newPassword">新密码：</label>
+                <input type="password" class="form-control input-lg" name="newPassword" id="newPassword" value="">
+            </div>
+            <div class="form-group">
+                <label for="newPasswordAgain">重复新密码：</label>
+                <input type="password" class="form-control input-lg" name="newPasswordAgain" id="newPasswordAgain" value="">
+            </div>
+            <div class="form-group">
+                <label for="sex">性别：</label>
+                 <select class="form-control input-lg" name="sex" id="sex">
+                 	#if($!{user.sex} == "male")
+                 	<option value="male">男</option>
+                	<option value="female">女</option>
+                	#else
+                	<option value="female">女</option>
+                	<option value="male">男</option>
+                 	#end
+                </select>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-info btn-block">确认修改</button>
+        </form>
+    </div>
+    <p></p>
+</div>
+
+<script type="text/javascript">
+function btn_click() {
+    var msg = "";
+    if ($("#username").val().length == 0) {
+        msg = "用户名不能为空!";
+        alert(msg);
+        return false;
+    }
+    if ($("#oldPassword").val().length == 0) {
+        msg = "请输入原密码!";
+        alert(msg);
+        return false;
+    }
+    if ($("#newPassword").val().length == 0) {
+        msg = "请输入新密码!";
+        alert(msg);
+        return false;
+    }
+    if ($("#newPasswordAgain").val().length == 0) {
+        msg = "请再次输入新密码!";
+        alert(msg);
+        return false;
+    }
+    if($("#newPassword").val() != $("#newPasswordAgain").val()){
+    	msg = "两次输入的新密码不一样!";
+        alert(msg);
+        return false;
+    }
+}
+
+</script>
+
+
+#parse("common/footer.html")
+
+</body>
+</html>
