@@ -29,7 +29,7 @@ ul.legals li:last-child::after { content: ""; }
 .legals { text-align: left; }
 .credit { text-align: right; }
 
-.container{
+.container {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
@@ -44,60 +44,60 @@ footer {
     height:100px;
 }
 
-th{
+th {
 	text-align: center;
 }
 
-td{
+td {
 	text-align: center;
 }
 
-body{
+body {
 	background-color: #F2F2F2;
 }
 
 /* ------------------------------以下为portal.html------------------------------ */
 
-.main{
+.main {
 	margin-top: 80px;
 	background-color: #FFFFFF;
 	width: 90%;
 }
 
-#myCarousel{
+#myCarousel {
 	height: 400px;
 	width: 700px;
 	margin: 50px 10px;
 }
 
-.news{
+.news {
 	margin: 50px 10px;
 }
 
-.recent{
+.recent {
 	margin: 80px 10px 0px 10px;
 }
 
-.recent h1{
+.recent h1 {
 	font-weight: bold;
 	font-family: SimHei;
 }
-.recent div h3{
-	font-weight: bold;
-	font-family: SimHei;
-}
-
-.news, .baike{
+.recent div h3 {
 	font-weight: bold;
 	font-family: SimHei;
 }
 
-.news a{
+.news, .baike {
+	font-weight: bold;
+	font-family: SimHei;
+}
+
+.news a {
 	font-size: 15px;
 	text-decoration: none;
 }
 
-#myCarousel a{
+#myCarousel a {
 	font-size: 100px;
 	line-height:400px
 }
@@ -109,12 +109,12 @@ div.middle-register {
 	padding:0;
 	min-height:100%;
 	height:auto;
-    width: 800px;
+    width: 60%;
     
 }
 
 /* ------------------------------以下为petList.html------------------------------ */
-.petList-main{
+.petList-main {
 	margin-top: 80px;
 	background-color: #FFFFFF;
 	width: 90%;
@@ -123,7 +123,7 @@ div.middle-register {
 	height: auto;
 }
 
-.pageSelect{
+.pageSelect {
 	width: 100%;
 	left: 0;
     right: 0;
@@ -132,7 +132,7 @@ div.middle-register {
 }
 
 /* ------------------------------以下为adopterInfo.html------------------------------ */
-.adopter-info-main{
+.adopter-info-main {
 	margin-top: 80px;
 	margin-bottom: 150px;
 	background-color: #FFFFFF;
@@ -143,7 +143,7 @@ div.middle-register {
 }
 
 /* ------------------------------以下为adoption.html------------------------------ */
-.adoption-main{
+.adoption-main {
 	margin-top: 80px;
 	background-color: #FFFFFF;
 	width: 90%;
@@ -153,7 +153,7 @@ div.middle-register {
 }
 
 /* ------------------------------以下为procedure.html------------------------------ */
-.procedure-main{
+.procedure-main {
 	margin-top: 80px;
 	margin-bottom: 150px;
 	background-color: #FFFFFF;
@@ -163,6 +163,15 @@ div.middle-register {
 	height: auto;
 }
 
+/* ------------------------------以下为personalInfo.html------------------------------ */
+.personal-info-main {
+	margin-top: 80px;
+	margin-bottom: 100px;
+	width: 60%;
+	height: 100%;
+	min-height: 100%;
+	height: auto;
+}
 
 
 

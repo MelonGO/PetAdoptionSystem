@@ -24,8 +24,8 @@ public interface UserDAO {
     @Select({"select ", UserDaoConstants.SELECT_FIELDS, " from ", UserDaoConstants.TABLE_NAME, " where name=#{name}"})
     User selectByName(String name);
 
-    @Update({"update ", UserDaoConstants.TABLE_NAME, " set password=#{password} where id=#{id}"})
-    void updatePassword(User user);
+    @Update({"update ", UserDaoConstants.TABLE_NAME, " set name=#{name}, password=#{password}, sex=#{sex} where id=#{id}"})
+    void updateUser(User user);
 
     @Delete({"delete from ", UserDaoConstants.TABLE_NAME, " where id=#{id}"})
     void deleteById(int id);
