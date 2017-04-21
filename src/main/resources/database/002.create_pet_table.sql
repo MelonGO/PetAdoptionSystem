@@ -12,7 +12,3 @@ CREATE TABLE `pas`.`pet` (
   `create_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`));
-  
-insert into pet (name, age, type) values ("小明", 10, "牧羊犬");
-insert into pet (name, age, type) values ("小红", 4, "波斯猫");
-insert into pet (name, age, type) values ("小张", 2, "藏獒");
