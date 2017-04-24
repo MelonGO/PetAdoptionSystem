@@ -49,6 +49,8 @@ public class AdoptionController {
 
 	@RequestMapping(path = { "/petList" })
 	public String adoption(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+		model.addAttribute("currentHtml", "adoption");
+		
 		int num = petService.allPetsNumber();
 		List<Integer> pages = new ArrayList<Integer>();
 

@@ -25,5 +25,13 @@ public class PetService {
 	public int allPetsNumber(){
 		return petDao.allPetsNumber();
 	}
+	
+	public List<Pet> getAll(){
+		return petDao.getAll();
+	}
+	
+	public List<Pet> getLatesPets(int start){
+		return petDao.getLatesPets(start);
+	}
 
 }

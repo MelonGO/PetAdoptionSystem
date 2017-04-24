@@ -2,10 +2,9 @@
 
 <body>
 
-
 <div class="container-fluid main">
     <div class="row">
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-sm-12 col-md-12 col-lg-8">
         	<div id="myCarousel" class="carousel slide">
         		<ol class="carousel-indicators">
         			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -40,44 +39,22 @@
         	<div class="recent">
         		<h1>最新领养</h1>
         		<HR color=#D6D6D6 style="height: 10px;">
-        		
+        		#foreach($pet in $petList)
         		<div class="col-sm-12 col-md-4 col-lg-4">
         			<img src="images/p1.jpg" class="img-thumbnail" width="400px" height="300px">
         		</div>
         		<div class="col-sm-12 col-md-8 col-lg-8">
-        			<h3>赠送一只小黑猫</h3>
-        			<p>小阿呆快四个月了由于个人原因不能养它了希望有好心人收养好好对它一定要求是女性这只小猫特别需要人照顾赠送猫架猫砂盆等生活用品它本来是一只流浪猫 ...</p>
+        			<h3>姓名:$pet.name &nbsp&nbsp 种类:$pet.type &nbsp&nbsp 性别:$pet.sex &nbsp&nbsp 年龄:$pet.age</h3>
+        			<p id="adopt-content">$pet.profile</p>
         		</div>
         		<div class="col-md-12">
         			<hr color=#D6D6D6 SIZE=1>
         		</div>
-        		
-        		<div class="col-sm-12 col-md-4 col-lg-4">
-        			<img src="images/p2.jpg" class="img-thumbnail" width="400px" height="300px">
-        		</div>
-        		<div class="col-sm-12 col-md-8 col-lg-8">
-        			<h3>2岁萨摩GG求好心人收留</h3>
-        			<p>家里老人要带过来带宝宝，但是查出来对大狗掉落的狗毛过敏，无奈无法继续养下去，希望可以有好心人陪伴他 免费送养（附赠牵引绳、狗粮、够零食等）...</p>
-        		</div>
-        		<div class="col-md-12">
-        			<hr color=#D6D6D6 SIZE=1>
-        		</div>
-        		
-        		<div class="col-sm-12 col-md-4 col-lg-4">
-        			<img src="images/p3.jpg" class="img-thumbnail" width="400px" height="300px">
-        		</div>
-        		<div class="col-sm-12 col-md-8 col-lg-8">
-        			<h3>8个月大奥利奥，希望找到一个真正爱猫的主人</h3>
-        			<p>奥利奥2016年6月出生，从不到两个月开始养。但平时工作比较忙，基本没有时间陪她。小姑娘一枚，最近到了第一次发情期。其实希望可以一直陪她成长，但 ...</p>
-        		</div>
-        		<div class="col-md-12">
-        			<hr color=#D6D6D6 SIZE=1>
-        		</div>
-        		
-        		
-        		
+        		#end
         	</div>
         	
+        	<button type="button" onclick="getMore()" class="btn btn-default btn-block">加载更多...</button>
+        	<hr>
     	</div>
     	
     	<div class="col-sm-12 col-md-4 col-lg-4">
@@ -126,6 +103,32 @@
     </div>
 </div>
 
+<script>
+var oBox=document.getElementById('adopt-content');
+var demoHtml = oBox.innerHTML.slice(0, 200)+'...';
+oBox.innerHTML = demoHtml;
+
+var start = 1;
+function getMore(){
+	start += 1;
+	$.get('getMore', {start : start}, function(data){
+		if(data) {
+			var petlist = eval('(' + data + ')');
+			$.each(petlist, function(index, pet) {
+				$('.recent').append('<div class="col-sm-12 col-md-4 col-lg-4">' 
+				+ '<img src="images/p1.jpg" class="img-thumbnail" width="400px" height="300px"> </div>'
+        		+ '<div class="col-sm-12 col-md-8 col-lg-8">'
+        		+ '<h3>姓名:' + pet.name + '&nbsp&nbsp 种类:' + pet.type + '&nbsp&nbsp 性别:'
+        		+ pet.sex + '&nbsp&nbsp 年龄:' + pet.age + '</h3>'
+        		+ '<p id="adopt-content">' + pet.profile + '</p> </div>'
+        		+ '<div class="col-md-12"><hr color=#D6D6D6 SIZE=1></div> ');
+				
+			});
+		}
+	});
+}
+
+</script>
 
 #parse("common/footer.html")
 
