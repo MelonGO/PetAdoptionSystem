@@ -11,7 +11,7 @@ import com.pet.model.Recycle;
 @Mapper
 public interface  RecycleDAO {	
 	@Insert({ "insert into ", RecycleDaoConstants.TABLE_NAME, "(", RecycleDaoConstants.INSERT_FIELDS,
-	") values (#{petId},#{userId},#{state},#{sponsorship}),#{money},#{address},#{phone}" })
+	") values (#{petId},#{userId},#{state},#{sponsorship},#{money},#{reason},#{address},#{phone})" })
 	@SelectKey(statement = "select last_insert_id() as id", keyProperty = "id", before = false, resultType = Integer.class, 
 	statementType = StatementType.PREPARED)
 	int addRecycle(Recycle recycle);

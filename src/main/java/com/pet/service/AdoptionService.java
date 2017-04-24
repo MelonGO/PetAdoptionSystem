@@ -64,6 +64,12 @@ public class AdoptionService {
 		return "none";
 	}
 	
+	public Adoption findByPetAndUser(int petId, int userId) {
+		Adoption adoptInfo = adoptionDao.selectByPetAndUser(petId, userId);
+		
+		return adoptInfo;
+	}
+	
 	public List<Adoption> findUserAdoption(int userId) {
 		return adoptionDao.selectByUser(userId);
 	}
