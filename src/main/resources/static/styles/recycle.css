@@ -20,3 +20,27 @@
 	padding-left:30px;
 	padding-right:30px;
 }
+
+
+#a{
+	padding-left:50px;
+	padding-right:50px;
+}
+
+#recycleTable tr td:first-child{
+	font-size:15px;
+	
+}
+
+#recycleTable input{
+	
+	width: 370px;
+	
+}
+
+
+.recyclePetId{
+	display:none;
+}
+
+
