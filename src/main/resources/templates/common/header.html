@@ -36,10 +36,10 @@
 	    </div>
 	    
 	    <ul class="nav navbar-nav">
-	    	<li class="active"><a href="/">首页</a></li>
-	    	<li><a href="">新闻</a></li>
-	    	<li><a href="petList">领养</a></li>
-	    	<li><a href="">百科</a></li>
+	    	<li #if($!{currentHtml} == "portal") class="active" #end><a href="/">首页</a></li>
+	    	<li #if($!{currentHtml} == "news") class="active" #end><a href="">新闻</a></li>
+	    	<li #if($!{currentHtml} == "adoption") class="active" #end><a href="petList">领养</a></li>
+	    	<li #if($!{currentHtml} == "wiki") class="active" #end><a href="">百科</a></li>
 	    </ul>
 	    
 	    #if($user)
@@ -52,14 +52,14 @@
 	    	
 	    		<li>
 	    			<a href="/message">
-	    				<i id="msg" class="fa fa-envelope fa-2x"></i>
+	    				<i id="msg" class="fa fa-envelope icon-size"></i>
 	    				<div class="notice">1</div>
 	    			</a>
 	    		</li>
 	    
 	    		<li class="dropdown">
 	    			<a href="" class="dropdown-toggle" data-toggle="dropdown">
-	    				<i id="usn" class="fa fa-user fa-2x"> $!{user.name}</i>
+	    				<i id="usn" class="fa fa-user icon-size"> $!{user.name}</i>
 	    			</a>
 	    			<ul class="dropdown-menu">
 	    				#if($!{user.role} == "admin")

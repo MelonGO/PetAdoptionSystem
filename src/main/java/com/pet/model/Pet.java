@@ -6,6 +6,7 @@ public class Pet extends Base {
 	private String type;
 	private String sex;
 	private Double price;
+	private String profile;
 
 	public String getName() {
 		return name;
@@ -41,4 +42,12 @@ public class Pet extends Base {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+	
 }

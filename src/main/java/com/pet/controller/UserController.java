@@ -28,24 +28,27 @@ public class UserController {
 		return "userInfo";
 	}
 	
-	@RequestMapping(path = { "/updateUser" })
-	public String updateUserInfo(@RequestParam("userId") int userId,
-								@RequestParam("username") String username,
+	@RequestMapping(path = { "/updateUserInfo" })
+	public String updateUserInfo(Model model, 
+								@RequestParam("userId") int userId,
+								@RequestParam("uame") String uame,
 								@RequestParam("oldPassword") String oldPassword,
 								@RequestParam("newPassword") String newPassword,
 								@RequestParam("newPasswordAgain") String newPasswordAgain,
-								@RequestParam("sex") String sex) {
+								@RequestParam("sex") String sex, HttpSession session) {
 		User user = userService.getUser(userId);
-		if (user.getPassword() != CreateMD5.getMd5(oldPassword)) {
-			return "userInfo?msg=passwordWrong";
+		if (!user.getPassword().equals(CreateMD5.getMd5(oldPassword))) {
+			return "redirect:userInfo?msg=passwordWrong";
 			
 		} else {
-			user.setName(username);
-			user.setSex(sex);
 			user.setPassword(CreateMD5.getMd5(newPassword));
+			user.setSex(sex);
 			userService.updateUserInfo(user);
 			
-			return "userInfo?msg=updateSuccess";
+			model.addAttribute("user", user);
+			session.setAttribute("user", user);
+			
+			return "redirect:userInfo?msg=updateSuccess";
 			
 		}
 		

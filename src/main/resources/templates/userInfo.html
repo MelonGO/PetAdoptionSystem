@@ -23,14 +23,14 @@ $(document).ready(function(){
             修改个人信息
         </h1>
         <hr>
-        <form role="form" action="updateUser" method="post" onsubmit="return(btn_click())">
-        	<div class="form-group" style="display:none">
+        <form role="form" action="updateUserInfo" method="post" onsubmit="return(btn_click())">
+            <div class="form-group" style="display:none">
                 <label for="userId">用户ID：</label>
                 <input type="text" class="form-control input-lg" name="userId" id="userId" value="$!{user.id}">
             </div>
             <div class="form-group">
-                <label for="username">用户名：</label>
-                <input type="text" disabled="disabled" class="form-control input-lg" name="username" id="username" value="$!{user.name}">
+                <label for="uame">用户名：</label>
+                <input type="text" class="form-control input-lg" name="uame" id="uame" value="$!{user.name}" readonly>
             </div>
             <div class="form-group">
                 <label for="oldPassword">原密码：</label>
@@ -45,19 +45,20 @@ $(document).ready(function(){
                 <input type="password" class="form-control input-lg" name="newPasswordAgain" id="newPasswordAgain" value="">
             </div>
             <div class="form-group">
-                <label for="sex">性别：</label>
-                 <select class="form-control input-lg" name="sex" id="sex">
-                 	#if($!{user.sex} == "male")
-                 	<option value="male">男</option>
+            	<label for="sex">性别：</label>
+                <select class="form-control input-lg" name="sex" id="sex">
+                	#if($!{user.sex} == "male")
+                	<option value="male">男</option>
                 	<option value="female">女</option>
                 	#else
                 	<option value="female">女</option>
                 	<option value="male">男</option>
-                 	#end
+                	#end
                 </select>
             </div>
             <hr>
             <button type="submit" class="btn btn-info btn-block">确认修改</button>
+            <hr>
         </form>
     </div>
     <p></p>
@@ -66,7 +67,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 function btn_click() {
     var msg = "";
-    if ($("#username").val().length == 0) {
+    if ($("#uame").val().length == 0) {
         msg = "用户名不能为空!";
         alert(msg);
         return false;

@@ -19,6 +19,12 @@ public interface PetDAO {
 	@Select({"select count(*) from ", PetDaoConstants.TABLE_NAME})
     int allPetsNumber();
 	
+	@Select({"select ", PetDaoConstants.SELECT_FIELDS, " from ", PetDaoConstants.TABLE_NAME})
+    List<Pet> getAll();
+	
+	@Select({"select ", PetDaoConstants.SELECT_FIELDS, " from ", PetDaoConstants.TABLE_NAME, "order by update_time desc", "limit #{start}, 3"})
+    List<Pet> getLatesPets(int start);
+	
 	
 	
 }

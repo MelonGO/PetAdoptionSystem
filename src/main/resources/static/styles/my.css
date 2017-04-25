@@ -102,6 +102,11 @@ body {
 	line-height:400px
 }
 
+.adopt-content {
+	overflow: hidden;
+	text-overflow:ellipsis;
+}
+
 /* ------------------------------以下为register.html------------------------------ */
 div.middle-register {
 	height:100%;
@@ -173,5 +178,9 @@ div.middle-register {
 	height: auto;
 }
 
+/* ------------------------------以下为header.html------------------------------ */
+.icon-size {
+	font-size: 20px;
+}
 
 
