@@ -22,25 +22,64 @@
 }
 
 
-#a{
-	padding-left:50px;
-	padding-right:50px;
+#a,#b,#c{
+	padding-left:40px;
+	padding-right:40px;
 }
 
-#recycleTable tr td:first-child{
-	font-size:15px;
-	
-}
-
-#recycleTable input{
-	
-	width: 370px;
-	
+#a p,#b p,#c p{
+	float:left; 
+	margin-left:15px;
+	margin-top:10px; 
+	line-height:20px; 
+	font-size:16px;
 }
 
 
-.recyclePetId{
+
+
+
+#a input{
+	width:400px;
+	margin:4px;
+	word-wrap:break-word;
+}
+
+
+.tdhidden{
 	display:none;
+}
+
+#alert_reason,#alert_address,#alert_phone,#alert_money,#alert_sponsorship{
+	width:485px;
+	padding:5px 20px 5px 20px;
+	height: 30px;
+	display:none;
+	margin-bottom: 3px;
+}
+
+
+.modal-footer .alert{
+	width:390px;
+	display: inline-block;
+    padding: 5px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin-top:20px;
+    margin-right:15px;
+    display:none;
+}
+
+#alert_recycle{
+	margin:5px 0 5px 0;
+	width:485px;
+	padding:5px 20px;
+	height: 30px;
+	display:block;
 }
 
 

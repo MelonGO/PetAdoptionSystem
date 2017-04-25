@@ -1,5 +1,6 @@
 package com.pet.service;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,18 @@ public class RecycleService {
 		msgMap.put("msg", "success");
 		return msgMap;
 			
+	}
+	
+	public List<Recycle> findUserRecycle(int userId) {
+		return recycleDao.selectByUser(userId);
+	}
+	
+	public Recycle findByPetAndUser(int petId, int userId) {
+		return recycleDao.selectByPetAndUser(petId, userId);
+	}
+	
+	public void updateRecycle(Recycle recycle){	
+		recycleDao.updateRecycle(recycle);
 	}
 
 }
