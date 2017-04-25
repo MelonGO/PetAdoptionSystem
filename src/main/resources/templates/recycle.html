@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-lg-12">
 			<h3 class="font-big mh">
-            	已领养的宠物
+            	我的宠物
         	</h3>
         	<div class="rt">
 				<table id="table1" class="table waiter-list ">
@@ -17,6 +17,7 @@
 							<th>宠物性别</th>
 							<th>宠物价格</th>
 							<th>领养时间</th>
+							<th>领养状态</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -28,12 +29,132 @@
 						<td>$kv.value.name</td>
 						<td>$kv.value.sex</td>
 						<td>$kv.value.price</td>
-						<td>$kv.key.updateTime</td>
-						<td class="recyclePetId">$kv.key.id</td>
-						<td><button type="button" data-toggle="modal" data-whatever="$kv.value.name" data-target="#recycleModal" class="btn btn-success btnRecycle" >送回</button></td>
+						<td>$kv.key.updateTime.substring(0,16)</td>
+						<td class="tdhidden">$kv.key.id</td>
+						<td>已领养</td>
+						<td><button type="button" data-toggle="modal" data-whatever="$kv.value.name" data-target="#recycleModal" class="btn btn btn-primary btnRecycle" >送回</button></td>
 						#end
+				
 					</tr>
 					#end
+					
+					#foreach($r in $myRecycleMap.entrySet())
+					<tr>
+						#if($r.key.state == 0)
+						<td>$r.value.type</td>
+						<td>$r.value.age</td>
+						<td>$r.value.name</td>
+						<td>$r.value.sex</td>
+						<td>$r.value.price</td>
+						<td></td>
+						<td class="tdhidden">$r.key.petId</td>
+						<td class="tdhidden">$r.key.reason</td>
+						<td class="tdhidden">$r.key.phone</td>
+						<td class="tdhidden">$r.key.address</td>
+						<td class="tdhidden">$r.key.sponsorship</td>
+						<td class="tdhidden">$r.key.money</td>
+						<td class="tdhidden">$r.key.createTime</td>
+						
+						<td>申请送回，等待审核</td>
+						<td><button type="button" data-toggle="modal" data-target="#recycleShowModal" class="btn btn-info btnRecycleShow" >查看</button></td>
+						#end
+						
+						#if($r.key.state == 1)
+						<td>$r.value.type</td>
+						<td>$r.value.age</td>
+						<td>$r.value.name</td>
+						<td>$r.value.sex</td>
+						<td>$r.value.price</td>
+						<td></td>
+						<td class="tdhidden">$r.key.petId</td>
+						<td class="tdhidden">$r.key.reason</td>
+						<td class="tdhidden">$r.key.phone</td>
+						<td class="tdhidden">$r.key.address</td>
+						<td class="tdhidden">$r.key.sponsorship</td>
+						<td class="tdhidden">$r.key.money</td>
+						<td class="tdhidden">$r.key.createTime</td>
+						<td>审核通过，等待支付</td>
+						<td>
+							<button type="button" data-toggle="modal"  data-target="" class="btn btn-warning btnRecyclePay" >付款</button>
+							<button type="button" data-toggle="modal"  data-target="#recycleCancelModal" class="btn btn-success btnRecycleCancel" >撤销</button>
+						</td>
+						#end
+						
+						#if($r.key.state == 2)
+						<td>$r.value.type</td>
+						<td>$r.value.age</td>
+						<td>$r.value.name</td>
+						<td>$r.value.sex</td>
+						<td>$r.value.price</td>
+						<td></td>	
+						<td class="tdhidden">$r.key.petId</td>
+						<td class="tdhidden">$r.key.reason</td>
+						<td class="tdhidden">$r.key.phone</td>
+						<td class="tdhidden">$r.key.address</td>
+						<td class="tdhidden">$r.key.sponsorship</td>
+						<td class="tdhidden">$r.key.money</td>
+						<td class="tdhidden">$r.key.createTime</td>
+						<td>已经付款，等待送回</td>
+						<td><button type="button" data-toggle="modal" data-whatever="$r.value.name" data-target="#recycleShowModal" class="btn btn-info btnRecycleShow" >查看</button></td>
+						#end
+						
+						#if($r.key.state == 3)
+						<td>$r.value.type</td>
+						<td>$r.value.age</td>
+						<td>$r.value.name</td>
+						<td>$r.value.sex</td>
+						<td>$r.value.price</td>
+						<td></td>
+						<td class="tdhidden">$r.key.petId</td>
+						<td class="tdhidden">$r.key.reason</td>
+						<td class="tdhidden">$r.key.phone</td>
+						<td class="tdhidden">$r.key.address</td>
+						<td class="tdhidden">$r.key.sponsorship</td>
+						<td class="tdhidden">$r.key.money</td>
+						<td class="tdhidden">$r.key.createTime</td>
+						<td>已送回</td>
+						<td><button type="button" class="btn btn-info" >查看</button></td>
+						#end
+						
+						#if($r.key.state == -2)
+						<td>$r.value.type</td>
+						<td>$r.value.age</td>
+						<td>$r.value.name</td>
+						<td>$r.value.sex</td>
+						<td>$r.value.price</td>
+						<td></td>	
+						<td class="tdhidden">$r.key.petId</td>
+						<td class="tdhidden">$r.key.reason</td>
+						<td class="tdhidden">$r.key.phone</td>
+						<td class="tdhidden">$r.key.address</td>
+						<td class="tdhidden">$r.key.sponsorship</td>
+						<td class="tdhidden">$r.key.money</td>
+						<td class="tdhidden">$r.key.createTime</td>
+						<td>已经撤销</td>
+						<td><button type="button" data-toggle="modal" data-target="#recycleShowModal" class="btn btn-info btnRecycleShow" >查看</button></td>
+						#end
+						
+						#if($r.key.state == -1)
+						<td>$r.value.type</td>
+						<td>$r.value.age</td>
+						<td>$r.value.name</td>
+						<td>$r.value.sex</td>
+						<td>$r.value.price</td>
+						<td></td>	
+						<td class="tdhidden">$r.key.petId</td>
+						<td class="tdhidden">$r.key.reason</td>
+						<td class="tdhidden">$r.key.phone</td>
+						<td class="tdhidden">$r.key.address</td>
+						<td class="tdhidden">$r.key.sponsorship</td>
+						<td class="tdhidden">$r.key.money</td>
+						<td class="tdhidden">$r.key.createTime</td>
+						<td>审核未通过</td>
+						<td><button type="button" data-toggle="modal" data-target="#recycleShowModal" class="btn btn-info btnRecycleShow" >查看</button></td>
+						#end
+						
+					</tr>
+					#end
+					
 					</tbody>
 				</table>
 			</div>
@@ -51,62 +172,175 @@
 	            </div>
 	            <div class="modal-body">
 	            	<div id="a">
-	            	
-		            	<table id=recycleTable>
-		            		<tr>
-				                <td>宠物编号：</td>
-				                <td><input id="recyclePetID" name="recyclePetID" type="text"   disabled="disabled"></td>
-				            </tr>
-		            		<tr>
-				                <td>宠物名称：</td>
-				                <td><input id="recyclePetName" name="recyclePetName" type="text"  disabled="disabled"></td>
-				            </tr>
-				            <tr>
-				                <td>宠物年龄：</td>
-				                <td><input id="recyclePetAge" name="recyclePetAge" type="text" disabled="disabled" ></td>
-				                
-				            </tr>
-				            <tr>
-				                <td>宠物种类：</td>
-				                <td><input id="recyclePetType" name="recyclePetType" type="text" disabled="disabled" ></td>
-				            </tr>
-				            <tr>
-				                <td>领养时间：</td>
-				                <td><input id="recyclePetAdoptTime" name="recyclePetAdoptTime" type="text"  disabled="disabled"></td>
-				            </tr>
-				            <tr>
-				                <td>送回原因：</td>
-				                <td><input id="recycleReason" name="recycleReason" type="text"  placeholder="请输入送回宠物的原因"></td>
-				            </tr>            
-				            <tr>
-				                <td>是否助养：</td>
-				                <td>
-					                <input id="recycleSponsorship" name="recycleSponsorship" type="text" placeholder="请选择是否助养" list ="isSponsorship">            					                
-					                <datalist id ="isSponsorship" >
-							            <option>进行助养</option >
-							            <option>直接送回</option >
-							        </datalist>
-					                
-				                </td>
-				            </tr>
-				            <tr>
-				                <td>助养金额：</td>
-				                <td><input id="recycleMoney" name="recycleMoney" type="text"  placeholder="请输入助养金金额"></td>
-				            </tr>	
-				            <tr>
-				                <td>你的地址：</td>
-				                <td><input id="recycleAddress" name="address" type="text"  placeholder="请输入你的地址"></td>
-				            </tr>
-				            <tr>
-				                <td>联系方式：</td>
-				                <td><input id="recyclePhone" name="phone" type="text"  placeholder="请输入你的联系方式"></td>
-				            </tr>
-						</table>
+						<div class="alert alert-warning" id="alert_recycle">请珍惜您的宠物，不要轻易送回！</div>
+						<div class="row">
+							<p class=".col-md-4">宠物编号：</p>
+							<input class=".col-md-8" id="recyclePetID" name="recyclePetID" type="text"   disabled="disabled">
+						</div>
+						
+	            		
+	            		<div class="row">
+	            			<p class=".col-md-4">宠物名称：</p>
+							<input class=".col-md-8" id="recyclePetName" name="recyclePetName" type="text"  disabled="disabled">
+						</div>
+			            
+						<div class="row">
+							<p class=".col-md-4">宠物年龄：</p>
+			            	<input class=".col-md-8" id="recyclePetAge" name="recyclePetAge" type="text" disabled="disabled" >
+						</div>
+						
+				        <div class="row">
+				        	<p class=".col-md-4">宠物种类：</p>
+		                	<input class=".col-md-8" id="recyclePetType" name="recyclePetType" type="text" disabled="disabled" >
+						</div>
+		                
+		           		<div class="row">
+			           		<p class=".col-md-4">领养时间：</p>
+			                <input class=".col-md-8" id="recyclePetAdoptTime" name="recyclePetAdoptTime" type="text"  disabled="disabled">
+						</div>
+		                
+		            	<div id="alert_reason" class="alert alert-danger">请输入送回宠物的原因</div>
+       					<div class="row">
+	       					<p class=".col-md-4">送回原因：</p>
+			                <input class=".col-md-8" id="recycleReason" name="recycleReason" type="text"  placeholder="请输入送回宠物的原因">
+						</div>
+		                
+		            	<div id="alert_sponsorship" class="alert alert-danger">请选择是否助养</div>
+		            	<div class="row">
+		            		<p class=".col-md-4">是否助养：</p>
+			                <input class=".col-md-8" id="recycleSponsorship" name="recycleSponsorship" type="text" placeholder="请选择是否助养" list ="isSponsorship">            					                
+			                <datalist id ="isSponsorship" >
+					            <option>进行助养</option >
+					            <option>直接送回</option >
+					        </datalist>
+						</div>
+				        <div id="alert_money" class="alert alert-danger">请输入助养金额（最多保留俩位小数）</div>
+				        <div class="row">
+							<p class=".col-md-4">助养金额：</p>
+		                	<input class=".col-md-8" id="recycleMoney" name="recycleMoney" type="text"  placeholder="请输入助养金金额">
+						</div>
+
+		            	
+		            	<div id="alert_address" class="alert alert-danger">请输入你的地址</div>
+		            	<div class="row">
+			            	<p class=".col-md-4">你的地址：</p>
+			                <input class=".col-md-8" id="recycleAddress" name="address" type="text"  placeholder="请输入你的地址">
+						</div>
+		            	<div id="alert_phone" class="alert alert-danger">请输入你的手机号码</div>
+		            	<div class="row">
+			            	<p class=".col-md-4">联系方式：</p>
+			                <input class=".col-md-8" id="recyclePhone" name="phone" type="text"  placeholder="请输入你的联系方式">
+						</div>
+		                
+
+	            	</div>
+	            </div>
+	            <div class="modal-footer">
+	            	<div class="alert alert-success" id="alert_submit">成功！很好地完成了提交。</div>
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary " id="recycleConfirm">确认</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+	
+	<!-- 撤销送回申请 -->
+	<div class="modal fade" id="recycleCancelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">撤销申请</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<div id="b">
+						<div class="row">
+							<p class=".col-md-4">宠物编号：</p>
+							<p class=".col-md-8" id="recycleCancelPetID">
+						</div>	            		
+	            		<div class="row">
+	            			<p class=".col-md-4">宠物名称：</p>
+							<p class=".col-md-8" id="recycleCancelPetName">
+						</div>		            
+						<div class="row">
+							<p class=".col-md-4">宠物年龄：</p>
+			            	<p class=".col-md-8" id="recycleCancelPetAge">
+						</div>					
+				        <div class="row">
+				        	<p class=".col-md-4">宠物种类：</p>
+		                	<p class=".col-md-8" id="recycleCancelPetType">
+						</div>     
+       					<div class="row">
+	       					<p class=".col-md-4">送回原因：</p>
+			                <p class=".col-md-8" id="recycleCancelRecycleReason">
+						</div>
+		            	<div class="row">
+		            		<p class=".col-md-4">是否助养：</p>
+		            		<p class=".col-md-8" id="recycleCancelSponsorship">
+			            </div>
+				        <div class="row">
+							<p class=".col-md-4">助养金额：</p>
+		                	<p class=".col-md-8" id="recycleCancelMoney"></div>
+						<div class="row">
+							<p class=".col-md-4">申请时间：</p>
+		                	<p class=".col-md-8" id="recycleCancelApplyTime">
+		                </div>               
+	            	</div>
+	            </div>
+	            <div class="modal-footer">
+	            	<div class="alert alert-success" id="alert_submit">成功！很好地完成了提交。</div>
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary " id="recycleCancel">撤销申请</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+	
+	<!-- 查看详情 -->
+	<div class="modal fade" id="recycleShowModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<div id="c">
+						<div class="row">
+							<p class=".col-md-4">宠物编号：</p>
+							<p class=".col-md-8" id="recycleShowPetID">
+						</div>	            		
+	            		<div class="row">
+	            			<p class=".col-md-4">宠物名称：</p>
+							<p class=".col-md-8" id="recycleShowPetName">
+						</div>		            
+						<div class="row">
+							<p class=".col-md-4">宠物年龄：</p>
+			            	<p class=".col-md-8" id="recycleShowPetAge">
+						</div>					
+				        <div class="row">
+				        	<p class=".col-md-4">宠物种类：</p>
+		                	<p class=".col-md-8" id="recycleShowPetType">
+						</div>     
+       					<div class="row">
+	       					<p class=".col-md-4">送回原因：</p>
+			                <p class=".col-md-8" id="recycleShowRecycleReason">
+						</div>
+		            	<div class="row">
+		            		<p class=".col-md-4">是否助养：</p>
+		            		<p class=".col-md-8" id="recycleShowSponsorship">
+			            </div>
+				        <div class="row">
+							<p class=".col-md-4">助养金额：</p>
+		                	<p class=".col-md-8" id="recycleShowMoney"></div>
+						<div class="row">
+							<p class=".col-md-4">申请时间：</p>
+		                	<p class=".col-md-8" id="recycleShowApplyTime">
+		                </div>               
 	            	</div>
 	            </div>
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	                <button type="button" class="btn btn-primary " id="recycleConfirm">确认</button>
 	            </div>
 	        </div><!-- /.modal-content -->
 	    </div><!-- /.modal -->

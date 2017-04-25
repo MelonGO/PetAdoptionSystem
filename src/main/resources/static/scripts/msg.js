@@ -8,9 +8,7 @@ $(function(){
 		   alert("接收者不能为空");
 	   }else if(content.replace(/(^\s+)|(\s+$)/,"")==""){
 		   alert("消息不能为空");
-	   }
-		   
-	   else
+	   }else
 	   {
 		   
 		   $.getJSON("sendmsg.do",{"userName":usn,"msgConent":content},function(d){
