@@ -45,7 +45,7 @@ public class AdoptionService {
 		newAdopt.setReceiving_info_id(recInfoDao.selectByUserId(userId).getId());
 		newAdopt.setPetId(petId);
 		newAdopt.setUserId(userId);
-		newAdopt.setTransport_way("邮递");
+		newAdopt.setTransport_way("mail");
 
 		adoptionDao.addAdoption(newAdopt);
 		msgMap.put("msg", "success");
@@ -78,11 +78,19 @@ public class AdoptionService {
 		return adoptionDao.selectById(id);
 	}
 	
-	public Map<String, Object> updateAdoption(Adoption adoptInfo){
+	public Map<String, Object> updateAdoption(String type, Adoption adoption){
 		Map<String, Object> msgMap = new HashMap<>();
 		
-		adoptionDao.updateAdoption(adoptInfo);
-		msgMap.put("msg", "审核成功!");
+		if(type.equals("state")){
+			adoptionDao.updateAdoptionState(adoption);
+			msgMap.put("msg", "success");
+			return msgMap;
+		}else if(type.equals("transport")){
+			adoptionDao.updateAdoptionTransport(adoption);
+			msgMap.put("msg", "success");
+			return msgMap;
+		}
+		
 		return msgMap;
 	}
 	

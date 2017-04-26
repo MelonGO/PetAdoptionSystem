@@ -15,4 +15,7 @@ public interface PropDAO {
 	List<Prop> getAll();
 	
 	
+	@Select({ "select ", PropDaoConstants.SELECT_FIELDS, " from ", PropDaoConstants.TABLE_NAME, " where id=#{propId} " })
+	Prop getByPropId(int propId);
+	
 }

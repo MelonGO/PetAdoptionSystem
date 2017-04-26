@@ -45,10 +45,10 @@
 					<td>$adoption.createTime</td>
 					#if($adoption.state == 0)
 					<td>未审核</td>
-					#elseif($adoption.state == 1)
-					<td>已通过</td>
 					#elseif($adoption.state == -1)
 					<td>未通过</td>
+					#else
+					<td>已通过</td>
 					#end
 					<td>
 					<button type="button" onclick='setAdoptionId($adoption.id)'

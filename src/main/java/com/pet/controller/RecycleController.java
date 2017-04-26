@@ -94,7 +94,7 @@ public class RecycleController {
 			}
 			recycleService.addRecycle(petid,user.getId(), isSponsorship,Double.parseDouble(money), reason, address, phone);
 			adoption.setState(4);
-			adoptInfoService.updateAdoption(adoption);
+			adoptInfoService.updateAdoption("state", adoption);
 	
 		}
 		return "2";
@@ -119,7 +119,7 @@ public class RecycleController {
 			recycle.setState(-2);
 			recycleService.updateRecycle(recycle);
 			adoption.setState(3);
-			adoptInfoService.updateAdoption(adoption);
+			adoptInfoService.updateAdoption("state", adoption);
 	
 		}
 		return "2";

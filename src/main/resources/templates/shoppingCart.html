@@ -1,0 +1,129 @@
+#parse("common/header.html")
+<body>
+
+<script type="text/javascript">
+var num;
+var total;
+
+$(document).ready(function() {
+	$("#selectAll").change(function() {
+		if($("#selectAll").attr("checked")) {
+			$('.petInfo').attr("checked","checked");
+			$('.propInfo').attr("checked","checked");
+		} else {
+			$('.petInfo').removeAttr("checked");
+			$('.propInfo').removeAttr("checked");
+		}
+		checkAll();
+	})
+	
+	$(".petInfo, .propInfo").change(function() {
+		checkAll();
+	})
+	
+});
+
+function checkAll(){
+	num = 0;
+	total = 0.0;
+	
+	$(".petInfo").each(function(){
+		if($(this).attr("checked")){
+			addPet($(this).attr("id"));
+		} else {
+			$('#selectAll').removeAttr("checked");
+		}
+	})
+	$(".propInfo").each(function(){
+		if($(this).attr("checked")){
+			addProp($(this).attr("id"));
+		} else {
+			$('#selectAll').removeAttr("checked");
+		}
+	})
+	
+	$("#numbers").html(num);
+	$("#totalPrice").html(total.toFixed(2));
+	
+}
+
+function addPet(id){
+	num += 1;
+	
+	var price_str = "pet_" + id;
+	var p = parseFloat(document.getElementById(price_str).innerHTML);
+	
+	total += p;
+}
+function addProp(id){
+	var num_str = "prop_num_" + id;
+	var n = parseInt(document.getElementById(num_str).innerHTML);
+	num += n;
+	
+	var price_str = "prop_" + id;
+	var p = parseFloat(document.getElementById(price_str).innerHTML);
+	
+	total += p;
+}
+
+</script>
+
+<div class="container-fluid cart-main">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<h1 class="font-big">购物车</h1>
+				<table class="table">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="selectAll">全选</th>
+							<th>商品信息</th>
+							<th>单价</th>
+							<th>数量</th>
+							<th>金额</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						#foreach($pet in $petList)
+						<tr>
+							<td><input type="checkbox" class="petInfo" id="$pet.id"></td>
+							<td>
+								宠物名字:$pet.name &nbsp&nbsp 宠物种类:$pet.type &nbsp&nbsp
+								宠物年龄:$pet.age &nbsp&nbsp 宠物性别:$pet.sex &nbsp&nbsp
+							</td>
+							<td>¥<em>$pet.price</em></td>
+							<td>1</td>
+							<td>¥<em id="pet_$pet.id">$pet.price</em></td>
+							<td>删除</td>
+						</tr>
+						#end
+						
+						#foreach($kv in $propMap.entrySet())
+						<tr>
+							<td><input type="checkbox" class="propInfo" id="$kv.key.id"></td>
+							<td>
+								$kv.key.name
+							</td>
+							<td>¥<em>$kv.key.price</em></td>
+							<td id="prop_num_$kv.key.id">$kv.value</td>
+							#set($total = $kv.key.price * $kv.value)
+							<td>¥<em id="prop_$kv.key.id">$total</em></td>
+							<td>删除</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+				<hr>
+				#set($num = 0)
+				#set($totalPrice = 0.00)
+				<div>
+					<h4 class="pull-right">已选商品&nbsp <em id="numbers">0</em> &nbsp件 &nbsp&nbsp&nbsp 合计：&nbsp ￥<em id="totalPrice">0.00</em> &nbsp&nbsp <button type="button" class="btn btn-primary">结算</button></h4>
+				</div>
+			
+			</div>
+		</div>
+</div>
+
+#parse("common/footer.html")
+</body>
+</html>
