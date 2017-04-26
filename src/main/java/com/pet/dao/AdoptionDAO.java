@@ -34,7 +34,10 @@ public interface AdoptionDAO {
 	Adoption selectById(int id);
 	
 	@Update({ "update ", AdoptionDaoConstants.TABLE_NAME, " set state=#{state} where id=#{id}" })
-	void updateAdoption(Adoption adoptInfo);
+	void updateAdoptionState(Adoption adoptInfo);
+	
+	@Update({ "update ", AdoptionDaoConstants.TABLE_NAME, " set transport_way=#{transport_way} where id=#{id}" })
+	void updateAdoptionTransport(Adoption adoptInfo);
 	
 	@Select({ "select ", AdoptionDaoConstants.SELECT_FIELDS, " from ", AdoptionDaoConstants.TABLE_NAME, " where pet_id=#{petId}" })
 	Adoption selectByPetId(int petId);

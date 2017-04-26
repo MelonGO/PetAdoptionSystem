@@ -18,4 +18,8 @@ public class PropService {
 		return propDao.getAll();
 	}
 	
+	public Prop getByPropId(int propId){
+		return propDao.getByPropId(propId);
+	}
+	
 }

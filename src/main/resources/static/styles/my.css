@@ -183,4 +183,15 @@ div.middle-register {
 	font-size: 20px;
 }
 
+/* ------------------------------以下为shoppingCart.html------------------------------ */
+.cart-main {
+	margin-top: 80px;
+	margin-bottom: 150px;
+	background-color: #FFFFFF;
+	width: 90%;
+	height: 100%;
+	min-height: 100%;
+	height: auto;
+}
+
 

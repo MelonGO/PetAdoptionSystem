@@ -1,7 +1,9 @@
 package com.pet.controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +23,7 @@ import com.pet.model.Adoption;
 import com.pet.model.Pet;
 import com.pet.model.Prop;
 import com.pet.model.ReceivingInfo;
+import com.pet.model.ShoppingCart;
 import com.pet.model.User;
 import com.pet.service.AdoptionService;
 import com.pet.service.PetService;
@@ -27,6 +31,7 @@ import com.pet.service.PropService;
 import com.pet.service.ReceivingInfoService;
 import com.pet.service.UserService;
 
+import net.sf.json.JSONObject;
 import tools.RequestUtil;
 
 @Controller
@@ -143,18 +148,38 @@ public class AdoptionController {
 	}
 	
 	@RequestMapping(path = { "/myAdoption" })
-	public String myAdoption(Model model, HttpSession session) {
+	public String myAdoption(Model model, HttpSession session, 
+					@CookieValue(value = "cartCookie", required  = false) String cartCookieStr) throws Exception {
 		User user = (User) session.getAttribute("user");
-		
+
+		List<Integer> cookieAdoptionList = new ArrayList<>();
 		Map<Adoption, Pet> myAdoptionMap = new LinkedHashMap<>();
-		
+
+		if (cartCookieStr != null) {
+			cartCookieStr = URLDecoder.decode(cartCookieStr, "utf-8");
+			JSONObject jsonCart = JSONObject.fromObject(cartCookieStr);
+			ShoppingCart shoppingCart = (ShoppingCart) JSONObject.toBean(jsonCart, ShoppingCart.class);
+
+			if (shoppingCart.getUserId() == user.getId()) {
+				cookieAdoptionList = shoppingCart.getAdoptionList();
+			}
+		}
+
 		List<Adoption> adoptInfoList = adoptInfoService.findUserAdoption(user.getId());
 		for (int i = 0; i < adoptInfoList.size(); i++) {
-			Adoption adoptInfo= adoptInfoList.get(i);
-			Pet pet = petService.selectById(adoptInfo.getPetId());
-			myAdoptionMap.put(adoptInfo, pet);
+			Adoption adoption = adoptInfoList.get(i);
+			boolean isExist = false;
+			for (int n : cookieAdoptionList) {
+				if (adoption.getId() == n) {
+					isExist = true;
+				}
+			}
+			if (!isExist) {
+				Pet pet = petService.selectById(adoption.getPetId());
+				myAdoptionMap.put(adoption, pet);
+			}
 		}
-		
+
 		model.addAttribute("myAdoptionMap", myAdoptionMap);
 		
 		return "adoption";
@@ -202,9 +227,13 @@ public class AdoptionController {
 			adoption.setState(-1);
 		}
 
-		Map<String, Object> msg = adoptInfoService.updateAdoption(adoption);
-
-		return (String) msg.get("msg");
+		Map<String, Object> msg = adoptInfoService.updateAdoption("state", adoption);
+		
+		if("success".equals((String) msg.get("msg"))){
+			return "审核成功!";
+		}
+		
+		return "审核失败!";
 	}
 	
 	@RequestMapping(path = { "/procedure" })
@@ -224,21 +253,6 @@ public class AdoptionController {
 		model.addAttribute("propList", propList);
 		
 		return "procedure";
-	}
-	
-	
-	@RequestMapping(path = { "/shoppingCart" })
-	@ResponseBody
-	public String shoppingCart(Model model,
-							@RequestParam("adoptionId") String adoptionId,
-							@RequestParam("transport") String transport,
-							@RequestParam(value = "prop[]", required = false) int[] prop) {
-		String props = "";
-		for (int n : prop) {
-			props = props + " " + n;
-		}
-		return "add to shoppingCart success! <hr>" + "adoptionId:" + adoptionId + 
-				"    transport:" + transport + "    propsId:" + props;
 	}
 	
 	
