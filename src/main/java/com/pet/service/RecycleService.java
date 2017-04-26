@@ -43,4 +43,5 @@ public class RecycleService {
 		recycleDao.updateRecycle(recycle);
 	}
 
+
 }
