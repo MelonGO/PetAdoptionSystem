@@ -35,8 +35,10 @@
 								class="btn btn-success">已通过，去办手续</button></td>
 					#elseif($kv.key.state == -1)
 					<td class="text-warning">未通过</td>
-					#elseif($kv.key.state == 5)
-					<td class="text-muted">已添加至购物车</td>
+					#elseif($kv.key.state == 4)
+					<td class="text-muted">已送回</td>
+					#elseif($kv.key.state == 3)
+					<td class="text-success">已支付</td>
 					#end
 				</tr>
 				#end
