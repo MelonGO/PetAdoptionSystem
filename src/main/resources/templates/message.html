@@ -5,25 +5,25 @@
 	<div class="messageList">
 		<h2 class="msgH2">我的消息</h2>
 		<ul class="msgType">			
-			<li class="msgLi">
-				<a href="/msg/#/private">
+			<li id="li_msg_private"class="msgLi">
+				<a id="msg_private">
 					<i class="fa fa-envelope-o fa-2x"></i>
 					<span class="myspan">私信</span>
 					<i class="u-bub" style="display: none;"></i>
 				</a>
 			</li>
-			<li class="msgLi">
-				<a href="/msg/#/comment">
+			<li id="li_msg_comment" class="msgLi">
+				<a id="msg_comment">
 					<i class="fa fa-comment-o fa-2x"></i>
 					<span class="myspan">评论</span>
 					<i class="u-bub" style="display: none;"></i>
 				</a>
 			</li>
-			<li class="msgLi">
-				<a href="/msg/#/notify">
+			<li id="li_msg_notify" class="msgLi">
+				<a id="msg_notify">
 					<i class="fa fa-bell-o fa-2x"></i>
 					<span class="myspan">通知</span>
-					<i class="u-bub" style="display: none;"></i>
+					<i class="u-bub" style="display: none"></i>
 				</a>
 			</li>
 		</ul>
@@ -35,7 +35,15 @@
 			<div class="n-msgnt n-msgnt-1 j-flag">
 				<div>
 					<div class="n-nmusic">
-						<h3 class="f-ff2"><i class="u-icn u-icn-21"></i>暂时还没有收到@</h3>
+						#if($myMsgList.size==0)
+						<h3 class="f-ff2"><i class="u-icn u-icn-21"></i>暂时还没有收到消息</h3>
+						#end
+						#foreach($msg in $myMsgList)
+						<p>$msg.username</p>
+						<p>$msg.content</p>
+						<p>$msg.sendTime</p>				
+						#end
+						
 					</div>
 				</div>
 			</div>

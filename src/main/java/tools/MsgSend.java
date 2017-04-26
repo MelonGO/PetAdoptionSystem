@@ -2,6 +2,7 @@ package tools;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 
 import redis.clients.jedis.Jedis;
 
@@ -14,32 +15,47 @@ public class MsgSend {
 		js=new Jedis("localhost",6379);
 	}
 	
-	public Boolean hasMsg(String username)
-	{
-		boolean hasMsg=js.exists("msg_"+username);
-		/*if(hasMsg){
-			System.out.println(hasMsg);
-			System.out.println("msg_"+username);
-		}*/
-		return hasMsg;
+	public int hasMsg(String username)
+	{ 		
+		int result=new Long(js.scard(username)).intValue();
+		return result;
+	}
+	
+	public Set<String> getMsgByTargeUsername(String targetUsername){
+		Set<String> s = js.smembers(targetUsername);
+		/*for (String str : s) {  
+		      String[] splits=str.split("_");
+		      String date=splits[0];
+		      String msgContent=splits[1];
+		      String username=splits[2];
+		      String readed=splits[3];
+		      String type=splits[4];
+		} */
+		return s;
+	}
+	
+	public void delMsgByTargeUsername(String targetUsername){
+		Set<String> s = js.smembers(targetUsername);
+		for (String str : s) {  
+			js.srem(targetUsername,str);  	      
+		}
 	}
 	
 	
 	
-	public void sendMsg(String username,String msgContent)
+	public void sendMsg(String username,String msgContent,String targetUsername)
 	{
 		Date cdate=new Date();
 		DateFormat  df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		
 		String date = df.format(cdate);
-		
-		
-		String key="msg_"+username;
-		String value=date+"_"+msgContent;
-		
-		System.out.println(key);
-		System.out.println(value);
-		js.rpush(key, value);
+		String readed="0";
+		String type="私信";		
+		String key=targetUsername;	
+		String value=date+"_"+msgContent+"_"+username+"_"+readed+"_"+type;
+		Set<String> s = js.smembers(targetUsername);
+		s.add(value);
+		js.sadd(key,value);  
 		
 		
 	}
