@@ -56,6 +56,19 @@ body {
 	background-color: #F2F2F2;
 }
 
+.mh {
+	padding-bottom:5px;
+    font-family:"微软雅黑";
+    font-weight:bold;
+    border-bottom: 2px solid #546cad;
+}
+
+.mytable {
+	padding-top:20px;
+	padding-left:30px;
+	padding-right:30px;
+}
+
 /* ------------------------------以下为portal.html------------------------------ */
 
 .main {
@@ -194,4 +207,32 @@ div.middle-register {
 	height: auto;
 }
 
+/* ------------------------------以下为recycleManage.html------------------------------ */
+.recycle-manage-main {
+	margin-top: 80px;
+	background-color: #FFFFFF;
+	width: 90%;
+	height: 100%;
+	min-height: 100%;
+	height: auto;
+}
 
+/* ------------------------------以下为pay.html------------------------------ */
+.pay-main {
+	margin-top: 80px;
+	background-color: #FFFFFF;
+	width: 60%;
+	height: 100%;
+	min-height: 100%;
+	height: auto;
+}
+
+/* ------------------------------以下为order.html------------------------------ */
+.order-main {
+	margin-top: 80px;
+	background-color: #FFFFFF;
+	width: 90%;
+	height: 100%;
+	min-height: 100%;
+	height: auto;
+}

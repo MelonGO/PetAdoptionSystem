@@ -1,0 +1,40 @@
+#parse("common/header.html")
+<body>
+
+
+<div class="container-fluid pay-main">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-12">
+			<h1 class="font-big mh">
+            	支付
+        	</h1>
+        	<form role="form" action="submitPay" method="post" onsubmit="return(btn_click())">
+        		<div class="form-group" style="display:none">
+                	<label for="pets">宠物</label>
+                	<input type="text" class="form-control input-lg" name="pets" id="pets" value="$!{pets}" readonly>
+            	</div>
+            	<div class="form-group" style="display:none">
+                	<label for="props">道具</label>
+                	<input type="text" class="form-control input-lg" name="props" id="props" value="$!{props}" readonly>
+            	</div>
+        		<div class="form-group">
+                	<label for="total">支付金额：</label>
+                	<input type="text" class="form-control input-lg" name="total" id="total" value="$!{total}" readonly>
+            	</div>
+        		<div class="form-group">
+                	<label for="pay-password">请输入支付密码：</label>
+                	<input type="password" class="form-control input-lg " name="pay-password" id="pay-password" value="">
+            	</div>
+            	<hr>
+            	<button type="submit" class="btn btn-info btn-block">确认支付</button>
+            	<p><hr></p>
+        	</form>
+        	
+        </div>
+    </div>
+</div>
+
+#parse("common/footer.html")
+
+</body>
+</html>

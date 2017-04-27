@@ -1,0 +1,15 @@
+USE `pas`;
+
+DROP TABLE IF EXISTS `myOrder`;
+
+CREATE TABLE `pas`.`myOrder` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `pets` VARCHAR(200),
+    `props` VARCHAR(200),
+    `total` DOUBLE NOT NULL,
+    `state` INT NOT NULL DEFAULT 0,
+    `create_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);

@@ -1,11 +1,11 @@
 #parse("common/header.html")
 <body>
 
-<div class="container-fluid adoption-main">
+<div class="container-fluid recycle-manage-main">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-lg-12">
 			<h1 class="font-big mh">
-            	领养管理
+            	回收管理
         	</h1>
 			<table class="table waiter-list">
 				<thead>
@@ -17,21 +17,20 @@
 						<th>宠物价格</th>
 						<th>申请人用户名</th>
 						<th>申请人性别</th>
-						<th>申请人真实姓名</th>
 						<th>申请人地址</th>
-						<th>申请人电话</th>
+						<th>手机号码</th>
 						<th>申请时间</th>
+						<th>是否为助养</th>
 						<th>申请状态</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-				#foreach($adoption in $allAdoptionList)
+				#foreach($recycle in $recycleList)
 				<tr>
 					#set($index = $foreach.count - 1) 
 					#set($pet = $petList.get($index)) 
 					#set($userInfo = $userList.get($index)) 
-					#set($recInfo = $recInfoList.get($index)) 
 					<td>$pet.type</td>
 					<td>$pet.age</td>
 					<td>$pet.name</td>
@@ -39,21 +38,31 @@
 					<td>$pet.price</td>
 					<td>$userInfo.name</td>
 					<td>$userInfo.sex</td>
-					<td>$recInfo.realName</td>
-					<td>$recInfo.address</td>
-					<td>$recInfo.phone</td>
-					<td>$adoption.createTime</td>
-					#if($adoption.state == 0)
+					<td>$recycle.address</td>
+					<td>$recycle.phone</td>
+					<td>$recycle.createTime</td>
+					#if($recycle.sponsorship == 0)
+					<td>否</td>
+					#elseif($recycle.sponsorship == 1)
+					<td>是</td>
+					#end
+					#if($recycle.state == 0)
 					<td>未审核</td>
-					#elseif($adoption.state == -1)
-					<td>未通过</td>
-					#else
+					#elseif($recycle.state == 1)
 					<td>已通过</td>
+					#elseif($recycle.state == -1)
+					<td>不通过</td>
+					#elseif($recycle.state == -2)
+					<td>已撤销</td>
+					#elseif($recycle.state == 2)
+					<td>已付款</td>
+					#elseif($recycle.state == 3)
+					<td>已送回</td>
 					#end
 					<td>
-					<button type="button" onclick='setAdoptionId($adoption.id)' 
+					<button type="button" onclick='setRecycleId($recycle.id)'
                     		class="btn btn-warning" data-toggle="modal" data-target="#audit"
-                    		#if($adoption.state != 0 ) style="display:none" #end>审核</button>
+                    		#if($recycle.state != 0 ) style="display:none" #end>审核</button>
 					</td>
 				</tr>
 				#end
@@ -72,13 +81,13 @@
                         aria-hidden="true">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel_1">
-                	领养申请审核
+                	回收申请审核
                 </h4>
              </div>
              <div class="modal-body">
-             	<button type="button" onclick="auditAdoption('y')"
+             	<button type="button" onclick="auditRecycle('y')"
                     	class="btn btn-success pull-left">批准</button>
-                 <button type="button" onclick="auditAdoption('n')"
+                 <button type="button" onclick="auditRecycle('n')"
                     	class="btn btn-warning pull-right">不批准</button>
             </div>
             <div class="modal-footer">
@@ -88,19 +97,19 @@
 </div>
 
 <script type="text/javascript">
-var adoptionId;
-function setAdoptionId(id) {
-	adoptionId = id;
+var recycleId;
+function setRecycleId(id) {
+	recycleId = id;
 }
-function auditAdoption(result){
+function auditRecycle(result){
 	var param = {};
-	param.adoptionId = adoptionId;
+	param.recycleId = recycleId;
 	if(result == "y"){
 		param.result = "yes";
 	}else{
 		param.result = "no";
 	}
-	$.post('audit', param, function (r) {
+	$.post('auditRecycle', param, function (r) {
 		alert(r);
 		location.replace(location.href);
 	});

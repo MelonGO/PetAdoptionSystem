@@ -219,7 +219,7 @@ public class AdoptionController {
 		String result = RequestUtil.getString(request, "result", null);
 
 		Adoption adoption = adoptInfoService.findAdoptionById(adoptionId);
-
+		
 		if (result.equals("yes")) {
 			adoption.setState(1);
 		} else {

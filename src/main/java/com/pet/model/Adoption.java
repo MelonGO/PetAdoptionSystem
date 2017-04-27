@@ -4,19 +4,11 @@ import com.pet.model.Base;
 
 public class Adoption extends Base {
 
-	private int id;
 	private int receiving_info_id;
 	private int petId;
 	private int userId;
 	private int state;
 	private String transport_way;
-
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public int getPetId() {
 		return petId;
