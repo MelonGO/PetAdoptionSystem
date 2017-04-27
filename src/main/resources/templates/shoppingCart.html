@@ -147,15 +147,9 @@ function Payment(){
 	getGoodsInfo();
 	
 	var total = $("#totalPrice").html();
-	param.total = total;
 	
-	param.pets = pets;
-	param.props = props;
-	
-	$.post('payment', param, function (r) {
-		alert(r);
-		location.replace(location.href);
-	});
+	var url = "payment?total=" + total + "&pets=" + pets + "&props=" + props;
+	location.replace(url);
 	
 }
 

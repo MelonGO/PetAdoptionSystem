@@ -5,20 +5,22 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pet.model.Adoption;
+import com.pet.model.MyOrder;
 import com.pet.model.ShoppingCart;
 import com.pet.model.User;
 import com.pet.service.AdoptionService;
+import com.pet.service.MyOrderService;
 
 import net.sf.json.JSONObject;
 
@@ -28,10 +30,26 @@ public class PaymentController {
 	@Autowired
 	AdoptionService adoptionService;
 	
+	@Autowired
+	MyOrderService orderService;
+	
 	@RequestMapping(path = { "/payment" })
-	@ResponseBody
-	public String payment(HttpSession session, HttpServletRequest request, HttpServletResponse response, 
+	public String pay(Model model, @RequestParam("pets") String pets,
+									@RequestParam("props") String props,
+									@RequestParam("total") Double total) {
+		model.addAttribute("total", total);
+		model.addAttribute("pets", pets);
+		model.addAttribute("props", props);
+		
+		return "payment";
+	}
+	
+	@RequestMapping(path = { "/submitPay" })
+	public String payment(HttpSession session, HttpServletResponse response, 
 						@CookieValue(value = "cartCookie", required  = false) String cartCookieStr, 
+						@RequestParam("pets") String pets,
+						@RequestParam("props") String props,
+						@RequestParam("total") Double total,
 						ShoppingCart shoppingCart) throws Exception {
 		cartCookieStr = URLDecoder.decode(cartCookieStr, "utf-8");
 		JSONObject jsonCart = JSONObject.fromObject(cartCookieStr);
@@ -41,10 +59,6 @@ public class PaymentController {
 		List<Integer> cartPropList = shoppingCart.getPropList();
 		
 		User user = (User) session.getAttribute("user");
-		
-		Double total = Double.parseDouble(request.getParameter("total"));
-		String pets = request.getParameter("pets");
-		String props = request.getParameter("props");
 		
 		String[] petsList = pets.split(",");
 		String[] propsList = props.split(",");
@@ -87,8 +101,20 @@ public class PaymentController {
 	    Cookie cookie = new Cookie("cartCookie",cartCookie);  
 	    cookie.setMaxAge(60*60*24*7);//保留7天
 	    response.addCookie(cookie);
+	    
+	    MyOrder newOrder = new MyOrder();
+	    newOrder.setUserId(user.getId());
+	    newOrder.setTotal(total);
+	    if (petsList.length > 0) {
+	    	newOrder.setPets(pets);
+	    }
+	    if (propsList.length > 0) {
+	    	newOrder.setProps(props);
+	    }
+	    
+	    orderService.addOrder(newOrder);
 		
-		return "支付成功!";
+		return "redirect:myOrder";
 	}
 	
 }

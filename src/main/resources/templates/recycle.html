@@ -8,7 +8,7 @@
             	我的宠物
         	</h3>
         	<div class="rt">
-				<table id="table1" class="table waiter-list ">
+				<table id="table1" class="table mytable">
 					<thead>
 						<tr>
 							<th>宠物种类</th>
@@ -56,7 +56,9 @@
 						<td class="tdhidden">$r.key.createTime</td>
 						
 						<td>申请送回，等待审核</td>
-						<td><button type="button" data-toggle="modal" data-target="#recycleShowModal" class="btn btn-info btnRecycleShow" >查看</button></td>
+						<td><button type="button" data-toggle="modal" data-target="#recycleShowModal" class="btn btn-info btnRecycleShow" >查看</button>
+							<button type="button" data-toggle="modal"  data-target="#recycleCancelModal" class="btn btn-success btnRecycleCancel" >撤销</button></td>
+						
 						#end
 						
 						#if($r.key.state == 1)
@@ -76,7 +78,6 @@
 						<td>审核通过，等待支付</td>
 						<td>
 							<button type="button" data-toggle="modal"  data-target="" class="btn btn-warning btnRecyclePay" >付款</button>
-							<button type="button" data-toggle="modal"  data-target="#recycleCancelModal" class="btn btn-success btnRecycleCancel" >撤销</button>
 						</td>
 						#end
 						
