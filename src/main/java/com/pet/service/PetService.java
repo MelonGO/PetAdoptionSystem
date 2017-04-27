@@ -34,4 +34,17 @@ public class PetService {
 		return petDao.getLatesPets(start);
 	}
 
+	public int update(String petID, String name, String type, String age, String sex, String price, String profile) {
+		// TODO Auto-generated method stub
+		Pet pet=new Pet();
+		pet.setId(Integer.parseInt(petID));
+		pet.setAge(Integer.parseInt(age));
+		pet.setName(name);
+		pet.setType(type);
+		pet.setPrice(Double.parseDouble(price));
+		pet.setSex(sex);
+		pet.setProfile(profile);
+		return petDao.update(pet);
+	}
+
 }

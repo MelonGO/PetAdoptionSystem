@@ -1,0 +1,121 @@
+#parse("common/header.html")
+<body>
+
+
+<div class="petManage-main">
+	<div id="pet_main">
+		<div class="myti">
+			<h3 class="font-big mh">
+            	我的宠物
+        	</h3>
+        	<button type="button" data-toggle="modal" data-target="#addPetModal" class="btn btn btn-primary btnAddPet" >添加</button>       	
+       	</div>
+       	<div class="rt">
+			<table id="table1" class="table waiter-list ">
+				<thead>
+					<tr>
+						<th>宠物编号</th>
+						<th>宠物名字</th>
+						<th>宠物种类</th>
+						<th>宠物年龄</th>	
+						<th>宠物性别</th>
+						<th>宠物价格</th>
+						<th>宠物属性</th>
+					</tr>
+				</thead>
+				<tbody>
+				#foreach($pet in $petList)
+				<tr>
+					<td>$pet.id</td>
+					<td>$pet.name</td>
+					<td>$pet.type</td>
+					<td>$pet.age</td>
+					<td>$pet.sex</td>
+					<td>$pet.price</td>
+					<td>$pet.profile</td>
+					<td>
+						<button type="button" data-toggle="modal" data-target="#updatePetModal" class="btn btn btn-primary btnUpdatePet" >修改</button>
+						<button type="button" data-toggle="modal" data-target="#updatePetModal" class="btn btn btn-danger btnDeletePet" onclick="setPetID($pet.id)">删除</button>
+					</td>
+					<script type="text/javascript">
+						var petID;
+						function setPetID(id){
+							petID=id;
+						}
+					</script>
+			
+				</tr>
+				#end
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<!-- /.修改宠物的信息 -->
+	<div class="modal fade" id="updatePetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">修改宠物信息</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<div id="a">
+						<div class="row">
+							<p class=".col-md-4">宠物编号：</p>
+							<input class=".col-md-8" id="updatePetID" name="updatePetID" type="text"   disabled="disabled">
+						</div>
+						
+	            		<div id="pet_name" class="alert alert-danger">请输入宠物的名称</div>
+	            		<div class="row">
+	            			<p class=".col-md-4">宠物名称：</p>
+							<input class=".col-md-8" id="updatePetName" name="updatePetName" type="text">
+						</div>
+						
+						<div id="pet_type" class="alert alert-danger">请输入宠物的种类</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物种类：</p>
+		                	<input class=".col-md-8" id="updatePetType" name="updatePetType" type="text">
+						</div>
+			            
+			            <div id="pet_age" class="alert alert-danger">请输入宠物的年龄</div>
+						<div class="row">
+							<p class=".col-md-4">宠物年龄：</p>
+			            	<input class=".col-md-8" id="updatePetAge" name="updatePetAge" type="text">
+						</div>
+						
+						<div id="pet_sex" class="alert alert-danger">请选择宠物的性别</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物性别：</p>
+		                	<input class=".col-md-8" id="updatePetSex" name="updatePetSex" type="text" list ="selectSex">
+		                	<datalist id ="selectSex" >
+					            <option>male</option >
+					            <option>female</option >
+					        </datalist>
+						</div>
+												
+						<div id="pet_price" class="alert alert-danger">请输入宠物价格（最多保留俩位小数）</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物价格：</p>
+		                	<input class=".col-md-8" id="updatePetPrice" name="updatePetPrice" type="text">
+						</div>
+						
+						<div id="pet_profile" class="alert alert-danger">请输入宠物的属性</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物属性：</p>
+		                	<input class=".col-md-8" id="updatePetProfile" name="updatePetProfile" type="text">
+						</div>
+	            	</div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary " id="updateConfirm">确认</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+</div>
+
+#parse("common/footer.html")
+</body>
+</html>

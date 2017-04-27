@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.pet.dao.constants.PetDaoConstants;
 import com.pet.model.Pet;
@@ -24,6 +25,9 @@ public interface PetDAO {
 	
 	@Select({"select ", PetDaoConstants.SELECT_FIELDS, " from ", PetDaoConstants.TABLE_NAME, "order by update_time desc", "limit #{start}, 3"})
     List<Pet> getLatesPets(int start);
+
+	@Update({ "update ", PetDaoConstants.TABLE_NAME, " set name=#{name} age=#{age} type=#{type} sex=#{sex} price=#{price} profile=#{profile} where id=#{id}" })
+	int update(Pet pet);
 	
 	
 	

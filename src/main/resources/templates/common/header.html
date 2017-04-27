@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>宠物领养助手</title>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -11,18 +12,17 @@
     <link href="styles/msg.css" rel="stylesheet">
     <link href="styles/recycle.css" rel="stylesheet">
     <link href="styles/queries.css" rel="stylesheet">
-    <script src="scripts/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="styles/petManage.css" rel="stylesheet">
+    <script type="text/javascript"src="scripts/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.js"></script>  
+    <link href="styles/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="scripts/bootstrap-datetimepicker.min.js"></script>
     <script src="scripts/login.js"></script>
     <script src="scripts/melon.js"></script>
     <script src="scripts/msg.js"></script>
     <script src="scripts/recycle.js"></script>
-    <link href="styles/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <script src="scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="scripts/petManage.js"></script>
     
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script> -->
-    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.3.2/jquery.min.js"></script>
-
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="navbar-header">
 	        <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -64,11 +64,12 @@
 	    			<ul class="dropdown-menu">
 	    				#if($!{user.role} == "admin")
     					<li><a href="adoptionManage">领养申请管理</a></li>
+    					<li><a href="petManage">宠物信息管理</a></li>
     					#end
     					<li><a href="userInfo">个人信息</a></li>
     					<li><a href="myAdoption">我的领养</a></li>
     					<li><a href="myRecycle">送回宠物</a></li>
-    					<li><a  data-toggle="modal" data-target="#msgModal">消息</a></li>
+    					<li><a data-toggle="modal" data-target="#msgModal">发送私信</a></li>
 	    				<li><a href="logout">登出</a></li>
 	    				
 	    			</ul>
@@ -139,35 +140,67 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                <h4 class="modal-title" id="myModalLabel">消息</h4>
+	                <h4 class="modal-title" id="myModalLabel">私信</h4>
 	            </div>
 	            <div class="modal-body" style="height: 300px" >
-					<div class="col-md-12 col-md-offset-1">
-		                <div class="col-md-2" >
+					<div class="col-md-12 " id="msg_u">
+		                <div class="col-md-2 msg_targetU" >
 		                	接收者：
 		                </div>
-		                <div class="col-md-8">
+		                <div class="col-md-9">
 		                   <input id="userName" type="text" class="form-control" placeholder="请输入接收者用户名">
 		                </div>
 			         </div>
 			         
 			         
-			         <div class="col-md-12 col-md-offset-1" style="margin-top: 20px">
-		                <div class="col-md-2">
-		                	内 容：
+			         <div class="col-md-12 " id="msg_c">
+		                <div class="col-md-2 msg_contentT">
+		                	内&nbsp&nbsp容：
 		                </div>
-		                <div class="col-md-8">
-		                   <textarea id="msgContent" style="height: 200px" class="form-control" placeholder="内容不超过200字"></textarea>
+		                <div class="col-md-9">
+		                   <textarea id="msgContentT" class="form-control" placeholder="内容不超过200字"></textarea>
 		                </div>
 			         </div>
 				</div>
 	            <div class="modal-footer">
-	                <div class="col-md-8 col-md-offset-3" style="margin-top: 20px">
-		                <div class="col-md-2 col-md-offset-3">
-		                	
-		                    <button id="sendBtn" class="btn btn-info">发送</button>
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary " id="sendBtn">发送</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+	
+	<!-- 系统通知 -->
+    <div class="modal fade" id="msgNotifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">系统通知</h4>
+	            </div>
+	            <div class="modal-body" style="height: 300px" >
+					<div class="col-md-12 " id="msg_u">
+		                <div class="col-md-2 msg_targetU" >
+		                	接收者：
 		                </div>
-         			</div>
+		                <div class="col-md-9">
+		                   <input id="userName" type="text" class="form-control" placeholder="请输入接收者用户名">
+		                </div>
+			         </div>
+			         
+			         
+			         <div class="col-md-12 " id="msg_c">
+		                <div class="col-md-2 msg_contentT">
+		                	内&nbsp&nbsp容：
+		                </div>
+		                <div class="col-md-9">
+		                   <textarea id="msgContentT" class="form-control" placeholder="内容不超过200字"></textarea>
+		                </div>
+			         </div>
+				</div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary " id="sendNotifyBtn">发送</button>
 	            </div>
 	        </div><!-- /.modal-content -->
 	    </div><!-- /.modal -->

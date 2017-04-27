@@ -1,0 +1,61 @@
+.petManage-main{
+	height:100%;
+}
+
+#pet1{
+	padding-left:40px;
+	padding-right:40px;
+}
+#pet1 p{
+	float:left; 
+	margin-left:15px;
+	margin-top:10px; 
+	line-height:20px; 
+	font-size:16px;
+}
+
+#pet1 input{
+	width:400px;
+	margin:4px;
+	word-wrap:break-word;
+}
+
+#pet_name,#pet_type,#pet_age,#pet_profile,#pet_price,#pet_sex{
+	width:485px;
+	padding:5px 20px 5px 20px;
+	height: 30px;
+	display:none;
+	margin-bottom: 3px;
+}
+
+#pet_main{
+	padding-top:50px;
+	padding-left:30px;
+	padding-right:30px;
+	padding-bottom:30px;
+}
+
+.myti{
+	border-bottom:1px solid #505050;
+	padding-top:15px;
+	padding-left:20px;
+	padding-right:150px;
+	padding-bottom:10px;
+}
+
+.myti button{
+	display:inline;
+	float:right;
+}
+
+.myti h3{
+	height:30px;
+	line-height:30px;	
+	display:inline;
+}
+
+#pet_main .rt{
+	margin-top:5px;
+	padding-left:10px;
+	padding-right:10px;
+}

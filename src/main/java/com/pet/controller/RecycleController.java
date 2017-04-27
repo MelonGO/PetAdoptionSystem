@@ -109,8 +109,6 @@ public class RecycleController {
 		} else {
 			User user = (User) session.getAttribute("user");
 			int petid=Integer.parseInt(pid);
-			System.out.println(petid);
-			System.out.println( user.getId());
 			Adoption adoption = adoptInfoService.findByPetAndUser(petid, user.getId());	
 			Recycle recycle = recycleService.findByPetAndUser(petid, user.getId());		
 			if(recycle.getState()!=0){
