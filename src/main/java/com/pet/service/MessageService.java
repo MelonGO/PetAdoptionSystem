@@ -33,7 +33,11 @@ public class MessageService {
 	}
 	
 	public void updateMessage(Message message){	
-		messageDao.updateMessage(message);
+		messageDao.updateMessage(message.getId());
+	}
+	
+	public int delMsg(String id){	
+		return messageDao.delMsg(Integer.parseInt(id));
 	}
 	
 	public List<Message> getPrivateByTargetUserName(String targetUsername){

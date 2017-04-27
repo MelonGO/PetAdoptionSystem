@@ -100,12 +100,32 @@
 }
 
 
+
 .myspan{
 	text-decoration: none;
 	font:bold;
 	font-size: 20px;
 	color: #777;
 }
+
+#send_private_msg,#send_notify_msg{
+	float: right;
+    font-size:13px;
+    height: 30px;
+    color: #333;
+    line-height: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    padding:0 5px;
+    border: 1px solid #ddd;
+}
+
+#send_notify_msg{
+	display:none;
+}
+
+
+
 
 .main-box{
 	float: right;
@@ -127,10 +147,107 @@
 }
 
 .msgContent .mh{
-    height: 35px;
+    height: 40px;
     line-height:30px;
     font-family:"微软雅黑";
     font-size:22px;
     font-weight:bold;
+    padding-bottom:5px;
     border-bottom: 2px solid #546cad;
+}
+#notify_content,#comment_content{
+	display:none;
+}
+
+.msg_m{
+	padding:12px 15px 12px 15px;
+	border-bottom: 1px dashed #d3d3d3;
+}
+
+.msg_c > .msg_m:first-child {
+	border-top:1px dashed #d3d3d3 !important;
+}
+
+
+.msg_username{
+	font-size: 20px;
+	height:20px;
+	line-height: 20px;
+	display:inline;
+}
+
+
+.mya{
+	z-index:999;
+	position:absolute;
+	top:35%;
+	left:45%;
+	display:none;
+}
+
+.msg_sendTime{
+	float: right;
+    font-family: Tahoma, Geneva, sans-serif;
+    color:#999;
+	font-size: 12px;
+	height:20px;
+	line-height: 20px;
+	padding-right:5px;
+	display:inline;
+}
+
+.msg_content{
+	width: 100%;
+    color:#999;
+    display:inline;
+}
+
+.msg_del{
+	display:none;
+	color:#0c73c2;
+	cursor: pointer;
+	text-align: right;
+	height:10px;
+	line-height:10px;
+	font-size:10px;
+	float:right;
+	margin-bottom:10px;
+	position:relative;
+	right:1px;
+	top:10px;
+		
+}
+
+.msg_del:hover{
+	text-decoration: underline;
+}
+
+.msg_m:hover .msg_del{
+	display:inline;
+}
+
+#msg_u{
+	margin-left:0px;
+}
+
+#msg_c{
+	margin-left:0px;
+	margin-top: 20px;
+}
+
+
+#msgContentT{
+	height: 200px;
+	display:inline;
+}
+
+.msg_m:hover{	
+	background-color:#eee;	
+}
+
+.msg_targetU,.msg_contentT{
+	height: 40px;
+	line-height: 40px;
+	text-align: right;
+	padding:0 0;
 }
