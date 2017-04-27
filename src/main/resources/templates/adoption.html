@@ -4,10 +4,10 @@
 <div class="container-fluid adoption-main">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-lg-12">
-			<h1 class="font-big">
-            	我的领养申请列表
+			<h1 class="font-big mh">
+            	领养申请
         	</h1>
-			<table class="table waiter-list">
+			<table class="table mytable">
 				<thead>
 					<tr>
 						<th>宠物种类</th>
@@ -16,7 +16,7 @@
 						<th>宠物性别</th>
 						<th>宠物价格</th>
 						<th>申请时间</th>
-						<th>申请状态</th>
+						<th>状态</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,6 +35,10 @@
 								class="btn btn-success">已通过，去办手续</button></td>
 					#elseif($kv.key.state == -1)
 					<td class="text-warning">未通过</td>
+					#elseif($kv.key.state == 4)
+					<td class="text-muted">已送回</td>
+					#elseif($kv.key.state == 3)
+					<td class="text-success">已支付</td>
 					#end
 				</tr>
 				#end

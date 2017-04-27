@@ -1,18 +1,10 @@
 package com.pet.model;
 
 public class ReceivingInfo extends Base  {
-	private int id;
 	private int userId;
 	private String realName;
 	private String address;
 	private String phone;
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	
 	public int getUserId() {
 		return userId;

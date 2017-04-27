@@ -1,9 +1,11 @@
 package com.pet.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import com.pet.service.AdoptionService;
 import com.pet.service.RecycleService;
 import com.pet.service.PetService;
 import com.pet.service.UserService;
+
+import tools.RequestUtil;
 
 @Controller
 public class RecycleController {
@@ -94,7 +98,7 @@ public class RecycleController {
 			}
 			recycleService.addRecycle(petid,user.getId(), isSponsorship,Double.parseDouble(money), reason, address, phone);
 			adoption.setState(4);
-			adoptInfoService.updateAdoption(adoption);
+			adoptInfoService.updateAdoption("state", adoption);
 	
 		}
 		return "2";
@@ -117,9 +121,48 @@ public class RecycleController {
 			recycle.setState(-2);
 			recycleService.updateRecycle(recycle);
 			adoption.setState(3);
-			adoptInfoService.updateAdoption(adoption);
+			adoptInfoService.updateAdoption("state", adoption);
 	
 		}
 		return "2";
+	}
+	
+	@RequestMapping(path = { "/recycleManage" })
+	public String recycleManage(Model model) {
+		List<Recycle> recycleList = recycleService.findAll();
+		List<Pet> petList = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
+
+		for (Recycle r : recycleList) {
+			int petId = r.getPetId();
+			Pet pet = petService.selectById(petId);
+			petList.add(pet);
+			userList.add(userService.getUser(r.getUserId()));
+		}
+		
+		model.addAttribute("recycleList", recycleList);
+		model.addAttribute("petList", petList);
+		model.addAttribute("userList", userList);
+		
+		return "recycleManage";
+	}
+	
+	@RequestMapping(path = { "/auditRecycle" })
+	@ResponseBody
+	public String auditRecycle(Model model, HttpServletRequest request) {
+		Integer recycleId = RequestUtil.getPositiveInteger(request, "recycleId", null);
+		String result = RequestUtil.getString(request, "result", null);
+		
+		Recycle recycle = recycleService.findRecycleById(recycleId);
+		
+		if (result.equals("yes")) {
+			recycle.setState(1);
+		} else {
+			recycle.setState(-1);
+		}
+		
+		recycleService.updateRecycle(recycle);
+		
+		return "审核成功";
 	}
 }

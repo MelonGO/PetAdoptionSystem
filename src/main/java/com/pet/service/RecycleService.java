@@ -42,6 +42,13 @@ public class RecycleService {
 	public void updateRecycle(Recycle recycle){	
 		recycleDao.updateRecycle(recycle);
 	}
-
+	
+	public List<Recycle> findAll() {
+		return recycleDao.findAll();
+	}
+	
+	public Recycle findRecycleById(int id) {
+		return recycleDao.findRecycleById(id);
+	}
 
 }

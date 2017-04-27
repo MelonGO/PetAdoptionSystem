@@ -29,5 +29,11 @@ public interface  RecycleDAO {
 	@Update({ "update ", RecycleDaoConstants.TABLE_NAME, " set state=#{state} where id=#{id}" })
 	void updateRecycle(Recycle recycle);
 	
+	@Select({ "select ", RecycleDaoConstants.SELECT_FIELDS, " from ", RecycleDaoConstants.TABLE_NAME })
+	List<Recycle> findAll();
+	
+	@Select({ "select ", RecycleDaoConstants.SELECT_FIELDS, " from ", RecycleDaoConstants.TABLE_NAME, " where id=#{id} " })
+	Recycle findRecycleById(int id);
+	
 	
 }
