@@ -43,14 +43,14 @@ public class MsgSend {
 	
 	
 	
-	public void sendMsg(String username,String msgContent,String targetUsername)
+	public void sendMsg(String username,String msgContent,String targetUsername,String t)
 	{
 		Date cdate=new Date();
-		DateFormat  df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		DateFormat  df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		String date = df.format(cdate);
 		String readed="0";
-		String type="私信";		
+		String type=t;		
 		String key=targetUsername;	
 		String value=date+"_"+msgContent+"_"+username+"_"+readed+"_"+type;
 		Set<String> s = js.smembers(targetUsername);

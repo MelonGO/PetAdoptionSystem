@@ -3,7 +3,6 @@ $(function(){
 	$('.btnRecycle').click(function (event) {  
 		var trs=$("table#table1 tbody tr");
 		var tr=$(this).closest("tr");
-        var index=trs.index(tr);
         var td=tr.eq(0).find("td")
         var type=td.eq(0).text();
         var age=td.eq(1).text();
@@ -118,7 +117,7 @@ $(function(){
 					$("#alert_submit").css("display","inline-block");
 					setTimeout(function(){  
 						window.location.reload();
-					},2000);
+					},1000);
 				}
 			});
 		}					
@@ -136,7 +135,7 @@ $(function(){
 				$("#alert_submit").css("display","inline-block");
 				setTimeout(function(){  
 					window.location.reload();
-				},2000);
+				},1000);
 			}
 		});
 	});

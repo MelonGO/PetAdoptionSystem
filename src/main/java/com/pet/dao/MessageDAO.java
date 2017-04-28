@@ -2,7 +2,7 @@ package com.pet.dao;
 
 
 import java.util.List;
-
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,15 +20,18 @@ public interface MessageDAO {
 	@SelectKey(statement = "select last_insert_id() as id", keyProperty = "id", before = false, resultType = Integer.class, statementType = StatementType.PREPARED)
 	int addMessage(Message message);
 	
-	@Select({ "select ", MessageDaoConstants.SELECT_FIELDS, " from ", MessageDaoConstants.TABLE_NAME, " where targetUsername=#{targetUsername} and type='私信'" })
+	@Select({ "select ", MessageDaoConstants.SELECT_FIELDS, " from ", MessageDaoConstants.TABLE_NAME, " where targetUsername=#{targetUsername} and type='私信' order by sendTime" })
 	List<Message> selectPrivateByTargetUserName(String targetUsername);
 	
-	@Select({ "select ", MessageDaoConstants.SELECT_FIELDS, " from ", MessageDaoConstants.TABLE_NAME, " where targetUsername=#{targetUsername} and type='评论'" })
+	@Select({ "select ", MessageDaoConstants.SELECT_FIELDS, " from ", MessageDaoConstants.TABLE_NAME, " where targetUsername=#{targetUsername} and type='评论' order by sendTime" })
 	List<Message> selectCommentByTargetUserName(String targetUsername);
 	
-	@Select({ "select ", MessageDaoConstants.SELECT_FIELDS, " from ", MessageDaoConstants.TABLE_NAME, " where targetUsername=#{targetUsername} and type='通知'" })
+	@Select({ "select ", MessageDaoConstants.SELECT_FIELDS, " from ", MessageDaoConstants.TABLE_NAME, " where targetUsername=#{targetUsername} and type='通知' order by sendTime" })
 	List<Message> selectNotifyByTargetUserName(String targetUsername);
 	
-	@Update({ "update ", MessageDaoConstants.TABLE_NAME, " set readed=#{readed} where id=#{id}" })
-	void updateMessage(Message message);
+	@Delete({ "delete  from ", MessageDaoConstants.TABLE_NAME, " where id=#{id}" })
+	int delMsg(int id);
+	
+	@Update({ "update ", MessageDaoConstants.TABLE_NAME, " set readed=1 where id=#{id}" })
+	void updateMessage(int id);
 }

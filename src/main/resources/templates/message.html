@@ -9,46 +9,134 @@
 				<a id="msg_private">
 					<i class="fa fa-envelope-o fa-2x"></i>
 					<span class="myspan">私信</span>
-					<i class="u-bub" style="display: none;"></i>
+					<div id="private_notice" class="notice" display="none"></div>
 				</a>
 			</li>
 			<li id="li_msg_comment" class="msgLi">
 				<a id="msg_comment">
 					<i class="fa fa-comment-o fa-2x"></i>
 					<span class="myspan">评论</span>
-					<i class="u-bub" style="display: none;"></i>
+					<div id="comment_notice" class="notice" display="none"></div>
 				</a>
 			</li>
 			<li id="li_msg_notify" class="msgLi">
 				<a id="msg_notify">
 					<i class="fa fa-bell-o fa-2x"></i>
 					<span class="myspan">通知</span>
-					<i class="u-bub" style="display: none"></i>
+					<div id="notify_notice" class="notice" display="none"></div>
 				</a>
 			</li>
 		</ul>
 	</div>
 	
-	<div class="main-box">
+	<div class="main-box" id="msg_main">
 		<div class="msgContent">
-			<h3 class="mh"><span class="f-fl tit">消息</span></h3>
-			<div class="n-msgnt n-msgnt-1 j-flag">
-				<div>
-					<div class="n-nmusic">
-						#if($myMsgList.size==0)
-						<h3 class="f-ff2"><i class="u-icn u-icn-21"></i>暂时还没有收到消息</h3>
-						#end
-						#foreach($msg in $myMsgList)
-						<p>$msg.username</p>
-						<p>$msg.content</p>
-						<p>$msg.sendTime</p>				
-						#end
-						
+			<h3 class="mh">
+				<span class="">消息</span>
+				<a class="btn fa fa-envelope-o" id="send_private_msg" data-toggle="modal" data-target="#msgModal">发新私信</a>
+				#if($!{user.role} == "admin")
+				<a class="btn fa fa-envelope-o" id="send_notify_msg" data-toggle="modal" data-target="#msgNotifyModal">发新通知</a>
+				#end
+			</h3>
+			<div>
+				<div id="private_content" class="msg_c">
+					
+					#if($myMsgList.size()==0)
+					<h3>暂时还没有收到私信</h3>
+					#end
+					#foreach($msg in $myMsgList)					
+					<div class="msg_m">
+						<div>
+							<div class="msg_username">$msg.username</div>
+							<div class="msg_sendTime">发送于 $msg.sendTime</div>
+						</div>
+						<div>
+							<div class="msg_content">$msg.content</div>
+							<div class="msg_del" data-toggle="modal" data-target="#msgDelModal" onclick="setMsgID($msg.id)">删除</div>
+						</div>
 					</div>
+					<script>
+					var msgID;
+					function setMsgID(id){
+						msgID=id;
+					}
+					</script>
+					#end
+					
+				</div>
+				<div id="comment_content" class="msg_c">
+					#if($myMsgList2.size()==0)
+					<h3>暂时还没有收到评论</h3>
+					#end
+					#foreach($msg2 in $myMsgList2)
+					<div class="msg_m">
+						<div>
+							<div class="msg_username">$msg2.username</div>
+							<div class="msg_sendTime">发送于 $msg2.sendTime</div>
+						</div>
+						<div>
+							<div class="msg_content">$msg2.content</div>
+							<div class="msg_del" data-toggle="modal" data-target="#msgDelModal" onclick="setMsgID($msg2.id)">删除</div>
+						</div>
+					</div>				
+					#end
+					<script>
+					var msgID;
+					function setMsgID(id){
+						msgID=id;
+					}
+					</script>
+					
+				</div>
+				<div id="notify_content" class="msg_c">
+					#if($myMsgList3.size()==0)
+					<h3>暂时还没有收到系统通知</h3>
+					#end
+					#foreach($msg3 in $myMsgList3)
+					<div class="msg_m">
+						<div>
+							<div class="msg_username">$msg3.username</div>
+							<div class="msg_sendTime">发送于 $msg3.sendTime</div>
+						</div>
+						<div>
+							<div class="msg_content">$msg3.content</div>
+							<div class="msg_del" data-toggle="modal" data-target="#msgDelModal" onclick="setMsgID($msg3.id)">删除</div>
+						</div>
+					</div>			
+					#end
+					<script>
+					var msgID;
+					function setMsgID(id){
+						msgID=id;
+					}
+					</script>
+					
 				</div>
 			</div>
-		<div class="u-page j-flag"></div>
 		</div>
+	</div>
+	
+	<div id="alertSuccess" class="alert alert-success mya">成功！很好地完成了提交。</div>
+	<div id="alertInfo"class="alert alert-info mya">信息！请注意这个信息。</div>
+	<div id="alertDanger" class="alert alert-danger mya">成功！很好地完成了提交。</div>
+	
+	<!-- 删除确认 -->
+    <div class="modal fade" id="msgDelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">删除</h4>
+	            </div>
+	            <div class="modal-body"  >
+					要删除这一条消息吗
+				</div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary " id="msgDelBtn">确认</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
 	</div>
 </div>
 
