@@ -30,8 +30,8 @@ $(function(){
 	});
 	
 	$("#sendNotifyBtn").click(function(){
-		   var usn=$("#userName").val();
-		   var content=$("#msgContentT").val();
+		   var usn=$("#notifyUserName").val();
+		   var content=$("#notifyContentT").val();
 		   if(usn.replace(/(^\s+)|(\s+$)/,"")==""){
 			   alert("接收者不能为空");
 		   }else if(content.replace(/(^\s+)|(\s+$)/,"")==""){
@@ -39,10 +39,20 @@ $(function(){
 		   }else{
 			   $.getJSON("sendNotifyMsg.do",{"userName":usn,"msgConent":content},function(d){
 				   if(d=="0"){
+					   $("#msgNotifyModal").modal('hide');
+					   $("#alertInfo").text("请先登录你的账号");
 					   $("#alertInfo").css("display","block");
+					   setTimeout(function(){  
+						   $("#alertSuccess").css("Info","none");
+						},1000);
 				   }
 				   else{
+					   $("#msgNotifyModal").modal('hide');
+					   $("#alertSuccess").text("发送通知成功");
 					   $("#alertSuccess").css("display","block");
+					   setTimeout(function(){  
+						   $("#alertSuccess").css("display","none");
+						},1000);
 				   } 
 			   });	   
 		   }
@@ -51,26 +61,27 @@ $(function(){
 	$("#msgDelBtn").click(function(){
 		$.getJSON("del_msg.do",{"mid":msgID},function(d){
 			if(d=="0"){
-				$("#msgModal").modal('hide');
+				$("#msgDelModal").modal('hide');
 				$("#alertInfo").text("请先登录你的账号");
 				$("#alertInfo").css("display","block");
 				setTimeout(function(){  
 					$("#alertSuccess").css("Info","none");
 				},1000);
 			}if(d=="1"){
-				$("#msgDelModa").modal('hide');
+				$("#msgDelModal").modal('hide');
 				$("#alertDanger").text("删除失败")
 				$("#alertDanger").css("display","block");
 				setTimeout(function(){  
-					$("#alertDanger").css("display","none");
-				},2000)
+					$("#alertDanger").css("display","none");					
+				},1000)
 			}if(d=="2"){
-				$("#msgDelModa").modal('hide');
+				$("#msgDelModal").modal('hide');
 				$("#alertSuccess").text("删除成功")
 				$("#alertSuccess").css("display","block");
 				setTimeout(function(){  
 					$("#alertSuccess").css("display","none");
-				},2000)
+					location.reload();
+				},1000)
 			}
 		});
 		

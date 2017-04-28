@@ -241,6 +241,11 @@
 	display:inline;
 }
 
+#notifyContentT{
+	height: 200px;
+	display:inline;
+}
+
 .msg_m:hover{	
 	background-color:#eee;	
 }

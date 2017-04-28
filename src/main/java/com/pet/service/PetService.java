@@ -47,4 +47,26 @@ public class PetService {
 		return petDao.update(pet);
 	}
 
+	public int add(String name, String type, String age, String sex, String price, String profile) {
+		// TODO Auto-generated method stub
+		Pet pet=new Pet();
+		pet.setAge(Integer.parseInt(age));
+		pet.setName(name);
+		pet.setType(type);
+		pet.setPrice(Double.parseDouble(price));
+		pet.setSex(sex);
+		pet.setProfile(profile);
+		return petDao.add(pet);
+	}
+
+	public int del(String id) {
+		// TODO Auto-generated method stub
+		return petDao.delPet(Integer.parseInt(id));
+	}
+
+	public int getID() {
+		// TODO Auto-generated method stub
+		return petDao.getID();
+	}
+
 }
