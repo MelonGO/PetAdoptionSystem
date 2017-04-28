@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import com.pet.dao.constants.MyOrderDaoConstants;
@@ -26,5 +27,14 @@ public interface MyOrderDAO {
 	
 	@Delete({"delete from ", MyOrderDaoConstants.TABLE_NAME, " where id=#{id}"})
     void deleteById(int id);
+	
+	@Select({ "select ", MyOrderDaoConstants.SELECT_FIELDS, " from ", MyOrderDaoConstants.TABLE_NAME })
+	List<MyOrder> getAll();
+	
+	@Update({ "update ", MyOrderDaoConstants.TABLE_NAME, " set state=#{state} where id=#{id}" })
+	void updateOrderState(MyOrder myOrder);
+	
+	@Select({ "select ", MyOrderDaoConstants.SELECT_FIELDS, " from ", MyOrderDaoConstants.TABLE_NAME, " where id=#{id}" })
+	MyOrder selectById(int id);
 	
 }

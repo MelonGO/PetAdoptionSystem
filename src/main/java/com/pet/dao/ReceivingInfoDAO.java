@@ -25,4 +25,7 @@ public interface ReceivingInfoDAO {
 	@Update({ "update ", ReceivingInfoDAOConstants.TABLE_NAME, " set real_name=#{realName},address=#{address},phone=#{phone} where id=#{id}" })
 	void updateReceivingInfo(ReceivingInfo recInfo);
 	
+	@Select({ "select ", ReceivingInfoDAOConstants.SELECT_FIELDS, " from ", ReceivingInfoDAOConstants.TABLE_NAME, " where id=#{id}" })
+	ReceivingInfo selectById(int id);
+	
 }

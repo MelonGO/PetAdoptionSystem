@@ -165,4 +165,16 @@ public class RecycleController {
 		
 		return "审核成功";
 	}
+	
+	@RequestMapping(path = { "/deliverRecycle" })
+	@ResponseBody
+	public String deliverRecycle(HttpServletRequest request) {
+		int recycleId = RequestUtil.getInteger(request, "recycleId", null);
+		Recycle recycle = recycleService.findRecycleById(recycleId);
+		recycle.setState(3);
+		
+		recycleService.updateRecycle(recycle);
+		return "确认回收成功!";
+	}
+	
 }

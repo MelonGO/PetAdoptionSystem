@@ -8,7 +8,8 @@
 			<h1 class="font-big mh">
             	支付
         	</h1>
-        	<form role="form" action="submitPay" method="post" onsubmit="return(btn_click())">
+        	<form role="form" #if($pets) action="submitPay" #else action="submitPayRecycle" #end method="post" onsubmit="return(btn_click())">
+        		#if($pets)
         		<div class="form-group" style="display:none">
                 	<label for="pets">宠物</label>
                 	<input type="text" class="form-control input-lg" name="pets" id="pets" value="$!{pets}" readonly>
@@ -17,6 +18,13 @@
                 	<label for="props">道具</label>
                 	<input type="text" class="form-control input-lg" name="props" id="props" value="$!{props}" readonly>
             	</div>
+            	#end
+            	#if($recycleId)
+            	<div class="form-group" style="display:none">
+                	<label for="recycleId">回收</label>
+                	<input type="text" class="form-control input-lg" name="recycleId" id="recycleId" value="$!{recycleId}" readonly>
+            	</div>
+            	#end
         		<div class="form-group">
                 	<label for="total">支付金额：</label>
                 	<input type="text" class="form-control input-lg" name="total" id="total" value="$!{total}" readonly>
