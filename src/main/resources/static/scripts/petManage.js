@@ -122,9 +122,23 @@ $(function(){
 		modal2.find('.modal-body #selectSex').val("") ;
 	});
 	
+	
+	
 	$("#addConfirm").click(function(){
+		var petID=$("#addPetID").val();
+        var name=$("#addPetName").val();
+        var type=$("#addPetType").val();
+        var age=$("#addPetAge").val();
+        var sex=$("#addPetSex").val();
+        var price=$("#addPetPrice").val();
+        var profile=$("#addPetProfile").val();        
+        var file = $("#picture").val();
+		if(name.replace(/(^\s+)|(\s+$)/,"")==""||type.replace(/(^\s+)|(\s+$)/,"")==""||!/^\d+$/.test(age)||profile.replace(/(^\s+)|(\s+$)/,"")==""
+			||sex.replace(/(^\s+)|(\s+$)/,"")==""||!(/^\d+(?:\.\d{1,2})?$/.test(price))){
+			return false;
+		}
 		$("#addConfirm").attr("disabled", true); 
-		$("#add-pet-form").submit();
+		$("#add-pet-form").submit();		
 	});
 
 	/*
