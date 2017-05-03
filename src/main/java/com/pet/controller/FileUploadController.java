@@ -26,7 +26,7 @@ public class FileUploadController {
 							Model model) {
 
 //		String path = request.getSession().getServletContext().getRealPath("upload");
-		String path = "/Users/melon/git/PetAdoptionSystem/src/main/resources/static/images";
+		String path = "/Users/";
 		String fileName = file.getOriginalFilename();
 		String extfileName = fileName.substring(fileName.indexOf("."));
 

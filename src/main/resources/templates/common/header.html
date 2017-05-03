@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/bootstrap-fileinput/4.3.9/css/fileinput.min.css" rel="stylesheet">
     <link href="styles/my.css" rel="stylesheet">
     <link href="styles/login.css" rel="stylesheet">
     <link href="styles/msg.css" rel="stylesheet">
@@ -15,6 +16,9 @@
     <link href="styles/petManage.css" rel="stylesheet">
     <script type="text/javascript"src="scripts/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.js"></script>  
+    <script src="http://cdn.bootcss.com/bootstrap-fileinput/4.3.9/js/fileinput.min.js"></script>  
+    <script src="http://cdn.bootcss.com/bootstrap-fileinput/4.3.9/js/locales/zh.min.js"></script>  
+    
     <link href="styles/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script src="scripts/bootstrap-datetimepicker.min.js"></script>
     <script src="scripts/login.js"></script>
@@ -22,6 +26,7 @@
     <script src="scripts/msg.js"></script>
     <script src="scripts/recycle.js"></script>
     <script src="scripts/petManage.js"></script>
+    
     
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="navbar-header">
@@ -193,7 +198,7 @@
 		                	接收者：
 		                </div>
 		                <div class="col-md-9">
-		                   <input id="userName" type="text" class="form-control" placeholder="请输入接收者用户名">
+		                   <input id="notifyUserName" type="text" class="form-control" placeholder="请输入接收者用户名">
 		                </div>
 			         </div>
 			         
@@ -203,7 +208,7 @@
 		                	内&nbsp&nbsp容：
 		                </div>
 		                <div class="col-md-9">
-		                   <textarea id="msgContentT" class="form-control" placeholder="内容不超过200字"></textarea>
+		                   <textarea id="notifyContentT" class="form-control" placeholder="内容不超过200字"></textarea>
 		                </div>
 			         </div>
 				</div>
