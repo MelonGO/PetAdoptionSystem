@@ -37,8 +37,10 @@
 					<td class="text-warning">未通过</td>
 					#elseif($kv.key.state == 4)
 					<td class="text-muted">已送回</td>
-					#elseif($kv.key.state == 3)
+					#elseif($kv.key.state == 2)
 					<td class="text-success">已支付</td>
+					#elseif($kv.key.state == 3)
+					<td class="text-success">已收货</td>
 					#end
 				</tr>
 				#end

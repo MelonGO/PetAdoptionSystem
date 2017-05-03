@@ -26,7 +26,17 @@ public class MyOrderService {
 		orderDao.deleteById(id);
 	}
 	
+	public List<MyOrder> getAll() {
+		return orderDao.getAll();
+	}
 	
+	public void updateOrderState(MyOrder order){
+		orderDao.updateOrderState(order);
+	}
+	
+	public MyOrder findById(int id) {
+		return orderDao.selectById(id);
+	}
 	
 	
 }

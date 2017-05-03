@@ -16,7 +16,7 @@ import com.pet.model.Adoption;
 public interface AdoptionDAO {
 
 	@Insert({ "insert into ", AdoptionDaoConstants.TABLE_NAME, "(", AdoptionDaoConstants.INSERT_FIELDS,
-			") values (#{receiving_info_id},#{petId},#{userId},#{state},#{transport_way})" })
+			") values (#{receivingInfoId},#{petId},#{userId},#{state},#{transportWay})" })
 	@SelectKey(statement = "select last_insert_id() as id", keyProperty = "id", before = false, resultType = Integer.class, 
 			statementType = StatementType.PREPARED)
 	int addAdoption(Adoption adoption);
@@ -36,7 +36,7 @@ public interface AdoptionDAO {
 	@Update({ "update ", AdoptionDaoConstants.TABLE_NAME, " set state=#{state} where id=#{id}" })
 	void updateAdoptionState(Adoption adoptInfo);
 	
-	@Update({ "update ", AdoptionDaoConstants.TABLE_NAME, " set transport_way=#{transport_way} where id=#{id}" })
+	@Update({ "update ", AdoptionDaoConstants.TABLE_NAME, " set transport_way=#{transportWay} where id=#{id}" })
 	void updateAdoptionTransport(Adoption adoptInfo);
 	
 	@Select({ "select ", AdoptionDaoConstants.SELECT_FIELDS, " from ", AdoptionDaoConstants.TABLE_NAME, " where pet_id=#{petId}" })

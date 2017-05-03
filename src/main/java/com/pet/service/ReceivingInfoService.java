@@ -16,6 +16,9 @@ public class ReceivingInfoService {
 		return recInfoDao.selectByUserId(userId);
 	}
 	
+	public ReceivingInfo findById(int id) {
+		return recInfoDao.selectById(id);
+	}
 	
 	
 }
