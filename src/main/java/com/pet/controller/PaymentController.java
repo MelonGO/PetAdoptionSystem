@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pet.model.Adoption;
 import com.pet.model.MyOrder;
+import com.pet.model.Recycle;
 import com.pet.model.ShoppingCart;
 import com.pet.model.User;
 import com.pet.service.AdoptionService;
 import com.pet.service.MyOrderService;
+import com.pet.service.RecycleService;
 
 import net.sf.json.JSONObject;
 
@@ -32,6 +34,9 @@ public class PaymentController {
 	
 	@Autowired
 	MyOrderService orderService;
+	
+	@Autowired
+	RecycleService recycleService;
 	
 	@RequestMapping(path = { "/payment" })
 	public String pay(Model model, @RequestParam("pets") String pets,
@@ -47,8 +52,8 @@ public class PaymentController {
 	@RequestMapping(path = { "/submitPay" })
 	public String payment(HttpSession session, HttpServletResponse response, 
 						@CookieValue(value = "cartCookie", required  = false) String cartCookieStr, 
-						@RequestParam("pets") String pets,
-						@RequestParam("props") String props,
+						@RequestParam(value = "pets", required  = false) String pets,
+						@RequestParam(value = "props", required  = false) String props,
 						@RequestParam("total") Double total,
 						ShoppingCart shoppingCart) throws Exception {
 		cartCookieStr = URLDecoder.decode(cartCookieStr, "utf-8");
@@ -74,7 +79,7 @@ public class PaymentController {
 						}
 					}
 
-					adoption.setState(3);
+					adoption.setState(2);
 					adoptionService.updateAdoption("state", adoption);
 				}
 			}
@@ -115,6 +120,28 @@ public class PaymentController {
 	    orderService.addOrder(newOrder);
 		
 		return "redirect:myOrder";
+	}
+	
+	@RequestMapping(path = { "/recyclePayment" })
+	public String recyclePayment(Model model, @RequestParam("recycleId") int recycleId) {
+		Recycle recycle = recycleService.findRecycleById(recycleId);
+		Double money = recycle.getMoney();
+		
+		model.addAttribute("total", money);
+		model.addAttribute("recycleId", recycleId);
+		
+		return "payment";
+	}
+	
+	@RequestMapping(path = { "/submitPayRecycle" })
+	public String submitPayRecycle(@RequestParam("recycleId") int recycleId,
+									@RequestParam("total") Double total) {
+		Recycle recycle = recycleService.findRecycleById(recycleId);
+		recycle.setState(2);
+		
+		recycleService.updateRecycle(recycle);
+		
+		return "redirect:myRecycle";
 	}
 	
 }

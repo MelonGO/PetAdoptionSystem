@@ -7,9 +7,9 @@ var total;
 
 $(document).ready(function() {
 	$("#selectAll").change(function() {
-		if($("#selectAll").attr("checked")) {
-			$('.petInfo').attr("checked","checked");
-			$('.propInfo').attr("checked","checked");
+		if($("#selectAll").prop("checked")) {
+			$('.petInfo').prop("checked","checked");
+			$('.propInfo').prop("checked","checked");
 		} else {
 			$('.petInfo').removeAttr("checked");
 			$('.propInfo').removeAttr("checked");
@@ -28,15 +28,15 @@ function checkAll(){
 	total = 0.0;
 	
 	$(".petInfo").each(function(){
-		if($(this).attr("checked")){
-			addPet($(this).attr("id"));
+		if($(this).prop("checked")){
+			addPet($(this).prop("id"));
 		} else {
 			$('#selectAll').removeAttr("checked");
 		}
 	})
 	$(".propInfo").each(function(){
-		if($(this).attr("checked")){
-			addProp($(this).attr("id"));
+		if($(this).prop("checked")){
+			addProp($(this).prop("id"));
 		} else {
 			$('#selectAll').removeAttr("checked");
 		}
@@ -87,7 +87,7 @@ function addProp(id){
 						#foreach($pet in $petList)
 						<tr>
 							<td><input type="checkbox" class="petInfo" id="$pet.id"></td>
-							<td>
+							<td style="text-align:left;">
 								宠物名字:$pet.name &nbsp&nbsp 宠物种类:$pet.type &nbsp&nbsp
 								宠物年龄:$pet.age &nbsp&nbsp 宠物性别:$pet.sex &nbsp&nbsp
 							</td>
@@ -101,7 +101,7 @@ function addProp(id){
 						#foreach($kv in $propMap.entrySet())
 						<tr>
 							<td><input type="checkbox" class="propInfo" id="$kv.key.id"></td>
-							<td>
+							<td style="text-align:left;">
 								$kv.key.name
 							</td>
 							<td>¥<em>$kv.key.price</em></td>
@@ -132,13 +132,13 @@ var props = "";
 
 function getGoodsInfo(){
 	$(".petInfo").each(function(){
-		if($(this).attr("checked")){
-			pets += $(this).attr("id") + ",";
+		if($(this).prop("checked")){
+			pets += $(this).prop("id") + ",";
 		}
 	})
 	$(".propInfo").each(function(){
-		if($(this).attr("checked")){
-			props += $(this).attr("id") + ",";
+		if($(this).prop("checked")){
+			props += $(this).prop("id") + ",";
 		}
 	})
 }
@@ -149,7 +149,7 @@ function Payment(){
 	var total = $("#totalPrice").html();
 	
 	var url = "payment?total=" + total + "&pets=" + pets + "&props=" + props;
-	location.replace(url);
+	window.location.href = url;
 	
 }
 

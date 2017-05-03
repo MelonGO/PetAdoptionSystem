@@ -4,11 +4,11 @@ import com.pet.model.Base;
 
 public class Adoption extends Base {
 
-	private int receiving_info_id;
+	private int receivingInfoId;
 	private int petId;
 	private int userId;
 	private int state;
-	private String transport_way;
+	private String transportWay;
 
 	public int getPetId() {
 		return petId;
@@ -31,18 +31,20 @@ public class Adoption extends Base {
 		this.state = state;
 	}
 	
-	public String getTransport_way() {
-		return transport_way;
+	public int getReceivingInfoId() {
+		return receivingInfoId;
 	}
-	public void setTransport_way(String transport_way) {
-		this.transport_way = transport_way;
+	public void setReceivingInfoId(int receivingInfoId) {
+		this.receivingInfoId = receivingInfoId;
 	}
 	
-	public int getReceiving_info_id() {
-		return receiving_info_id;
+	public String getTransportWay() {
+		return transportWay;
 	}
-	public void setReceiving_info_id(int receiving_info_id) {
-		this.receiving_info_id = receiving_info_id;
+	public void setTransportWay(String transportWay) {
+		this.transportWay = transportWay;
 	}
+	
+	
 
 }

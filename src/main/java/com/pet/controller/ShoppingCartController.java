@@ -45,19 +45,19 @@ public class ShoppingCartController {
 	PropService propService;
 	
 	@RequestMapping(path = { "/addToCart" })
-	public String addToCart(HttpServletResponse response, HttpSession session,
+	public String addToCart(HttpServletResponse response, HttpSession session, Model model, 
 							@CookieValue(value = "cartCookie", required  = false) String cartCookieStr, 
 							@RequestParam("adoptionId") int adoptionId,
 							@RequestParam("transport") String transport,
-							@RequestParam(value = "prop[]", required = false) int[] prop, 
+							@RequestParam(value = "prop[]", required = false) int[] props, 
 							ShoppingCart shoppingCart) throws Exception {
 		User user = (User) session.getAttribute("user");
 		shoppingCart.setUserId(user.getId());
 		
 		if (cartCookieStr == null) {
 			shoppingCart.getAdoptionList().add(adoptionId);
-			for (int i = 0; i < prop.length; i++) {
-				shoppingCart.getPropList().add(prop[i]);
+			for (int i = 0; i < props.length; i++) {
+				shoppingCart.getPropList().add(props[i]);
 			}
 			
 		} else {
@@ -65,8 +65,8 @@ public class ShoppingCartController {
 			JSONObject jsonCart = JSONObject.fromObject(cartCookieStr);
 			shoppingCart = (ShoppingCart) JSONObject.toBean(jsonCart, ShoppingCart.class);//Json转换成对象Cart
 			shoppingCart.getAdoptionList().add(adoptionId);
-			for (int i = 0; i < prop.length; i++) {
-				shoppingCart.getPropList().add(prop[i]);
+			for (int i = 0; i < props.length; i++) {
+				shoppingCart.getPropList().add(props[i]);
 			}
 		}
 
@@ -77,12 +77,47 @@ public class ShoppingCartController {
 	    response.addCookie(cookie);
 	    
 	    Adoption adoption = adoptionService.findAdoptionById(adoptionId);
-	    adoption.setTransport_way(transport);
+	    adoption.setTransportWay(transport);
 	    
 	    adoptionService.updateAdoption("transport", adoption);
 	    
+	   
+	    if (shoppingCart.getUserId() == user.getId()) {
+			List<Pet> petList = new ArrayList<>();
+			Map<Prop, Integer> propMap = new HashMap<Prop, Integer>();
+
+			List<Integer> adoptionList = shoppingCart.getAdoptionList();
+			for (int i = 0; i < adoptionList.size(); i++) {
+				int adopId = adoptionList.get(i);
+
+				Adoption adop = adoptionService.findAdoptionById(adopId);
+				Pet pet = petService.selectById(adop.getPetId());
+				petList.add(pet);
+			}
+			
+			List<Integer> propList = shoppingCart.getPropList();
+			for (int k = 0; k < propList.size(); k++) {
+				int propId = propList.get(k);
+				Prop prop = propService.getByPropId(propId);
+				
+				boolean exist = false;
+				for (Prop p : propMap.keySet()) {
+					if (p.getName().equals(prop.getName())) {
+						exist = true;
+						propMap.put(p, propMap.get(p) + 1);
+					}
+				}
+				if (exist == false) {
+					propMap.put(prop, 1);
+				}
+			}
+
+			model.addAttribute("petList", petList);
+			model.addAttribute("propMap", propMap);
+		}
 	    
-		return "redirect:shoppingCart";
+	    
+		return "shoppingCart";
 	}
 	
 	@RequestMapping(path = { "/shoppingCart" })

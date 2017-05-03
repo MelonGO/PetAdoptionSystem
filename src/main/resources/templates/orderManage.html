@@ -4,7 +4,7 @@
 <div class="container-fluid order-main">
 		<div class="row">
 			<div class="col-sm-12 col-md-12 col-lg-12">
-				<h1 class="font-big">我的订单</h1>
+				<h1 class="font-big">订单管理</h1>
 				<table class="table">
 					<thead>
 						<tr>
@@ -13,7 +13,7 @@
 							<th>总金额</th>
 							<th>实付款</th>
 							<th>交易状态</th>
-							<th>交易操作</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -21,27 +21,19 @@
 						<tr>
 							<td>$order.id</td>
 							<td style="text-align:left;">
-								$order.pets
-								#if($order.pets != "")
-								<br>
-								#end
-								附加道具:$order.props
+								$order.pets  $order.props
 							</td>
 							<td>¥<em>$order.total</em></td>
 							<td>¥<em>$order.total</em></td>
 							#if($order.state == 0)
 							<td>已付款，未发送</td>
+							<td><a href="javascript:void(0)" onclick="ConfirmDeliver($order.id)">确认发送</a></td>
 							#elseif($order.state == 1)
 							<td>已发送</td>
+							<td></td>
 							#elseif($order.state == 2)
 							<td>已收货</td>
-							#end
-							#if($order.state == 0)
 							<td></td>
-							#elseif($order.state == 1)
-							<td><a href="javascript:void(0)" onclick="confirmReceipt($order.id)">确认收货</a></td>
-							#elseif($order.state == 2)
-							<td><a href="javascript:void(0)" onclick="removeOrder($order.id)">删除</a></td>
 							#end
 						</tr>
 						#end
@@ -55,17 +47,9 @@
 
 <script type="text/javascript">
 var param = {};
-function removeOrder(id){
+function ConfirmDeliver(id){
 	param.orderId = id;
-	$.get('removeOrder', param, function (r) {
-		alert(r);
-		location.replace(location.href);
-	});
-}
-param = {};
-function confirmReceipt(id) {
-	param.orderId = id;
-	$.get('confirmReceipt', param, function (r) {
+	$.get('deliver', param, function (r) {
 		alert(r);
 		location.replace(location.href);
 	});

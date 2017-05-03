@@ -22,7 +22,7 @@
 						<th>申请时间</th>
 						<th>是否为助养</th>
 						<th>申请状态</th>
-						<th></th>
+						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,9 +60,12 @@
 					<td>已送回</td>
 					#end
 					<td>
+					#if($recycle.state == 0)
 					<button type="button" onclick='setRecycleId($recycle.id)'
-                    		class="btn btn-warning" data-toggle="modal" data-target="#audit"
-                    		#if($recycle.state != 0 ) style="display:none" #end>审核</button>
+                    		class="btn btn-warning" data-toggle="modal" data-target="#audit">审核</button>
+                    #elseif($recycle.state == 2)
+                    <a href="javascript:void(0)" onclick="ConfirmDeliver($recycle.id)">确认回收</a>
+                   	#end
 					</td>
 				</tr>
 				#end
@@ -110,6 +113,15 @@ function auditRecycle(result){
 		param.result = "no";
 	}
 	$.post('auditRecycle', param, function (r) {
+		alert(r);
+		location.replace(location.href);
+	});
+}
+
+function ConfirmDeliver(id){
+	var param = {};
+	param.recycleId = id;
+	$.get('deliverRecycle', param, function (r) {
 		alert(r);
 		location.replace(location.href);
 	});

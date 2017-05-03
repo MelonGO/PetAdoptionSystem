@@ -42,10 +42,10 @@ public class AdoptionService {
 		}
 
 		Adoption newAdopt = new Adoption();
-		newAdopt.setReceiving_info_id(recInfoDao.selectByUserId(userId).getId());
+		newAdopt.setReceivingInfoId(recInfoDao.selectByUserId(userId).getId());
 		newAdopt.setPetId(petId);
 		newAdopt.setUserId(userId);
-		newAdopt.setTransport_way("mail");
+		newAdopt.setTransportWay("mail");
 
 		adoptionDao.addAdoption(newAdopt);
 		msgMap.put("msg", "success");
