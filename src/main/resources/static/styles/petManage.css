@@ -28,6 +28,14 @@
 	margin-bottom: 3px;
 }
 
+#add_pet_name,#add_pet_type,#add_pet_age,#add_pet_profile,#add_pet_price,#add_pet_sex,#add_pet_picture{
+	width:485px;
+	padding:5px 20px 5px 20px;
+	height: 30px;
+	display:none;
+	margin-bottom: 3px;
+}
+
 #pet_main{
 	padding-top:50px;
 	padding-left:30px;
@@ -58,4 +66,19 @@
 	margin-top:5px;
 	padding-left:10px;
 	padding-right:10px;
+}
+
+#pic{
+	display:inline-block;
+	width: 400px;
+    margin-top: 6px;
+    margin-left: 4px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 5px #eee;
+    border: 1px solid #D4D4D4;
+    color: #333333;
+}
+
+#pp{
+	display:inline-block;
 }

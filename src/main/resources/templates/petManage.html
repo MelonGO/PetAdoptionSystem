@@ -5,11 +5,14 @@
 <div class="petManage-main">
 	<div id="pet_main">
 		<div class="myti">
-			<h3 class="font-big mh">
+			<h3 class="font-big">
             	我的宠物
         	</h3>
         	<button type="button" data-toggle="modal" data-target="#addPetModal" class="btn btn btn-primary btnAddPet" >添加</button>       	
        	</div>
+       	<div id="alertSuccess" class="alert alert-success mya"></div>
+		<div id="alertInfo"class="alert alert-info mya"></div>
+		<div id="alertDanger" class="alert alert-danger mya"></div>
        	<div class="rt">
 			<table id="table1" class="table waiter-list ">
 				<thead>
@@ -35,7 +38,7 @@
 					<td>$pet.profile</td>
 					<td>
 						<button type="button" data-toggle="modal" data-target="#updatePetModal" class="btn btn btn-primary btnUpdatePet" >修改</button>
-						<button type="button" data-toggle="modal" data-target="#updatePetModal" class="btn btn btn-danger btnDeletePet" onclick="setPetID($pet.id)">删除</button>
+						<button type="button" data-toggle="modal" data-target="#petDelModal" class="btn btn btn-danger btnDeletePet" onclick="setPetID($pet.id)">删除</button>
 					</td>
 					<script type="text/javascript">
 						var petID;
@@ -114,6 +117,96 @@
 	        </div><!-- /.modal-content -->
 	    </div><!-- /.modal -->
 	</div>
+	
+	<!-- /.增加宠物 -->
+	<div class="modal fade" id="addPetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	        	<form id="add-pet-form" action="addPet" method="post" enctype="multipart/form-data">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">增加宠物</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<div id="a">
+	            						
+	            		<div id="add_pet_name" class="alert alert-danger">请输入宠物的名称</div>
+	            		<div class="row">
+	            			<p class=".col-md-4">宠物名称：</p>
+							<input class=".col-md-8" id="addPetName" name="addPetName" type="text" placeholder="请输入宠物的名称">
+						</div>
+						
+						<div id="add_pet_type" class="alert alert-danger">请输入宠物的种类</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物种类：</p>
+		                	<input class=".col-md-8" id="addPetType" name="addPetType" type="text" placeholder="请输入宠物的种类">
+						</div>
+			            
+			            <div id="add_pet_age" class="alert alert-danger">请输入宠物的年龄</div>
+						<div class="row">
+							<p class=".col-md-4">宠物年龄：</p>
+			            	<input class=".col-md-8" id="addPetAge" name="addPetAge" type="text" placeholder="请输入宠物的年龄">
+						</div>
+						
+						<div id="add_pet_sex" class="alert alert-danger">请选择宠物的性别</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物性别：</p>
+		                	<input class=".col-md-8" id="addPetSex" name="addPetSex" type="text" list ="selectSex" placeholder="请选择宠物的性别">
+		                	<datalist id ="selectSex" >
+					            <option>male</option >
+					            <option>female</option >
+					        </datalist>
+						</div>
+												
+						<div id="add_pet_price" class="alert alert-danger">请输入宠物价格（最多保留俩位小数）</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物价格：</p>
+		                	<input class=".col-md-8" id="addPetPrice" name="addPetPrice" type="text" placeholder="请输入宠物的价格">
+						</div>
+						
+						<div id="add_pet_profile" class="alert alert-danger">请输入宠物的属性</div>
+						<div class="row">
+				        	<p class=".col-md-4">宠物属性：</p>
+		                	<input class=".col-md-8" id="addPetProfile" name="addPetProfile" type="text" placeholder="请输入宠物的属性">
+						</div>
+						
+						<div id="add_pet_picture" class="alert alert-danger">请上传宠物的照片</div>
+						<div class="row">
+				        	<p id="pp" class=".col-md-4">宠物图片：</p>
+				        	<div id="pic" class=".col-md-8" >
+				        		<input id="picture" name="file" type="file" multiple class="file-loading">
+				        	</div>
+				        	
+						</div>
+	            	</div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="submit" class="btn btn-primary " id="addConfirm">确认</button>
+	            </div>
+	            </form>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+	<!-- 删除确认 -->
+    <div class="modal fade" id="petDelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">删除</h4>
+	            </div>
+	            <div class="modal-body"  >
+					要删除这一条宠物信息吗
+				</div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary " id="petDelBtn">确认</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+	
 </div>
 
 #parse("common/footer.html")
