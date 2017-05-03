@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Comments</title>
+</head>
+<body>
+<div id="comment_banner">
+<h4>
+评论()条
+</h4>
+</div>
+<div id="comment_center">
+#foreach($comment in $rootCommentList)
+<dl>
+<dt>
+<img src="#">
+</dt>
+<dd>
+<p>
+<span>username</span>
+<span>time</span>
+</p>
+<p>
+main-content
+</p>
+<p>
+<a href="javascript:void(0)" onclick="reply(this);">回复</a>
+<a href="javascript:void(0)" onclick="like(this);">点赞</a>
+</p>
+<div id="commentHelper" style="display: none;">
+<textarea placeholder="comment please.."></textarea>
+<input type="button" value="reply"/>
+</div>
+#foreach($comment in $leafCommentList)
+<div>
+<dl>
+<dt>
+<img src="#">
+</dt>
+<dd>
+<p>
+<span>leafname</span>
+<span>time</span>
+</p>
+<p>leafcontent</p>
+</dd>
+</dl>
+</div>
+#end
+</dd>
+</dl>
+#end
+</div>
+</body>
+</html>
