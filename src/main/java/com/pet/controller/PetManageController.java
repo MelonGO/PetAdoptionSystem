@@ -2,7 +2,10 @@ package com.pet.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,14 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.pet.service.UserService;
 
 
 import com.pet.model.Pet;
 import com.pet.model.User;
+import com.pet.model.Adoption;
 import com.pet.service.PetService;
+import com.pet.service.AdoptionService;
 
 @Controller
 public class PetManageController {
@@ -31,9 +35,12 @@ public class PetManageController {
 	
 	@Autowired
 	PetService petService;
+	
+	@Autowired
+	AdoptionService adoptionService;
 
 	@RequestMapping(path = { "/petManage" })
-	public String petManage(Model model, HttpSession session) {
+	public String petManage(Model model, @RequestParam(value = "page", defaultValue = "1") int page,HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		if(user==null){
 			return "login";
@@ -41,10 +48,57 @@ public class PetManageController {
 		if(!user.getRole().equals("admin")){
 			return "login";
 		}
+		
+		
+		model.addAttribute("currentHtml", "adoption");
+		int num = petService.allPetsNumber();
+		List<Integer> pages = new ArrayList<Integer>();
+
+		int pageAmount = num / 10;
+		if (num % 10 != 0) {
+			pageAmount++;
+		}
+
+		int tmp = page;
+		if (tmp % 10 == 0) {
+			tmp = tmp - 9;
+		} else {
+			tmp = tmp - tmp % 10 + 1;
+		}
+
+		for (int i = 0; i < 10; i++) {
+			if (tmp <= pageAmount) {
+				pages.add(tmp);
+				tmp++;
+			}
+		}
+
+		model.addAttribute("pages", pages);
+
+		model.addAttribute("current", page);
+		model.addAttribute("previous", page - 1);
+		model.addAttribute("next", page + 1);
+		model.addAttribute("pageAmount", pageAmount);
+		
+		
 		List<Pet> petList=petService.getAll();
-		model.addAttribute("petList", petList);
+		Map<Pet, String> petMap = new LinkedHashMap<>();
+		for(int i=page*10-10;i<page*10&&i<petList.size();i++){
+			int pid=petList.get(i).getId();
+			Adoption adoption=adoptionService.findByPetId(pid);
+			if (adoption != null) {
+				
+				petMap.put(petList.get(i), String.valueOf(adoption.getState()));
+			} else {
+				petMap.put(petList.get(i), "0");
+			}
+			
+		}
+		model.addAttribute("petMap", petMap);
 		return "petManage";
 	}
+	
+	
 	@RequestMapping(path = { "/petPicture" })
 	public  @ResponseBody String petPicture(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("user");

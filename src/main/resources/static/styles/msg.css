@@ -14,17 +14,19 @@
 
 }
 
+
 .msgBody{
 	padding-top:45px;
-	height:100%;
-	width: 70%;
-    min-height: 700px;    
+	min-height:100%;
+	width: 70%;  
+	padding-bottom:90px;
     margin: 0 auto;
     background-color: #fff;
     border: 1px solid #d3d3d3;
     border-width: 0 1px;
-    word-wrap: break-word;
-    word-break: break-word;
+    display:inline-block;
+    position:relative;
+    left:15%;
 	
 }
 
@@ -43,12 +45,11 @@
 
 .messageList{
 	margin-bottom:0px;
-	position: relative;
     float: left;
     width: 184px;
     border: 0px solid #d3d3d3;
     border-width: 1px;
-    height:89%;
+    height:100% auto;
     background-color: #fefefe;
 }
 
@@ -134,15 +135,21 @@
     margin-left: -185px;
     border: 0px solid #d3d3d3;
     border-width: 1px;
+    border-bottom: 0;
 }
 
 .msgContent{
+	background-color: #fff;
 	height:89%;
-	margin-left:185px;
+	width:100% auto;
+	margin-left:183px;
 	padding-left:40px;
 	padding-right:40px;
 	padding-top:30px;
 	border: 0px solid #d3d3d3;
+	border-bottom:0;
+	border-width: 1px;
+	padding-bottom: 60px;
 
 }
 
