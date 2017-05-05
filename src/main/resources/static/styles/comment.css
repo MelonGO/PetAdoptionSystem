@@ -11,3 +11,61 @@
 	margin-left: 15px;
 	padding : 0px 5px 0px 5px ;
 }
+
+.sep {
+	margin-top: 10px;
+	height: 1px;
+	border: none;
+	border-top: 1px dashed black;
+}
+
+.list_li {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.comment_text {
+	font-size: 16px;
+	min-height:50px;
+}
+
+.leaf_comment_text {
+	font-size: 14px;
+	min-height:50px;
+}
+
+.info_text{
+	font-size: 14px; 
+	line-height: 21px;
+}
+
+.user_name span{
+	font-family: Arial,Microsoft YaHei; 
+	font-size: 14px; 
+	font-weight: 500; 
+	line-height: 21px;
+}
+.comment_time {
+	margin-left: 50px; 
+	font-family: Arial,Microsoft YaHei; 
+	font-size: 12px; 
+	font-weight: 400; 
+	line-height: 18px; 
+	color: rgb(140,140,140)
+}
+.leaf_comment {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+.leaf_comment_list_li {
+	border-bottom-color: rgb(217, 217, 217);
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	margin-left: 20px;
+	padding-top: 2px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	background-color: rgb(234, 234, 236);
+}
