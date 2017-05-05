@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Comments</title>
+<link rel="stylesheet" type="text/css" href="styles/comment.css"/>
 </head>
 <body>
 <div id="comment_banner">
@@ -10,47 +11,40 @@
 评论()条
 </h4>
 </div>
-<div id="comment_center">
-#foreach($comment in $rootCommentList)
-<dl>
-<dt>  
-<img src="#">
-</dt>  
-<dd>
-<p>
-<span>username</span>
-<span>time</span>
-</p>
-<p>
-main-content
-</p>
-<p>
-<a href="javascript:void(0)" onclick="reply(this);">回复</a>
-<a href="javascript:void(0)" onclick="like(this);">点赞</a>
-</p>
-<div id="commentHelper" style="display: none;">
-<textarea placeholder="comment please.."></textarea>
-<input type="button" value="reply"/>
+<div id="comment_center" style="width: 800px;">
+<div class="list_li" node-type="root_comment" comment_id="1" style="padding-left: 20px; padding-right: 20px;">
+<div class="avatar" style="float: left;">
+<a class="avatar">
+<img style="display: block;" alt="avatar" src="materials\avatar001.jpg" />
+</a>
 </div>
-#foreach($comment in $leafCommentList)
+<div class="list_con" style="margin-left: 90px; padding: 0px;">
+<div class="comment_info">
+<p class="info_text" style="font-size: 14px; line-height: 21px;">
+<span class="user_name" style="font-family: Arial,Microsoft YaHei; font-size: 14px; font-weight: 500; line-height: 21px;">Paul</span>
+<span class="comment_time" style="margin-left: 50px; font-family: Arial,Microsoft YaHei; font-size: 12px; font-weight: 400; line-height: 18px; color: rgb(140,140,140)"> 2017/5/3 &nbsp 19:16 </span>
+</p>
+</div>
+<div class="comment_text" style="min-height:50px;">
+小花妹妹的生日愿望是爸爸不要再帅了<br>
+overflow <br>
+overflow <br>
+overflow <br>
+overflow <br>
+overflow <br>
+overflow <br>
+overflow
+</div>
+<div class="func_area" style="margin-top: 10px; padding-right: 10px;">
 <div>
-<dl>
-<dt>
-<img src="#">
-</dt>
-<dd>
-<p>
-<span>leafname</span>
-<span>time</span>
-</p>
-<p>leafcontent</p>
-</dd>
-</dl>
+<div class="actions" style="float: right;">
+<span class="item_span"><a class="item_like">赞</a></span>
+<span class="item_span"><a class="item_reply">回复</a></span>
 </div>
-#end
-</dd>
-</dl>
-#end
+</div>
+</div>
+</div>
+</div>
 </div>
 </body>
 </html>
