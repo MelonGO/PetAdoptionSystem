@@ -8,7 +8,7 @@ public class Comment extends Base{
 	private int replyCommentID;
 	private int support;
 	
-	public int getCommentID() {
+	public int getPetID() {
 		return petID;
 	}
 	public String getUsername() {
@@ -23,8 +23,8 @@ public class Comment extends Base{
 	public int getSupport() {
 		return support;
 	}
-	public void setCommentID(int commentID) {
-		this.petID = commentID;
+	public void setPetID(int petID) {
+		this.petID = petID;
 	}
 	public void setUsername(String username) {
 		this.username = username;
@@ -35,7 +35,7 @@ public class Comment extends Base{
 	public void setFatherCommentID(int fatherCommentID) {
 		this.fatherCommentID = fatherCommentID;
 	}
-	public void setLike(int support) {
+	public void setSupport(int support) {
 		this.support = support;
 	}
 	public int getReplyCommentID() {

@@ -4,12 +4,46 @@
 <meta charset="UTF-8">
 <title>Comments</title>
 <link rel="stylesheet" type="text/css" href="styles/comment.css"/>
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
 </head>
 <body>
+<script>
+$(document).ready(function(){ 
+	var args = new Object();
+	args = GetUrlParms();
+	var value1 = args["msg"];
+	if(value1 == "notLogin"){
+		alert("请先登录!");
+	}
+	if(value1 == "success"){
+		alert("评论成功!");
+	}
+});
+
+
+function comment_submit() {
+	var text = $('#content').val();
+	alert(text);
+	$.get('pushcomment', {content : text});
+}
+
+</script>
 <div id="comment_banner">
 <h4>
 评论($commentList.size())条
 </h4>
+</div>
+<div class="comment_action_wrap">
+<div class="comment_editor">
+<textarea class="user_comment" name="content" id="content" placeholder="请输入评论内容..."></textarea>
+<p class="comment_limit" style="display: none">100</p>
+</div>
+<div class="comment_action_bar">
+<div class="comment_action_btn">
+<a class="comment_submit" title="click to submit" href="javascript:void(0);" onclick="comment_submit()">发布评论</a>
+</div>
+</div>
+<hr class="sep"/>
 </div>
 <div id="comment_center" style="width: 800px;">
 #set($rootid=-1)

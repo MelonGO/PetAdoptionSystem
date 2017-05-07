@@ -69,3 +69,44 @@
 	padding-left: 10px;
 	background-color: rgb(234, 234, 236);
 }
+.comment_action_wrap{
+	width: 800px;
+}
+.comment_editor {
+	padding-left: 110px;
+}
+.user_comment {
+	display: block;
+	height: 67px;
+	width: 628px;
+	line-height: 22px;
+	color: rgb(170,170,170);
+	font-family: "Microsoft YaHei";
+	maxlength: 200;	
+}
+.comment_action_bar{
+	display: block;
+	overflow: hidden;
+	zoom: 1;
+	height: 48px;
+}
+.comment_action_btn{
+	display: inline;
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 56px;
+}
+.comment_submit {
+	background: #35b559;
+	display: block;
+	width: 80px;
+	height: 28px;
+	line-height: 28px;
+	color: #fff;
+	text-align: center;
+	font-size: 12px;
+	text-decoration: none;
+	border-radius: 3px;
+	margin-left: 15px;
+}
