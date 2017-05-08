@@ -52,28 +52,44 @@ public class ShoppingCartController {
 							@RequestParam(value = "prop[]", required = false) int[] props, 
 							ShoppingCart shoppingCart) throws Exception {
 		User user = (User) session.getAttribute("user");
-		shoppingCart.setUserId(user.getId());
 		
 		if (cartCookieStr == null) {
+			shoppingCart.setUserId(user.getId());
 			shoppingCart.getAdoptionList().add(adoptionId);
-			for (int i = 0; i < props.length; i++) {
-				shoppingCart.getPropList().add(props[i]);
+			if(props != null) {
+				for (int i = 0; i < props.length; i++) {
+					shoppingCart.getPropList().add(props[i]);
+				}
 			}
 			
 		} else {
 			cartCookieStr = URLDecoder.decode(cartCookieStr, "utf-8");
 			JSONObject jsonCart = JSONObject.fromObject(cartCookieStr);
 			shoppingCart = (ShoppingCart) JSONObject.toBean(jsonCart, ShoppingCart.class);//Json转换成对象Cart
-			shoppingCart.getAdoptionList().add(adoptionId);
-			for (int i = 0; i < props.length; i++) {
-				shoppingCart.getPropList().add(props[i]);
+			if(shoppingCart.getUserId() == user.getId()) {
+				shoppingCart.getAdoptionList().add(adoptionId);
+				if(props != null) {
+					for (int i = 0; i < props.length; i++) {
+						shoppingCart.getPropList().add(props[i]);
+					}
+				}
+			} else {
+				shoppingCart = new ShoppingCart();
+				shoppingCart.setUserId(user.getId());
+				shoppingCart.getAdoptionList().add(adoptionId);
+				if(props != null) {
+					for (int i = 0; i < props.length; i++) {
+						shoppingCart.getPropList().add(props[i]);
+					}
+				}
 			}
+			
 		}
 
 		String cartCookie = JSONObject.fromObject(shoppingCart).toString();//Cart转换成对象Json
 		cartCookie = URLEncoder.encode(cartCookie, "utf-8");
 	    Cookie cookie = new Cookie("cartCookie",cartCookie);  
-	    cookie.setMaxAge(60*60*24*7);//保留7天
+	    cookie.setMaxAge(60*60*24*3);//保留3天
 	    response.addCookie(cookie);
 	    
 	    Adoption adoption = adoptionService.findAdoptionById(adoptionId);
@@ -117,7 +133,7 @@ public class ShoppingCartController {
 		}
 	    
 	    
-		return "shoppingCart";
+		return "redirect:shoppingCart";
 	}
 	
 	@RequestMapping(path = { "/shoppingCart" })
@@ -228,7 +244,7 @@ public class ShoppingCartController {
 		String cartCookie = JSONObject.fromObject(shoppingCart).toString();//Cart转换成对象Json
 		cartCookie = URLEncoder.encode(cartCookie, "utf-8");
 	    Cookie cookie = new Cookie("cartCookie",cartCookie);  
-	    cookie.setMaxAge(60*60*24*7);//保留7天
+	    cookie.setMaxAge(60*60*24*3);//保留3天
 	    response.addCookie(cookie);
 	    
 		return "删除成功!";
