@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: demo
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: MSI2015
+Built-By: melongo
 Implementation-Vendor-Id: com.major
-Build-Jdk: 1.8.0_131
+Build-Jdk: 1.8.0_111
 Implementation-URL: http://projects.spring.io/spring-boot/PetAdoptionS
  ystem/
 Created-By: Maven Integration for Eclipse
