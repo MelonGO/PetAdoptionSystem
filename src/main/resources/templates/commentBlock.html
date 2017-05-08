@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Comments</title>
+<link rel="stylesheet" type="text/css" href="styles/comment.css"/>
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+</head>
+<body>
+<script>
+$(document).ready(function(){ 
+	var args = new Object();
+	args = GetUrlParms();
+	var value1 = args["msg"];
+	if(value1 == "notLogin"){
+		alert("请先登录!");
+	}
+	if(value1 == "success"){
+		alert("评论成功!");
+	}
+});
+
+
+function comment_submit() {
+	var text = $('#content').val();
+	alert(text);
+	$.get('pushcomment', {content : text});
+}
+
+</script>
+<div id="comment_banner">
+<h4>
+评论($commentList.size())条
+</h4>
+</div>
+<div class="comment_action_wrap">
+<div class="comment_editor">
+<textarea class="user_comment" name="content" id="content" placeholder="请输入评论内容..."></textarea>
+<p class="comment_limit" style="display: none">100</p>
+</div>
+<div class="comment_action_bar">
+<div class="comment_action_btn">
+<a class="comment_submit" title="click to submit" href="javascript:void(0);" onclick="comment_submit()">发布评论</a>
+</div>
+</div>
+<hr class="sep"/>
+</div>
+<div id="comment_center" style="width: 800px;">
+#set($rootid=-1)
+#foreach($comment in $commentList)
+#if($comment.fatherCommentID == 0)
+#set($rootid=$comment.id)
+<div class="list_li" node-type="root_comment" comment_id="1">
+<div class="avatar" style="float: left;">
+<a class="avatar">
+<img style="display: block;" alt="avatar" src="materials\avatar001.jpg" />
+</a>
+</div>
+<div class="list_con" style="margin-left: 90px; padding: 0px;">
+<div class="comment_info">
+<p class="info_text">
+<span class="user_name">$comment.username</span>
+<span class="comment_time">$comment.createTime</span>
+</p>
+</div>
+<div class="comment_text">
+$comment.content
+</div>
+<div class="func_area" style=" margin-top: 10px; padding-right: 10px;">
+<div class="actions" style="float: right;">
+<span class="item_span"><a class="item_like">赞($comment.support)</a></span>
+<span class="item_span"><a class="item_reply">回复</a></span>
+</div>
+<div style="clear: both;"></div>
+</div>
+#set($hasLeafCom=-1)
+<div class="leaf_comment">
+#foreach($leafcom in $commentList)
+#if($leafcom.fatherCommentID == $rootid)
+#set($hasLeafCom=1)
+<div class="leaf_comment_list_li">
+<div class="comment_info">
+<p class="info_text">
+<span class="user_name">$leafcom.username</span>
+<span class="comment_time">$leafcom.createTime</span>
+</p>
+</div>
+<div class="leaf_comment_text">
+$leafcom.content
+</div>
+<div class="func_area" style=" margin-top: 10px; padding-right: 10px; padding-bottom: 10px;">
+<div class="actions" style="float: right;">
+<span class="item_span"><a class="item_like">赞($leafcom.support)</a></span>
+<span class="item_span"><a class="item_reply">回复</a></span>
+</div>
+<div style="clear: both;"></div>
+</div>
+</div>
+#end
+#end
+</div>
+</div>
+#if($hasLeafCom==-1)
+<hr class="sep"/>
+#end
+</div>
+#end
+#end
+</div>
+</body>
+</html>
