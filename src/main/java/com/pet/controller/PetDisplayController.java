@@ -1,5 +1,6 @@
 package com.pet.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,11 +32,41 @@ public class PetDisplayController {
 	PetService petService;
 	
 	@RequestMapping(path = {"/item"})
-	public String loadCom(Model model, /*@RequestParam(value = "petId") int petId,*/ HttpSession session){
+	public String loadCom(Model model, /*@RequestParam(value = "petId") int petId,*/ 
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			HttpSession session){
+		int rootCommentCount = commentService.getRootCommentsCountByPetId(1);
+		System.out.println(rootCommentCount);
+		List<Integer> pages = new ArrayList<Integer>();
+
+		int pageAmount = rootCommentCount / 5;
+		if (rootCommentCount % 5 != 0) {
+			pageAmount++;
+		}
+
+		int tmp = page;
+		if (tmp % 5 == 0) {
+			tmp = tmp - 4;
+		} else {
+			tmp = tmp - tmp % 5 + 1;
+		}
+
+		for (int i = 0; i < 5; i++) {
+			if (tmp <= pageAmount) {
+				pages.add(tmp);
+				tmp++;
+			}
+		}
+
+		model.addAttribute("pages", pages);
+		model.addAttribute("current", page);
+		model.addAttribute("pageAmount", pageAmount);
 		
 		model.addAttribute("currentHtml", "commentBlock");
 		Pet pet = petService.selectById(1);
-		List<Comment> commentList = commentService.selectById(1);
+		List<Integer> rootCommentIdList = commentService.selectRootIdByPage(1, page);
+		
+		List<Comment> commentList = commentService.selectByPage(1,page);
 		model.addAttribute("pet", pet);
 		model.addAttribute("commentList", commentList);
 		

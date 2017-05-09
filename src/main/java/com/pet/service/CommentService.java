@@ -38,4 +38,16 @@ public class CommentService {
 		msgMap.put("msg", "success");
 		return msgMap;
 	}
+	
+	public int getRootCommentsCountByPetId(int petID){
+		return commentDao.getRootCommentsCountByPetId(petID);
+	}
+	
+	public List<Comment> selectByPage(int petID, int page){
+    	return commentDao.selectByPage(petID, page);
+    }
+	
+	public List<Integer> selectRootIdByPage(int petID, int page){
+		return commentDao.selectRootIdByPage(petID, page);
+	}
 }

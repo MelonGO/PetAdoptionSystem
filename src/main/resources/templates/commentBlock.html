@@ -68,7 +68,7 @@ function like(){
 </script>
 <div class="pet_display_wrap">
 <div class="center_helper">
-<div><h3>嗨! 我是 $pet.name : )</h1></div>
+<div><h3>嗨! 我是 $pet.name : )</h3></div>
 <div class="pet_display_pic">
 <img class="pet_pic" style="display: block;" alt="pet" src="images\pet_pic_1_300.jpg" />
 </div>
@@ -162,6 +162,13 @@ $leafcom.content
 </div>
 #end
 #end
+<div class="page">
+<ul>
+#foreach($page in $pages)
+<li>$!{page} $pageAmount</li>
+#end
+</ul>
+</div>
 </div>
 </body>
 </html>
