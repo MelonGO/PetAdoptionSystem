@@ -6,7 +6,7 @@ CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `petID` int(11) NOT NULL,
   `username` varchar(64) NOT NULL,
-  `content` varchar(64) NOT NULL,
+  `content` varchar(1024) NOT NULL,
   `fatherCommentID` int(11) NOT NULL,
   `replyCommentID` int(11) NOT NULL,
   `support` int(11) NOT NULL,
