@@ -35,7 +35,7 @@ public class PetDisplayController {
 	public String loadCom(Model model, /*@RequestParam(value = "petId") int petId,*/ 
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			HttpSession session){
-		int rootCommentCount = commentService.getRootCommentsCountByPetId(1);
+		int rootCommentCount = commentService.getRootCommentsCountByPetId(1);//petId
 		System.out.println(rootCommentCount);
 		List<Integer> pages = new ArrayList<Integer>();
 
@@ -59,16 +59,29 @@ public class PetDisplayController {
 		}
 
 		model.addAttribute("pages", pages);
+		model.addAttribute("previous", page-1);
 		model.addAttribute("current", page);
+		model.addAttribute("next", page+1);
 		model.addAttribute("pageAmount", pageAmount);
 		
+		int commentCount = commentService.getCommentsCountByPetId(1);//petId
+		model.addAttribute("commentCount",commentCount);
 		model.addAttribute("currentHtml", "commentBlock");
-		Pet pet = petService.selectById(1);
-		List<Integer> rootCommentIdList = commentService.selectRootIdByPage(1, page);
-		
-		List<Comment> commentList = commentService.selectByPage(1,page);
+		Pet pet = petService.selectById(1);//petId
+		List<Comment> rootCommentList = commentService.selectRootCommentByPage(1, (page - 1) * 5);//petId
+		String fatherId = "";
+		for(int i=0;i<rootCommentList.size();i++){
+			if(i==rootCommentList.size()-1){
+				fatherId += rootCommentList.get(i).getId();
+			}
+			else{
+				fatherId += rootCommentList.get(i).getId()+",";
+			}
+		}
+		List<Comment> leafCommentList = commentService.selectLeafCommentByFatherCommentId(fatherId);
 		model.addAttribute("pet", pet);
-		model.addAttribute("commentList", commentList);
+		model.addAttribute("rootCommentList", rootCommentList);
+		model.addAttribute("leafCommentList", leafCommentList);
 		
 		return "commentBlock";
 	}

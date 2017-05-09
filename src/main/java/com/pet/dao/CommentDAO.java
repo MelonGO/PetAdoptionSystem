@@ -17,6 +17,9 @@ public interface CommentDAO {
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, " where petID=#{petId}"})
 	List<Comment> selectById(int petId);
 	
+	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME, " where petID=#{petID} "})
+    int getCommentsCountByPetId(int petID);
+	
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME})
     List<Comment> getAll();
 	
@@ -26,12 +29,16 @@ public interface CommentDAO {
 	statementType = StatementType.PREPARED)
     int addComment(Comment com);
 	
-	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME, " where petID=#{petId} and fatherCommentID=0"})
+	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME, " where petID=#{petID} and fatherCommentID=0"})
     int getRootCommentsCountByPetId(int petID);
 	
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where petID=#{petID}", "limit #{page}, 5"})
     List<Comment> selectByPage(@Param("petID") int petID, @Param("page") int page);
 	
-	@Select({"select id from ", CommentDaoConstants.TABLE_NAME, "where petID=#{petID}", "limit #{page}, 5"})
-    List<Integer> selectRootIdByPage(@Param("petID") int petID, @Param("page") int page);
+	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where petID=#{petID} and fatherCommentID=0", "limit #{page}, 5"})
+    List<Comment> selectRootCommentByPage(@Param("petID") int petID, @Param("page") int page);
+	
+	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where fatherCommentID in (" + "#{fatherId}" + ")"})
+    List<Comment> selectLeafCommentByFatherCommentId(@Param("fatherId") String fatherId);
+	
 }
