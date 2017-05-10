@@ -32,10 +32,10 @@ public class PetDisplayController {
 	PetService petService;
 	
 	@RequestMapping(path = {"/item"})
-	public String loadCom(Model model, /*@RequestParam(value = "petId") int petId,*/ 
+	public String loadCom(Model model, @RequestParam(value = "petId") int petId,
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			HttpSession session){
-		int rootCommentCount = commentService.getRootCommentsCountByPetId(1);//petId
+		int rootCommentCount = commentService.getRootCommentsCountByPetId(petId);//petId
 		System.out.println(rootCommentCount);
 		List<Integer> pages = new ArrayList<Integer>();
 
@@ -64,11 +64,11 @@ public class PetDisplayController {
 		model.addAttribute("next", page+1);
 		model.addAttribute("pageAmount", pageAmount);
 		
-		int commentCount = commentService.getCommentsCountByPetId(1);//petId
+		int commentCount = commentService.getCommentsCountByPetId(petId);//petId
 		model.addAttribute("commentCount",commentCount);
 		model.addAttribute("currentHtml", "commentBlock");
-		Pet pet = petService.selectById(1);//petId
-		List<Comment> rootCommentList = commentService.selectRootCommentByPage(1, (page - 1) * 5);//petId
+		Pet pet = petService.selectById(petId);//petId
+		List<Comment> rootCommentList = commentService.selectRootCommentByPage(petId, (page - 1) * 5);//petId
 		String fatherId = "";
 		for(int i=0;i<rootCommentList.size();i++){
 			if(i==rootCommentList.size()-1){
@@ -87,8 +87,8 @@ public class PetDisplayController {
 	}
 	
 	@RequestMapping(path = {"/pushcomment"})
-	public String pushComment(Model model, /*@RequestParam(value = "petId") int petId,*/HttpServletRequest request, HttpSession session){
-		/*if (session.getAttribute("user") == null) {
+	public String pushComment(Model model, @RequestParam(value = "petId") int petId,HttpServletRequest request, HttpSession session){
+		if (session.getAttribute("user") == null) {
 			return "redirect:petList?msg=notLogin";
 		} else {
 			User user = (User) session.getAttribute("user");
@@ -102,7 +102,8 @@ public class PetDisplayController {
 			}
 			
 			return "redirect:item?msg=success";
-		}*/
+		}
+		/*
 		String content = request.getParameter("content");
 		int fatherid = Integer.parseInt(request.getParameter("fatherid"));
 		Map<String, Object> map = commentService.addComment(1, "Cruze", content, fatherid, -1, 0);
@@ -112,5 +113,6 @@ public class PetDisplayController {
 			return "error";
 		}
 		return "redirect:item?msg=success";
+		*/
 	}
 }
