@@ -4,12 +4,18 @@
 <meta charset="UTF-8">
 <title>Comments</title>
 <link rel="stylesheet" type="text/css" href="styles/comment.css"/>
+<link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="scripts/melon.js"></script>
 </head>
 <body>
 <script>
-$(document).ready(function(){ 
+$(document).ready(function(){
 	var args = new Object();
+	navi();
+	setAlign();
 	args = GetUrlParms();
 	var value1 = args["msg"];
 	if(value1 == "notLogin"){
@@ -18,19 +24,70 @@ $(document).ready(function(){
 	if(value1 == "success"){
 		alert("评论成功!");
 	}
+	
 });
 
+var textTitle = "";
+var comIdRegister = 0;
 
 function comment_submit() {
 	var text = $('#content').val();
-	alert(text);
-	$.get('pushcomment', {content : text});
+	if(text.split(":").length>1){
+		if(text.split(":")[0] == textTitle){
+			text = text.substring(1+textTitle.length);
+		}
+	}
+	$.get('pushcomment', {content : text, fatherid : comIdRegister}, function(){
+		alert("评论成功!");
+		window.location.reload();
+	});
 }
 
+function navi(){
+	$(".item_reply").bind("click",function(){
+		var fix = this.parentNode.parentNode.parentNode;
+		var username = $(fix).prev().prev().children().eq(0).children().eq(0).text();
+		comIdRegister = $(fix).parent().eq(0).parent().eq(0).attr("comment_id");
+		textTitle = "回复"+username;
+		$("#content").val(textTitle+":");
+	});
+}
+
+
+function setAlign(){
+	$('.comment_center').css({
+		"left" : ($(window).width()-$('.comment_center').outerWidth())/2+"px"
+	});
+}
+
+function like(){
+	
+	
+}
+
+
 </script>
-<div id="comment_banner">
+<div class="pet_display_wrap">
+<div class="center_helper">
+<div><h3>嗨! 我是 $pet.name : )</h3></div>
+<div class="pet_display_pic">
+<img class="pet_pic" style="display: block;" alt="pet" src="images\pet_pic_1_300.jpg" />
+</div>
+<div class="pet_info">
+<ul class="info_list">
+<li class="info_list_li"><span>名字:</span> $pet.name</li>
+<li class="info_list_li"><span>年龄:</span> $pet.age</li>
+<li class="info_list_li"><span>品种:</span> $pet.type</li>
+<li class="info_list_li"><span>性别:</span> $pet.sex</li>
+<li class="info_list_li"><span>领养费用:</span> $pet.price</li>
+<li class="info_list_li"><span>资料:</span> $pet.profile</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="comment_banner">
 <h4>
-评论($commentList.size())条
+评论($commentCount)条
 </h4>
 </div>
 <div class="comment_action_wrap">
@@ -45,15 +102,14 @@ function comment_submit() {
 </div>
 <hr class="sep"/>
 </div>
-<div id="comment_center" style="width: 800px;">
+<div class="comment_center">
 #set($rootid=-1)
-#foreach($comment in $commentList)
-#if($comment.fatherCommentID == 0)
+#foreach($comment in $rootCommentList)
 #set($rootid=$comment.id)
-<div class="list_li" node-type="root_comment" comment_id="1">
+<div class="list_li" node-type="root_comment" comment_id="$comment.id">
 <div class="avatar" style="float: left;">
 <a class="avatar">
-<img style="display: block;" alt="avatar" src="materials\avatar001.jpg" />
+<img style="display: block;" alt="avatar" src="images\avatar001.jpg" />
 </a>
 </div>
 <div class="list_con" style="margin-left: 90px; padding: 0px;">
@@ -69,16 +125,16 @@ $comment.content
 <div class="func_area" style=" margin-top: 10px; padding-right: 10px;">
 <div class="actions" style="float: right;">
 <span class="item_span"><a class="item_like">赞($comment.support)</a></span>
-<span class="item_span"><a class="item_reply">回复</a></span>
+<span class="item_span"><a class="item_reply" href="#content">回复</a></span>
 </div>
 <div style="clear: both;"></div>
 </div>
 #set($hasLeafCom=-1)
 <div class="leaf_comment">
-#foreach($leafcom in $commentList)
+#foreach($leafcom in $leafCommentList)
 #if($leafcom.fatherCommentID == $rootid)
 #set($hasLeafCom=1)
-<div class="leaf_comment_list_li">
+<div class="leaf_comment_list_li" node-type="leaf_comment" comment_id="$leafcom.id" father_id="$rootid">
 <div class="comment_info">
 <p class="info_text">
 <span class="user_name">$leafcom.username</span>
@@ -105,7 +161,26 @@ $leafcom.content
 #end
 </div>
 #end
+<div class="pageSelect">
+<nav aria-label="Page navigation">
+<ul class="pagination">
+
+#if($previous >= 1)
+<li><a href="item?page=$!{previous}" aria-label="Previous"> 
+<span aria-hidden="true">&laquo;</span></a></li> 
 #end
+
+#foreach($page in $pages)
+<li #if($current == $page) class="active" #end><a href="item?page=$!{page}">$!{page}</a></li>
+#end
+
+#if($next <= $pageAmount)
+<li><a href="item?page=$!{next}" aria-label="Next">
+<span aria-hidden="true">&raquo;</span></a></li>
+#end
+</ul>
+</nav>
+</div>
 </div>
 </body>
 </html>
