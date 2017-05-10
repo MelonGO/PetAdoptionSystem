@@ -9,6 +9,7 @@
 <script type="text/javascript" src="scripts/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="scripts/melon.js"></script>
+<script src="scripts/melon.js"></script>
 </head>
 <body>
 <script>
@@ -37,9 +38,11 @@ function comment_submit() {
 			text = text.substring(1+textTitle.length);
 		}
 	}
-	$.get('pushcomment', {content : text, fatherid : comIdRegister}, function(){
-		alert("评论成功!");
-		window.location.reload();
+	$.get('pushcomment', {content : text, fatherid : comIdRegister, petId : $!{petId}}, function(data){
+		/*alert("评论成功!");
+		window.location.reload();*/
+		/*$("body").html(data);*/
+		window.location.href("item?petId=$!{petId}&page=1&msg=success");
 	});
 }
 
@@ -166,16 +169,16 @@ $leafcom.content
 <ul class="pagination">
 
 #if($previous >= 1)
-<li><a href="item?page=$!{previous}" aria-label="Previous"> 
+<li><a href="item?petId=$!{petId}&page=$!{previous}" aria-label="Previous"> 
 <span aria-hidden="true">&laquo;</span></a></li> 
 #end
 
 #foreach($page in $pages)
-<li #if($current == $page) class="active" #end><a href="item?page=$!{page}">$!{page}</a></li>
+<li #if($current == $page) class="active" #end><a href="item?petId=$!{petId}&page=$!{page}">$!{page}</a></li>
 #end
 
 #if($next <= $pageAmount)
-<li><a href="item?page=$!{next}" aria-label="Next">
+<li><a href="item?petId=$!{petId}&page=$!{next}" aria-label="Next">
 <span aria-hidden="true">&raquo;</span></a></li>
 #end
 </ul>

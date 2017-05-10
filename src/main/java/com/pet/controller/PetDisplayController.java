@@ -35,8 +35,9 @@ public class PetDisplayController {
 	public String loadCom(Model model, @RequestParam(value = "petId") int petId,
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			HttpSession session){
+		Pet pet = petService.selectById(petId);//petId
 		int rootCommentCount = commentService.getRootCommentsCountByPetId(petId);//petId
-		System.out.println(rootCommentCount);
+		System.out.println("count"+rootCommentCount);
 		List<Integer> pages = new ArrayList<Integer>();
 
 		int pageAmount = rootCommentCount / 5;
@@ -57,38 +58,45 @@ public class PetDisplayController {
 				tmp++;
 			}
 		}
-
+		
+		
 		model.addAttribute("pages", pages);
 		model.addAttribute("previous", page-1);
 		model.addAttribute("current", page);
 		model.addAttribute("next", page+1);
 		model.addAttribute("pageAmount", pageAmount);
 		
-		int commentCount = commentService.getCommentsCountByPetId(petId);//petId
-		model.addAttribute("commentCount",commentCount);
-		model.addAttribute("currentHtml", "commentBlock");
-		Pet pet = petService.selectById(petId);//petId
-		List<Comment> rootCommentList = commentService.selectRootCommentByPage(petId, (page - 1) * 5);//petId
-		String fatherId = "";
-		for(int i=0;i<rootCommentList.size();i++){
-			if(i==rootCommentList.size()-1){
-				fatherId += rootCommentList.get(i).getId();
-			}
-			else{
-				fatherId += rootCommentList.get(i).getId()+",";
-			}
-		}
-		List<Comment> leafCommentList = commentService.selectLeafCommentByFatherCommentId(fatherId);
+		model.addAttribute("petId", petId);
 		model.addAttribute("pet", pet);
-		model.addAttribute("rootCommentList", rootCommentList);
-		model.addAttribute("leafCommentList", leafCommentList);
+		model.addAttribute("currentHtml", "commentBlock");
 		
+		if(rootCommentCount==0){
+			model.addAttribute("commentCount",0);
+			model.addAttribute("rootCommentList", new ArrayList<Comment>());
+			model.addAttribute("leafCommentList", new ArrayList<Comment>());
+		}
+		else{
+			int commentCount = commentService.getCommentsCountByPetId(petId);//petId
+			model.addAttribute("commentCount",commentCount);
+			List<Comment> rootCommentList = commentService.selectRootCommentByPage(petId, (page - 1) * 5);//petId
+			String fatherId = "";
+			for(int i=0;i<rootCommentList.size();i++){
+				if(i==rootCommentList.size()-1){
+					fatherId += rootCommentList.get(i).getId();
+				}
+				else{
+					fatherId += rootCommentList.get(i).getId()+",";
+				}
+			}
+			model.addAttribute("rootCommentList", rootCommentList);
+			model.addAttribute("leafCommentList", commentService.selectLeafCommentByFatherCommentId(fatherId));
+		}
 		return "commentBlock";
 	}
 	
 	@RequestMapping(path = {"/pushcomment"})
-	public String pushComment(Model model, @RequestParam(value = "petId") int petId,HttpServletRequest request, HttpSession session){
-		if (session.getAttribute("user") == null) {
+	public String pushComment(Model model, @RequestParam(value = "petId") int petId, HttpServletRequest request, HttpSession session){
+		/*if (session.getAttribute("user") == null) {
 			return "redirect:petList?msg=notLogin";
 		} else {
 			User user = (User) session.getAttribute("user");
@@ -102,17 +110,17 @@ public class PetDisplayController {
 			}
 			
 			return "redirect:item?msg=success";
-		}
-		/*
+		}*/
+		
 		String content = request.getParameter("content");
 		int fatherid = Integer.parseInt(request.getParameter("fatherid"));
-		Map<String, Object> map = commentService.addComment(1, "Cruze", content, fatherid, -1, 0);
+		Map<String, Object> map = commentService.addComment(petId, "Cruze", content, fatherid, -1, 0);
 		String msg = (String) map.get("msg");
 		if(!msg.equals("success")){
 			model.addAttribute("error", "评论失败!");
 			return "error";
 		}
-		return "redirect:item?msg=success";
-		*/
+		return "redirect:item?" + "petId=" + petId + "&msg=success";
+		
 	}
 }
