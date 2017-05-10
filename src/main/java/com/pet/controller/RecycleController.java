@@ -174,7 +174,7 @@ public class RecycleController {
 		recycle.setState(3);
 		
 		recycleService.updateRecycle(recycle);
-		return "确认回收成功!";
+		return "确认送回成功!";
 	}
 	
 }

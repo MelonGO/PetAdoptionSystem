@@ -113,8 +113,8 @@ function getMore(){
 	start += 1;
 	$.get('getMore', {start : start}, function(data){
 		if(data) {
-			var petlist = eval('(' + data + ')');
-			$.each(petlist, function(index, pet) {
+			/* var petlist = eval('(' + data + ')'); */
+			$.each(data, function(index, pet) {
 				$('.recent').append('<div class="col-sm-12 col-md-4 col-lg-4">' 
 				+ '<img src="images/p1.jpg" class="img-thumbnail" width="400px" height="300px"> </div>'
         		+ '<div class="col-sm-12 col-md-8 col-lg-8">'

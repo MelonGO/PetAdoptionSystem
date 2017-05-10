@@ -157,13 +157,13 @@ var p = {};
 function removePet(petId){
 	p.petId = petId;
 	$.get('removePetCookie', p, function (r) {
-		location.replace(location.href);
+		window.location.href = location.href;
 	});
 }
 function removeProp(propId){
 	p.propId = propId;
 	$.get('removePropCookie', p, function (r) {
-		location.replace(location.href);
+		window.location.href = location.href;
 	});
 }
 
