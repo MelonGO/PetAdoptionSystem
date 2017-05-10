@@ -20,6 +20,10 @@ public class CommentService {
     	return commentDao.selectById(petId);
     }
 	
+	public int getCommentsCountByPetId(int petID){
+		return commentDao.getCommentsCountByPetId(petID);
+	}
+	
 	public List<Comment> getAll(){
 		return commentDao.getAll();
 	}
@@ -37,5 +41,21 @@ public class CommentService {
 		commentDao.addComment(myCom);
 		msgMap.put("msg", "success");
 		return msgMap;
+	}
+	
+	public int getRootCommentsCountByPetId(int petID){
+		return commentDao.getRootCommentsCountByPetId(petID);
+	}
+	
+	public List<Comment> selectByPage(int petID, int page){
+    	return commentDao.selectByPage(petID, page);
+    }
+	
+	public List<Comment> selectRootCommentByPage(int petID, int page){
+		return commentDao.selectRootCommentByPage(petID, page);
+	}
+	
+	public List<Comment> selectLeafCommentByFatherCommentId(String fatherId){
+		return commentDao.selectLeafCommentByFatherCommentId(fatherId);
 	}
 }

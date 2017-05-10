@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.mapping.StatementType;
@@ -16,6 +17,9 @@ public interface CommentDAO {
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, " where petID=#{petId}"})
 	List<Comment> selectById(int petId);
 	
+	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME, " where petID=#{petID} "})
+    int getCommentsCountByPetId(int petID);
+	
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME})
     List<Comment> getAll();
 	
@@ -24,4 +28,17 @@ public interface CommentDAO {
     @SelectKey(statement = "select last_insert_id() as id", keyProperty = "id", before = false, resultType = Integer.class, 
 	statementType = StatementType.PREPARED)
     int addComment(Comment com);
+	
+	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME, " where petID=#{petID} and fatherCommentID=0"})
+    int getRootCommentsCountByPetId(int petID);
+	
+	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where petID=#{petID}", "limit #{page}, 5"})
+    List<Comment> selectByPage(@Param("petID") int petID, @Param("page") int page);
+	
+	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where petID=#{petID} and fatherCommentID=0", "limit #{page}, 5"})
+    List<Comment> selectRootCommentByPage(@Param("petID") int petID, @Param("page") int page);
+	
+	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where fatherCommentID in (" + "#{fatherId}" + ")"})
+    List<Comment> selectLeafCommentByFatherCommentId(@Param("fatherId") String fatherId);
+	
 }

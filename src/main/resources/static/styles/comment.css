@@ -1,5 +1,61 @@
 @CHARSET "UTF-8";
 
+.pet_display_wrap {
+	width: 800px;
+	position: relative;
+	left: 50%;
+}
+
+.center_helper{
+	position: relative;
+	left: -50%;
+	padding-top: 10px;
+	/*
+	border-left-color: rgb(217, 217, 217);
+	border-left-style: solid;
+	border-left-width: 1px;
+	*/
+}
+
+.pet_display_pic {
+	display: inline-block;
+	width: 400px;
+	margin-top: 10px;
+}
+
+.pet_pic {
+	margin-left: 60px;
+}
+
+.pet_info {
+	display: inline-block;
+	width: 350px;
+}
+
+.info_list {
+	margin-bottom: 10px;
+	margin-left: 60px;
+}
+
+.info_list_li {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.comment_banner {
+	width: 800px;
+	margin: 0 auto;
+}
+
+.comment_action_wrap {
+	margin: 0 auto;
+}
+
+.comment_center {
+	width: 800px;
+	margin: 0 auto;
+}
+
 .actions a {
 	font-size: 12px;
 	color: rgb(51,51,51);
@@ -29,11 +85,17 @@
 .comment_text {
 	font-size: 16px;
 	min-height:50px;
+	word-break: break-all;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .leaf_comment_text {
 	font-size: 14px;
 	min-height:50px;
+	word-break: break-all;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .info_text{
@@ -109,4 +171,7 @@
 	text-decoration: none;
 	border-radius: 3px;
 	margin-left: 15px;
+}
+.pageSelect {
+	text-align: center;
 }
