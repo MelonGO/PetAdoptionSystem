@@ -39,10 +39,7 @@ function comment_submit() {
 		}
 	}
 	$.get('pushcomment', {content : text, fatherid : comIdRegister, petId : $!{petId}}, function(data){
-		/*alert("评论成功!");
-		window.location.reload();*/
-		/*$("body").html(data);*/
-		window.location.href("item?petId=$!{petId}&page=1&msg=success");
+		window.location.href = "item?petId=$!{petId}&page=1&msg=success";
 	});
 }
 
@@ -119,7 +116,7 @@ function like(){
 <div class="comment_info">
 <p class="info_text">
 <span class="user_name">$comment.username</span>
-<span class="comment_time">$comment.createTime</span>
+<span class="comment_time">$!{comment.createTime}</span>
 </p>
 </div>
 <div class="comment_text">

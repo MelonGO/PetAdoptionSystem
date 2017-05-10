@@ -37,7 +37,6 @@ public class PetDisplayController {
 			HttpSession session){
 		Pet pet = petService.selectById(petId);//petId
 		int rootCommentCount = commentService.getRootCommentsCountByPetId(petId);//petId
-		System.out.println("count"+rootCommentCount);
 		List<Integer> pages = new ArrayList<Integer>();
 
 		int pageAmount = rootCommentCount / 5;

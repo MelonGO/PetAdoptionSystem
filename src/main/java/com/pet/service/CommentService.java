@@ -52,10 +52,18 @@ public class CommentService {
     }
 	
 	public List<Comment> selectRootCommentByPage(int petID, int page){
-		return commentDao.selectRootCommentByPage(petID, page);
+		List<Comment> result = commentDao.selectRootCommentByPage(petID, page);
+		for(Comment c: result){
+			c.setCreateTime(c.getCreateTime().substring(0, 19));
+		}
+		return result;
 	}
 	
 	public List<Comment> selectLeafCommentByFatherCommentId(String fatherId){
-		return commentDao.selectLeafCommentByFatherCommentId(fatherId);
+		List<Comment> result = commentDao.selectLeafCommentByFatherCommentId(fatherId);
+		for(Comment c: result){
+			c.setCreateTime(c.getCreateTime().substring(0, 19));
+		}
+		return result;
 	}
 }
