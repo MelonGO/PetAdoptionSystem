@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pet.dao.CommentDAO;
 import com.pet.model.Comment;
+import com.pet.model.Support;
 
 @Service
 public class CommentService {
@@ -65,5 +66,9 @@ public class CommentService {
 			c.setCreateTime(c.getCreateTime().substring(0, 19));
 		}
 		return result;
+	}
+	
+	public List<Support> selectCommentSupportByUserId(int userId, String commentId){
+		return commentDao.selectCommentSupportByUserId(userId, commentId);
 	}
 }

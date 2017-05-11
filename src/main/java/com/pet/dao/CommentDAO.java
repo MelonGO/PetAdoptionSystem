@@ -11,6 +11,7 @@ import org.apache.ibatis.mapping.StatementType;
 
 import com.pet.dao.constants.CommentDaoConstants;
 import com.pet.model.Comment;
+import com.pet.model.Support;
 
 @Mapper
 public interface CommentDAO {
@@ -40,5 +41,8 @@ public interface CommentDAO {
 	
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where fatherCommentID in (" + "#{fatherId}" + ")"})
     List<Comment> selectLeafCommentByFatherCommentId(@Param("fatherId") String fatherId);
+	
+	@Select({"select ", CommentDaoConstants.SELECT_FIELDS_SUPPORT, " from ", CommentDaoConstants.TABLE_NAME_SUPPORT, "where userId=#{userId} and commentId in (" + "#{commentId}" + ")"})
+    List<Support> selectCommentSupportByUserId(@Param("userId") int userId, @Param("commentId") String fatherId);
 	
 }

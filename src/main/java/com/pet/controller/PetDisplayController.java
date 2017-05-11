@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pet.model.Comment;
 import com.pet.model.Pet;
 import com.pet.model.ReceivingInfo;
+import com.pet.model.Support;
 import com.pet.model.User;
 import com.pet.service.CommentService;
 import com.pet.service.PetService;
@@ -87,8 +88,29 @@ public class PetDisplayController {
 					fatherId += rootCommentList.get(i).getId()+",";
 				}
 			}
+			List<Comment> leafCommentList = commentService.selectLeafCommentByFatherCommentId(fatherId);
+			String commentId = fatherId + ";";
+			for(int i=0;i<leafCommentList.size();i++){
+				if(i==leafCommentList.size()-1){
+					commentId += leafCommentList.get(i).getId();
+				}
+				else{
+					commentId += leafCommentList.get(i).getId()+",";
+				}
+			}
+			/*
+			if(session.getAttribute("user")==null){
+				model.addAttribute("supportList", new ArrayList<>());
+			}
+			else{
+				User user = (User)session.getAttribute("user");
+				List<Support> commentSup = commentService.selectCommentSupportByUserId(user.getId(), commentId);
+				model.addAttribute("supportList", commentSup);
+			}
+			*/
+			model.addAttribute("supportList",  commentService.selectCommentSupportByUserId(1, commentId));
 			model.addAttribute("rootCommentList", rootCommentList);
-			model.addAttribute("leafCommentList", commentService.selectLeafCommentByFatherCommentId(fatherId));
+			model.addAttribute("leafCommentList", leafCommentList);
 		}
 		return "commentBlock";
 	}
@@ -121,5 +143,11 @@ public class PetDisplayController {
 		}
 		return "redirect:item?" + "petId=" + petId + "&msg=success";
 		
+	}
+	
+	@RequestMapping(path = {"/like"})
+	public String pushLike(HttpSession session){
+		
+		return "";
 	}
 }

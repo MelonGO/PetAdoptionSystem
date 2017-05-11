@@ -16,6 +16,7 @@
 $(document).ready(function(){
 	var args = new Object();
 	navi();
+	like();
 	setAlign();
 	args = GetUrlParms();
 	var value1 = args["msg"];
@@ -53,18 +54,18 @@ function navi(){
 	});
 }
 
+function like(){
+	$(".item_like").bind("click",function(){
+		alert(this.html());
+	});
+}
+
 
 function setAlign(){
 	$('.comment_center').css({
 		"left" : ($(window).width()-$('.comment_center').outerWidth())/2+"px"
 	});
 }
-
-function like(){
-	
-	
-}
-
 
 </script>
 <div class="pet_display_wrap">
@@ -87,7 +88,7 @@ function like(){
 </div>
 <div class="comment_banner">
 <h4>
-评论($commentCount)条
+评论($!{commentCount})条
 </h4>
 </div>
 <div class="comment_action_wrap">
@@ -124,7 +125,10 @@ $comment.content
 </div>
 <div class="func_area" style=" margin-top: 10px; padding-right: 10px;">
 <div class="actions" style="float: right;">
-<span class="item_span"><a class="item_like">赞($comment.support)</a></span>
+<span class="item_span"><a class="item_like"
+#foreach($support in $supportList)
+#if($!{support.commentId} == $!{comment.id})
+ style="color: #FF0000;">已#end#end赞($comment.support)</a></span>
 <span class="item_span"><a class="item_reply" href="#content">回复</a></span>
 </div>
 <div style="clear: both;"></div>
@@ -146,7 +150,10 @@ $leafcom.content
 </div>
 <div class="func_area" style=" margin-top: 10px; padding-right: 10px; padding-bottom: 10px;">
 <div class="actions" style="float: right;">
-<span class="item_span"><a class="item_like">赞($leafcom.support)</a></span>
+<span class="item_span"><a class="item_like"
+#foreach($support in $supportList)
+#if($!{support.commentId} == $!{comment.id})
+ style="color: #FF0000;">已#end#end赞($leafcom.support)</a></span>
 <span class="item_span"><a class="item_reply">回复</a></span>
 </div>
 <div style="clear: both;"></div>
