@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import com.pet.dao.constants.CommentDaoConstants;
@@ -39,10 +40,16 @@ public interface CommentDAO {
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where petID=#{petID} and fatherCommentID=0", "limit #{page}, 5"})
     List<Comment> selectRootCommentByPage(@Param("petID") int petID, @Param("page") int page);
 	
-	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where fatherCommentID in (" + "#{fatherId}" + ")"})
-    List<Comment> selectLeafCommentByFatherCommentId(@Param("fatherId") String fatherId);
+	/*
+	 * 
+	 * 以下sql如无注释，参考mybatis-mapper.xml
+	 * 
+	 * */
 	
-	@Select({"select ", CommentDaoConstants.SELECT_FIELDS_SUPPORT, " from ", CommentDaoConstants.TABLE_NAME_SUPPORT, "where userId=#{userId} and commentId in (" + "#{commentId}" + ")"})
-    List<Support> selectCommentSupportByUserId(@Param("userId") int userId, @Param("commentId") String fatherId);
+    List<Comment> selectLeafCommentByFatherCommentId(@Param("fatherIdList") List<Integer> fatherIdList);
 	
+    List<Support> selectCommentSupportByUserId(@Param("userId") int userId, @Param("commentIdList") List<Integer> commentIdList);
+	
+	@Update({"update ", CommentDaoConstants.TABLE_NAME_SUPPORT, " set status=#{status} where userId=#{userId} and commentId=#{commentId}"})
+	int updateCommentSupport(Support s);
 }

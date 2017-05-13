@@ -15,9 +15,9 @@
 <script>
 $(document).ready(function(){
 	var args = new Object();
+	setAlign();
 	navi();
 	like();
-	setAlign();
 	args = GetUrlParms();
 	var value1 = args["msg"];
 	if(value1 == "notLogin"){
@@ -56,7 +56,23 @@ function navi(){
 
 function like(){
 	$(".item_like").bind("click",function(){
-		alert(this.html());
+		var fix = this.parentNode.parentNode.parentNode;
+		var supIdRegister = $(fix).parent().eq(0).parent().eq(0).attr("comment_id");
+		var title = $(this).html().split("(")[0];
+		var num = $(this).html().split("(")[1].split(")")[0];
+		alert(num);
+		if(title=="已赞"){
+			if(num==1){
+				$(this).html("赞");
+			}else{
+				$(this).html("赞("+(num-1)+")");
+			}
+			$(this).css({"color":"black"});
+			/*$.get('dislike', {commentId : supIdRegister}, function(){
+				$(this).html("赞");
+				$(this).html.css({"color","black"});
+			});*/
+		}
 	});
 }
 
@@ -125,10 +141,20 @@ $comment.content
 </div>
 <div class="func_area" style=" margin-top: 10px; padding-right: 10px;">
 <div class="actions" style="float: right;">
-<span class="item_span"><a class="item_like"
+<span class="item_span">
+#set($isSup=-1)
 #foreach($support in $supportList)
 #if($!{support.commentId} == $!{comment.id})
- style="color: #FF0000;">已#end#end赞($comment.support)</a></span>
+#set($isSup=1)
+#break
+#end
+#end
+#if($isSup==1)
+<a class="item_like" style="color: #FF0000;">已赞($comment.support)</a></span>
+#set($isSup=-1)
+#else
+<a class="item_like">赞#if($comment.support!=0)($comment.support)#end</a></span>
+#end
 <span class="item_span"><a class="item_reply" href="#content">回复</a></span>
 </div>
 <div style="clear: both;"></div>
@@ -139,6 +165,8 @@ $comment.content
 #if($leafcom.fatherCommentID == $rootid)
 #set($hasLeafCom=1)
 <div class="leaf_comment_list_li" node-type="leaf_comment" comment_id="$leafcom.id" father_id="$rootid">
+<div class="take_space"></div>
+<div class="list_con">
 <div class="comment_info">
 <p class="info_text">
 <span class="user_name">$leafcom.username</span>
@@ -150,13 +178,22 @@ $leafcom.content
 </div>
 <div class="func_area" style=" margin-top: 10px; padding-right: 10px; padding-bottom: 10px;">
 <div class="actions" style="float: right;">
-<span class="item_span"><a class="item_like"
+<span class="item_span">
 #foreach($support in $supportList)
-#if($!{support.commentId} == $!{comment.id})
- style="color: #FF0000;">已#end#end赞($leafcom.support)</a></span>
+#if($!{support.commentId} == $!{leafcom.id})
+#end
+#end
+#if($isSup==1)
+<a class="item_like" style="color: #FF0000;">已赞($leafcom.support)</a>
+#set($isSup=-1)
+#else
+<a class="item_like">赞#if($leafcom.support!=0)($leafcom.support)#end</a>
+#end
+</span>
 <span class="item_span"><a class="item_reply">回复</a></span>
 </div>
 <div style="clear: both;"></div>
+</div>
 </div>
 </div>
 #end

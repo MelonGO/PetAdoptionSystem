@@ -60,15 +60,19 @@ public class CommentService {
 		return result;
 	}
 	
-	public List<Comment> selectLeafCommentByFatherCommentId(String fatherId){
-		List<Comment> result = commentDao.selectLeafCommentByFatherCommentId(fatherId);
+	public List<Comment> selectLeafCommentByFatherCommentId(List<Integer> fatherIdMap){
+		List<Comment> result = commentDao.selectLeafCommentByFatherCommentId(fatherIdMap);
 		for(Comment c: result){
 			c.setCreateTime(c.getCreateTime().substring(0, 19));
 		}
 		return result;
 	}
 	
-	public List<Support> selectCommentSupportByUserId(int userId, String commentId){
-		return commentDao.selectCommentSupportByUserId(userId, commentId);
+	public List<Support> selectCommentSupportByUserId(int userId, List<Integer> commentIdList){
+		return commentDao.selectCommentSupportByUserId(userId,commentIdList);
+	}
+	
+	public int updateCommentSupport(Support s){
+		return commentDao.updateCommentSupport(s);
 	}
 }

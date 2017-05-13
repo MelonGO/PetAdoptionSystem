@@ -1,6 +1,7 @@
 package com.pet.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,24 +80,13 @@ public class PetDisplayController {
 			int commentCount = commentService.getCommentsCountByPetId(petId);//petId
 			model.addAttribute("commentCount",commentCount);
 			List<Comment> rootCommentList = commentService.selectRootCommentByPage(petId, (page - 1) * 5);//petId
-			String fatherId = "";
-			for(int i=0;i<rootCommentList.size();i++){
-				if(i==rootCommentList.size()-1){
-					fatherId += rootCommentList.get(i).getId();
-				}
-				else{
-					fatherId += rootCommentList.get(i).getId()+",";
-				}
+			List<Integer> fatherIdList = new ArrayList<Integer>();
+			for(Comment c: rootCommentList){
+				fatherIdList.add(c.getId());
 			}
-			List<Comment> leafCommentList = commentService.selectLeafCommentByFatherCommentId(fatherId);
-			String commentId = fatherId + ";";
-			for(int i=0;i<leafCommentList.size();i++){
-				if(i==leafCommentList.size()-1){
-					commentId += leafCommentList.get(i).getId();
-				}
-				else{
-					commentId += leafCommentList.get(i).getId()+",";
-				}
+			List<Comment> leafCommentList = commentService.selectLeafCommentByFatherCommentId(fatherIdList);
+			for(Comment c:leafCommentList){
+				fatherIdList.add(c.getId());
 			}
 			/*
 			if(session.getAttribute("user")==null){
@@ -108,7 +98,8 @@ public class PetDisplayController {
 				model.addAttribute("supportList", commentSup);
 			}
 			*/
-			model.addAttribute("supportList",  commentService.selectCommentSupportByUserId(1, commentId));
+			
+			model.addAttribute("supportList",  commentService.selectCommentSupportByUserId(1,fatherIdList));
 			model.addAttribute("rootCommentList", rootCommentList);
 			model.addAttribute("leafCommentList", leafCommentList);
 		}
@@ -120,17 +111,15 @@ public class PetDisplayController {
 		/*if (session.getAttribute("user") == null) {
 			return "redirect:petList?msg=notLogin";
 		} else {
-			User user = (User) session.getAttribute("user");
 			String content = request.getParameter("content");
-			int fatherid = Integer.parseInt(request.getParameter("fatherid"));
-			Map<String, Object> map = commentService.addComment(petId, user.getName(), content, fatherid, -1, 0);
-			String msg = (String) map.get("msg");
-			if(!msg.equals("success")){
-				model.addAttribute("error", "评论失败!");
-				return "error";
-			}
-			
-			return "redirect:item?msg=success";
+		    int fatherid = Integer.parseInt(request.getParameter("fatherid"));
+		    Map<String, Object> map = commentService.addComment(petId, "Cruze", content, fatherid, -1, 0);
+		    String msg = (String) map.get("msg");
+		    if(!msg.equals("success")){
+			    model.addAttribute("error", "评论失败!");
+			    return "error";
+		    }
+		    return "redirect:item?" + "petId=" + petId + "&msg=success";
 		}*/
 		
 		String content = request.getParameter("content");
@@ -145,9 +134,14 @@ public class PetDisplayController {
 		
 	}
 	
-	@RequestMapping(path = {"/like"})
+	@RequestMapping(path = {"/dislike"})
 	public String pushLike(HttpSession session){
-		
-		return "";
+		if(session.getAttribute("user")==null){
+			return "";
+		}
+		else{
+			
+			return "";
+		}
 	}
 }
