@@ -5,7 +5,7 @@ public class Support {
 	private int commentId;
 	private String createTime;
 	private String updateTime;
-	private int status;
+	private int status;//1:点赞 -1:取消了赞
 	public int getUserId() {
 		return userId;
 	}

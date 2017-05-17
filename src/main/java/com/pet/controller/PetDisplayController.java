@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pet.model.Comment;
 import com.pet.model.Pet;
-import com.pet.model.ReceivingInfo;
 import com.pet.model.Support;
 import com.pet.model.User;
 import com.pet.service.CommentService;
 import com.pet.service.PetService;
 
+import tools.HavePages;
 import tools.RequestUtil;
 
 @Controller
@@ -39,33 +39,9 @@ public class PetDisplayController {
 			HttpSession session){
 		Pet pet = petService.selectById(petId);//petId
 		int rootCommentCount = commentService.getRootCommentsCountByPetId(petId);//petId
-		List<Integer> pages = new ArrayList<Integer>();
-
-		int pageAmount = rootCommentCount / 5;
-		if (rootCommentCount % 5 != 0) {
-			pageAmount++;
-		}
-
-		int tmp = page;
-		if (tmp % 5 == 0) {
-			tmp = tmp - 4;
-		} else {
-			tmp = tmp - tmp % 5 + 1;
-		}
-
-		for (int i = 0; i < 5; i++) {
-			if (tmp <= pageAmount) {
-				pages.add(tmp);
-				tmp++;
-			}
-		}
 		
 		
-		model.addAttribute("pages", pages);
-		model.addAttribute("previous", page-1);
-		model.addAttribute("current", page);
-		model.addAttribute("next", page+1);
-		model.addAttribute("pageAmount", pageAmount);
+		
 		
 		model.addAttribute("petId", petId);
 		model.addAttribute("pet", pet);
@@ -73,20 +49,30 @@ public class PetDisplayController {
 		
 		if(rootCommentCount==0){
 			model.addAttribute("commentCount",0);
-			model.addAttribute("rootCommentList", new ArrayList<Comment>());
-			model.addAttribute("leafCommentList", new ArrayList<Comment>());
+			model.addAttribute("commentList", new ArrayList<List<Comment>>());
+			model.addAttribute("supportList", new ArrayList<List<Support>>());
+			model.addAttribute("pages", new ArrayList<List<Integer>>());
 		}
 		else{
+			List<List<Integer>> pages = new ArrayList<List<Integer>>();
+			pages.add(HavePages.getMyPages(page, rootCommentCount));
 			int commentCount = commentService.getCommentsCountByPetId(petId);//petId
-			model.addAttribute("commentCount",commentCount);
 			List<Comment> rootCommentList = commentService.selectRootCommentByPage(petId, (page - 1) * 5);//petId
-			List<Integer> fatherIdList = new ArrayList<Integer>();
+			List<Integer> commentIdListSup = new ArrayList<Integer>();
+			List<List<Comment>> commentList = new ArrayList<List<Comment>>();
+			List<List<Support>> supportList = new ArrayList<List<Support>>();
+			
 			for(Comment c: rootCommentList){
-				fatherIdList.add(c.getId());
-			}
-			List<Comment> leafCommentList = commentService.selectLeafCommentByFatherCommentId(fatherIdList);
-			for(Comment c:leafCommentList){
-				fatherIdList.add(c.getId());
+				List<Comment> commentListItem = new ArrayList<Comment>();/*用以存放一条根评论及其一页的评论*/
+				commentListItem.add(c);
+				commentIdListSup.add(c.getId());
+				pages.add(HavePages.getMyPages(1, commentService.getLeafCommentsCountByFatherId(c.getId())));
+				for(Comment cs: commentService.selectLeafCommentByPage(c.getId(), 0)){
+					commentListItem.add(cs);
+					commentIdListSup.add(cs.getId());
+				}
+				commentList.add(commentListItem);
+				supportList.add(commentService.selectCommentSupportByUserId(1, commentIdListSup));//userId
 			}
 			/*
 			if(session.getAttribute("user")==null){
@@ -98,10 +84,10 @@ public class PetDisplayController {
 				model.addAttribute("supportList", commentSup);
 			}
 			*/
-			
-			model.addAttribute("supportList",  commentService.selectCommentSupportByUserId(1,fatherIdList));
-			model.addAttribute("rootCommentList", rootCommentList);
-			model.addAttribute("leafCommentList", leafCommentList);
+			model.addAttribute("commentCount",commentCount);
+			model.addAttribute("commentList", commentList);
+			model.addAttribute("supportList",  supportList);
+			model.addAttribute("pages", pages);
 		}
 		return "commentBlock";
 	}
@@ -134,14 +120,19 @@ public class PetDisplayController {
 		
 	}
 	
-	@RequestMapping(path = {"/dislike"})
-	public String pushLike(HttpSession session){
-		if(session.getAttribute("user")==null){
+	@RequestMapping(path = {"/like"})
+	public String pushDislike(HttpSession session, @RequestParam(value = "like") int like, @RequestParam(value = "commentId") int commentId){
+		/*if(session.getAttribute("user")==null){
 			return "";
 		}
 		else{
-			
-			return "";
-		}
+			User user = (User)session.getAttribute("user");
+			commentService.updateCommentSupport(like, commentId);
+		    commentService.updateCommentSupportTable(1,commentId,like);
+			return "dislike_success";
+		}*/
+		commentService.updateCommentSupport(like, commentId);
+		commentService.updateCommentSupportTable(1,commentId,like);
+		return "";
 	}
 }

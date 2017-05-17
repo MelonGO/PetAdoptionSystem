@@ -48,6 +48,10 @@ public class CommentService {
 		return commentDao.getRootCommentsCountByPetId(petID);
 	}
 	
+	public int getLeafCommentsCountByFatherId(int fatherId){
+		return commentDao.getLeafCommentsCountByFatherId(fatherId);
+	}
+	
 	public List<Comment> selectByPage(int petID, int page){
     	return commentDao.selectByPage(petID, page);
     }
@@ -60,8 +64,8 @@ public class CommentService {
 		return result;
 	}
 	
-	public List<Comment> selectLeafCommentByFatherCommentId(List<Integer> fatherIdMap){
-		List<Comment> result = commentDao.selectLeafCommentByFatherCommentId(fatherIdMap);
+	public List<Comment> selectLeafCommentByFatherCommentId(List<Integer> fatherIdList){
+		List<Comment> result = commentDao.selectLeafCommentByFatherCommentId(fatherIdList);
 		for(Comment c: result){
 			c.setCreateTime(c.getCreateTime().substring(0, 19));
 		}
@@ -72,7 +76,15 @@ public class CommentService {
 		return commentDao.selectCommentSupportByUserId(userId,commentIdList);
 	}
 	
-	public int updateCommentSupport(Support s){
-		return commentDao.updateCommentSupport(s);
+	public int updateCommentSupportTable(int userId, int commentId, int status){
+		return commentDao.updateCommentSupportTable(userId,commentId,status,commentDao.doExistSupport(userId, commentId));
+	}
+	
+	public int updateCommentSupport(int fix,int commentId){
+		return commentDao.updateCommentSupport(fix, commentId);
+	}
+	
+	public List<Comment> selectLeafCommentByPage(int fatherId, int page){
+		return commentDao.selectLeafCommentByPage(fatherId, page);
 	}
 }

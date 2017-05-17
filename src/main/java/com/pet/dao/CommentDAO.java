@@ -34,6 +34,9 @@ public interface CommentDAO {
 	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME, " where petID=#{petID} and fatherCommentID=0"})
     int getRootCommentsCountByPetId(int petID);
 	
+	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME, "where fatherCommentId=#{fatherId}"})
+	int getLeafCommentsCountByFatherId(int fatherId);
+	
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where petID=#{petID}", "limit #{page}, 5"})
     List<Comment> selectByPage(@Param("petID") int petID, @Param("page") int page);
 	
@@ -50,6 +53,15 @@ public interface CommentDAO {
 	
     List<Support> selectCommentSupportByUserId(@Param("userId") int userId, @Param("commentIdList") List<Integer> commentIdList);
 	
-	@Update({"update ", CommentDaoConstants.TABLE_NAME_SUPPORT, " set status=#{status} where userId=#{userId} and commentId=#{commentId}"})
-	int updateCommentSupport(Support s);
+	int updateCommentSupportTable(@Param("userId") int userId, @Param("commentId") int commentId, @Param("status") int status, @Param("exist") int exist);
+	
+	@Update({"update ", CommentDaoConstants.TABLE_NAME, " set support=support+#{fix} where id=#{commentId}"})
+	int updateCommentSupport(@Param("fix") int fix, @Param("commentId") int commentId);
+	
+	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME_SUPPORT, "where userId=#{userId} and commentId=#{commentId}"})
+	int doExistSupport(@Param("userId") int userId, @Param("commentId") int commentId);
+	
+	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where fatherCommentID=#{fatherId}",  "limit #{page}, 5"})
+	List<Comment> selectLeafCommentByPage(@Param("fatherId") int fatherId, @Param("page") int page);
+	
 }
