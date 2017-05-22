@@ -10,7 +10,10 @@ public class HavePages {
 			pageAmount++;
 		}
 		List<Integer> pages = new ArrayList<Integer>();
+		pages.add(page-1);
 		pages.add(page);
+		pages.add(page+1);
+		pages.add(pageAmount);
 		int tmp = page-2;
 		for(int i=0;i<=2;i++){
 			if(tmp<=0){
@@ -31,7 +34,6 @@ public class HavePages {
 				tmp++;
 			}
 		}
-		pages.add(pageAmount);
 		//System.out.println(pages.toString());
 		return pages;
 	}

@@ -30,15 +30,15 @@ public class CommentService {
 	}
 	
 	public Map<String, Object> addComment(int petID, String username, String content, 
-			int fatherCommentID, int replyCommentID, int support){
+			int fatherCommentID){
 		Map<String, Object> msgMap = new HashMap<>();
 		Comment myCom = new Comment();
 		myCom.setPetID(petID);
 		myCom.setUsername(username);
 		myCom.setContent(content);
 		myCom.setFatherCommentID(fatherCommentID);
-		myCom.setReplyCommentID(replyCommentID);
-		myCom.setSupport(support);
+		myCom.setReplyCommentID(-1);
+		myCom.setSupport(0);
 		commentDao.addComment(myCom);
 		msgMap.put("msg", "success");
 		return msgMap;
@@ -86,5 +86,13 @@ public class CommentService {
 	
 	public List<Comment> selectLeafCommentByPage(int fatherId, int page){
 		return commentDao.selectLeafCommentByPage(fatherId, page);
+	}
+	
+	public int doExistSupport(int userId, int commentId){
+		return commentDao.doExistSupport(userId, commentId);
+	}
+	
+	public int isSupportted(int userId, int commentId){
+		return commentDao.isSupportted(userId, commentId);
 	}
 }

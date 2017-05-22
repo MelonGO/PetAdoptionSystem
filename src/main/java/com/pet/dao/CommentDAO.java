@@ -61,6 +61,9 @@ public interface CommentDAO {
 	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME_SUPPORT, "where userId=#{userId} and commentId=#{commentId}"})
 	int doExistSupport(@Param("userId") int userId, @Param("commentId") int commentId);
 	
+	@Select({"select count(*) from", CommentDaoConstants.TABLE_NAME_SUPPORT, "where userId=#{userId} and commentId=#{commentId} and status=1"})
+	int isSupportted(@Param("userId") int userId, @Param("commentId") int commentId);
+	
 	@Select({"select ", CommentDaoConstants.SELECT_FIELDS, " from ", CommentDaoConstants.TABLE_NAME, "where fatherCommentID=#{fatherId}",  "limit #{page}, 5"})
 	List<Comment> selectLeafCommentByPage(@Param("fatherId") int fatherId, @Param("page") int page);
 	

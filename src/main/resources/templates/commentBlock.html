@@ -124,9 +124,37 @@ function page_select(){
 }
 function page_a(){
 	$(".page_a").bind("click",function(){
-		var fix = $(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).attr("comment_id");
-		alert(fix);
-		
+		var fix = this;
+		var commentId = $(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).attr("comment_id");
+		var page = $(this).attr("page");
+		$.get('moreLeaves', {commentId : commentId, page : page}, function(data){
+			var leaf_comment = fix.parentNode.parentNode.parentNode.parentNode.parentNode;
+			for(var i=0;i<data.length;i++){
+				var leaf_comment_list_li = $(leaf_comment).children().get(i);
+				if($(leaf_comment_list_li).css("display") == "none"){
+					$(leaf_comment_list_li).css({"display":"block"});
+				}
+				$(leaf_comment_list_li).attr({"comment_id":data[i].id});
+				var info_text = $(leaf_comment_list_li).children().eq(1).children().eq(0).children().get(0);
+				$(info_text).children().eq(0).html(data[i].username);
+				$(info_text).children().eq(1).html(data[i].createTime);
+				$(leaf_comment_list_li).children().eq(1).children().eq(1).html(data[i].content);
+				var item_like = $(leaf_comment_list_li).children().eq(1).children().eq(2).children().children().children().get(0);
+				console.log(data[i].replyCommentID);
+				if(data[i].replyCommentID == 1){
+					$(item_like).html("已赞("+data[i].support+")");
+					$(item_like).css({"color":"red"});
+				}
+				else{
+					$(item_like).html("赞("+data[i].support+")");
+					$(item_like).css({"color":"black"});
+				}
+			}
+			for(var i=data.length;i<5;i++){
+				console.log($(leaf_comment).children().get(i));
+				$(leaf_comment).children().eq(i).css({"display":"none"});
+			}
+		});
 	});
 }
 
@@ -258,32 +286,27 @@ $leafcom.content
 <ul class="pagination">
 #if(${pages.size()}>0)
 #set($mindex=${loop} + 1)
-#set($index=$pages.get($mindex).size())
-#set($index=${index} - 1 )
-#set($pageAmount=${pages.get($mindex).get($index)})
-#if(${pages.get($mindex).get(0)} > 1)
-<li><a class="page_a" href="javascript:void(0);" aria-label="First">
+#set($pageAmount=${pages.get($mindex).get(3)})
+#if(${pages.get($mindex).get(1)} > 1)
+<li><a class="page_a" href="javascript:void(0);" aria-label="First" page="1">
 <span aria-hidden="true">首页</span></a></li>
 #end
 
-#if(${pages.get($mindex).get(0)} >= 2)
-#set($previous=${pages.get($mindex).get(0)})
-#set($previous=$previous - 1 )
-<li><a class="page_a" href="javascript:void(0);" aria-label="Previous" page="${previous}">
+#if(${pages.get($mindex).get(0)} >= 1)
+<li><a class="page_a" href="javascript:void(0);" aria-label="Previous" page="${pages.get($mindex).get(0)}">
 <span aria-hidden="true">上一页</span></a></li>
 #end
 
 #if($pageAmount>1)
 #foreach($page in ${pages.get($mindex)})
-#if(${velocityCount}>1 && ${velocityCount}<=$index)
-<li #if(${pages.get($mindex).get(0)} == $page) class="active" #end><a href="javascript:void(0);" onclick="page_select()" page="{$page}">$!{page}</a></li>
+#if(${velocityCount}>4)
+<li #if(${pages.get($mindex).get(1)} == $page) class="active" #end><a href="javascript:void(0);" onclick="page_select()" page="{$page}">$!{page}</a></li>
 #end
 #end
 #end
 
-#if(${pages.get($mindex).get(0)} + 1 <= $pageAmount)
-#set($next=${pages.get($mindex).get(0)} + 1 )
-<li><a class="page_a" href="javascript:void(0);" aria-label="Next" page="${next}">
+#if(${pages.get($mindex).get(2)}<= $pageAmount)
+<li><a class="page_a" href="javascript:void(0);" aria-label="Next" page="${pages.get($mindex).get(2)}">
 <span aria-hidden="true">下一页</span></a></li>
 #end
 
@@ -307,30 +330,27 @@ $leafcom.content
 <nav aria-label="Page navigation">
 <ul class="pagination">
 #if(${pages.size()}>0)
-#set($index=$pages.get(0).size())
-#set($index=${index} - 1 )
-#set($pageAmount=${pages.get(0).get($index)})
-#if(${pages.get(0).get(0)} > 1)
+#set($pageAmount=${pages.get(0).get(3)})
+#if(${pages.get(0).get(1)} > 1)
 <li><a href="item?petId=$!{petId}&page=1" aria-label="First">
 <span aria-hidden="true">首页</span></a></li>
 #end
 
-#if(${pages.get(0).get(0)} >= 2)
-#set($previous=${pages.get(0).get(0)})
-#set($previous=$previous - 1 )
-<li><a href="item?petId=$!{petId}&page=$!{previous}" aria-label="Previous">
+#if(${pages.get(0).get(0)} >= 1)
+<li><a href="item?petId=$!{petId}&page=$!{pages.get(0).get(0)} " aria-label="Previous">
 <span aria-hidden="true">上一页</span></a></li>
 #end
 
+#if($pageAmount>1)
 #foreach($page in ${pages.get(0)})
-#if(${velocityCount}>1 && ${velocityCount}<=$index)
-<li #if(${pages.get(0).get(0)} == $page) class="active" #end><a href="item?petId=$!{petId}&page=$!{page}">$!{page}</a></li>
+#if(${velocityCount}>4)
+<li #if(${pages.get(0).get(1)} == $page) class="active" #end><a href="item?petId=$!{petId}&page=$!{page}">$!{page}</a></li>
+#end
 #end
 #end
 
-#if(${pages.get(0).get(0)} + 1 <= $pageAmount)
-#set($next=${pages.get(0).get(0)} + 1 )
-<li><a href="item?petId=$!{petId}&page=$!{next}" aria-label="Next">
+#if(${pages.get(0).get(2)}<= $pageAmount)
+<li><a href="item?petId=$!{petId}&page=$!{pages.get(0).get(2)}" aria-label="Next">
 <span aria-hidden="true">下一页</span></a></li>
 #end
 

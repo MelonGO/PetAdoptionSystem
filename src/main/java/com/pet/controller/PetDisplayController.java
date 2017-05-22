@@ -37,6 +37,24 @@ public class PetDisplayController {
 	public String loadCom(Model model, @RequestParam(value = "petId") int petId,
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			HttpSession session){
+		/*
+		 * 
+		 * 测试用 visualUser 2017/5/22
+		 * 
+		 * */
+		User user = new User();
+		user.setId(1);
+		user.setName("visualPaul");
+		if(session.getAttribute("user")==null){
+			session.setAttribute("user", user);
+		}
+		else{
+			user = (User)session.getAttribute("user");
+		}
+		/*
+		 * 
+		 * */
+		
 		Pet pet = petService.selectById(petId);//petId
 		int rootCommentCount = commentService.getRootCommentsCountByPetId(petId);//petId
 		
@@ -72,18 +90,15 @@ public class PetDisplayController {
 					commentIdListSup.add(cs.getId());
 				}
 				commentList.add(commentListItem);
-				supportList.add(commentService.selectCommentSupportByUserId(1, commentIdListSup));//userId
+				if(session.getAttribute("user")==null){
+					for(int i=0;i<5;i++){
+						supportList.add(new ArrayList<Support>());
+					}
+				}
+				else{
+					supportList.add(commentService.selectCommentSupportByUserId(user.getId(), commentIdListSup));//userId
+				}
 			}
-			/*
-			if(session.getAttribute("user")==null){
-				model.addAttribute("supportList", new ArrayList<>());
-			}
-			else{
-				User user = (User)session.getAttribute("user");
-				List<Support> commentSup = commentService.selectCommentSupportByUserId(user.getId(), commentId);
-				model.addAttribute("supportList", commentSup);
-			}
-			*/
 			model.addAttribute("commentCount",commentCount);
 			model.addAttribute("commentList", commentList);
 			model.addAttribute("supportList",  supportList);
@@ -94,45 +109,53 @@ public class PetDisplayController {
 	
 	@RequestMapping(path = {"/pushcomment"})
 	public String pushComment(Model model, @RequestParam(value = "petId") int petId, HttpServletRequest request, HttpSession session){
-		/*if (session.getAttribute("user") == null) {
-			return "redirect:petList?msg=notLogin";
+		if (session.getAttribute("user") == null) {
+			return "redirect:item?msg=notLogin";
 		} else {
+			User user = (User)session.getAttribute("user");
 			String content = request.getParameter("content");
-		    int fatherid = Integer.parseInt(request.getParameter("fatherid"));
-		    Map<String, Object> map = commentService.addComment(petId, "Cruze", content, fatherid, -1, 0);
-		    String msg = (String) map.get("msg");
-		    if(!msg.equals("success")){
-			    model.addAttribute("error", "评论失败!");
-			    return "error";
-		    }
-		    return "redirect:item?" + "petId=" + petId + "&msg=success";
-		}*/
-		
-		String content = request.getParameter("content");
-		int fatherid = Integer.parseInt(request.getParameter("fatherid"));
-		Map<String, Object> map = commentService.addComment(petId, "Cruze", content, fatherid, -1, 0);
-		String msg = (String) map.get("msg");
-		if(!msg.equals("success")){
-			model.addAttribute("error", "评论失败!");
-			return "error";
+			int fatherid = Integer.parseInt(request.getParameter("fatherid"));
+			Map<String, Object> map = commentService.addComment(petId, user.getName(), content, fatherid);
+			String msg = (String) map.get("msg");
+			if(!msg.equals("success")){
+				model.addAttribute("error", "评论失败!");
+				return "error";
+			}
+			return "redirect:item?" + "petId=" + petId + "&msg=success";
 		}
-		return "redirect:item?" + "petId=" + petId + "&msg=success";
-		
 	}
 	
 	@RequestMapping(path = {"/like"})
 	public String pushDislike(HttpSession session, @RequestParam(value = "like") int like, @RequestParam(value = "commentId") int commentId){
-		/*if(session.getAttribute("user")==null){
-			return "";
+		if(session.getAttribute("user")==null){
+			return "redirect:item?msg=notLogin";
 		}
 		else{
 			User user = (User)session.getAttribute("user");
 			commentService.updateCommentSupport(like, commentId);
-		    commentService.updateCommentSupportTable(1,commentId,like);
-			return "dislike_success";
-		}*/
-		commentService.updateCommentSupport(like, commentId);
-		commentService.updateCommentSupportTable(1,commentId,like);
-		return "";
+			commentService.updateCommentSupportTable(user.getId(),commentId,like);
+			return "";
+		}
+	}
+	
+	@RequestMapping(path = {"moreLeaves"})
+	@ResponseBody
+	public List<Comment> getMoreLeafComments(HttpSession session, @RequestParam(value = "commentId") int commentId, @RequestParam(value = "page") int page){
+		List<Comment> leafCommentList = commentService.selectLeafCommentByPage(commentId, (page-1)*5);
+		for(Comment c : leafCommentList){
+			if(session.getAttribute("user")==null){
+				c.setReplyCommentID(0);
+			}
+			else{
+				User user = (User)session.getAttribute("user");
+				if(commentService.isSupportted(user.getId(), c.getId()) == 1){
+					c.setReplyCommentID(1);
+				}
+				else{
+					c.setReplyCommentID(0);
+				}
+			}
+		}
+		return leafCommentList;
 	}
 }
