@@ -185,7 +185,7 @@ public class MsgController {
 	}
 	
 	@RequestMapping("/sendmsg.do")
-	public  @ResponseBody String send(String userName,String msgConent, HttpSession session)
+	public  @ResponseBody String send(String userName,String msgContent, HttpSession session)
 	{
 		User user=(User) session.getAttribute("user");
 		if(user==null){
@@ -193,10 +193,7 @@ public class MsgController {
 		}
 		if(user.getRole().equals("admin")||user.getRole().equals("user"))
 		{
-			
-			MsgSend ms=new MsgSend();			
-			ms.sendMsg(user.getName(), msgConent,userName,"私信");
-			
+			messageService.sendMessage(user.getName(), msgContent, userName,"私信");			
 			return "1";
 		}
 		return "0";
@@ -204,15 +201,14 @@ public class MsgController {
 	}
 	
 	@RequestMapping("/sendNotifyMsg.do")
-	public  @ResponseBody String sendNotify(String userName,String msgConent, HttpSession session)
+	public  @ResponseBody String sendNotify(String userName,String msgContent, HttpSession session)
 	{
 		User user=(User) session.getAttribute("user");
 		if(user==null){
 			return "0";
 		}
 		if(user.getRole().equals("admin")){	
-			MsgSend ms=new MsgSend();			
-			ms.sendMsg(user.getName(), msgConent,userName,"通知");		
+			messageService.sendMessage(user.getName(), msgContent, userName,"系统通知");	
 			return "1";
 		}
 		return "0";

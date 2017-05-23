@@ -1,4 +1,7 @@
 $(function(){
+	$('.msgBody').css('height', $('.main-box').innerHeight()+45+"px");
+	$('.messageList').css('height', $('.msgBody').innerHeight()-45+"px");
+	$("#li_msg_private").css("background-color","#fff");
 	$("#sendBtn").click(function(){
 	   var usn=$("#userName").val();
 	   var content=$("#msgContentT").val();

@@ -55,9 +55,7 @@ public class MsgSend {
 		String value=date+"_"+msgContent+"_"+username+"_"+readed+"_"+type;
 		Set<String> s = js.smembers(targetUsername);
 		s.add(value);
-		js.sadd(key,value);  
-		
-		
+		js.sadd(key,value);  	
 	}
 
 }

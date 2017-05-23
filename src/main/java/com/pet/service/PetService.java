@@ -48,7 +48,6 @@ public class PetService {
 	}
 
 	public int add(String name, String type, String age, String sex, String price, String profile) {
-		// TODO Auto-generated method stub
 		Pet pet=new Pet();
 		pet.setAge(Integer.parseInt(age));
 		pet.setName(name);
@@ -60,7 +59,6 @@ public class PetService {
 	}
 
 	public int del(String id) {
-		// TODO Auto-generated method stub
 		return petDao.delPet(Integer.parseInt(id));
 	}
 

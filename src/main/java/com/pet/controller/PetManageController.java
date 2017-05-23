@@ -139,12 +139,9 @@ public class PetManageController {
 		if(!user.getRole().equals("admin")){
 			return "redirect:login";
 		}
-		int result=petService.add(name,type,age,sex,price,profile);
-		int id=petService.getID();
-		
-		if (!picture.isEmpty()) {  
-	        String fileName = picture.getOriginalFilename();  
-	  
+		petService.add(name,type,age,sex,price,profile);
+		int id=petService.getID();	
+		if (!picture.isEmpty()) {   
 	        try {  
 	            String tomcatPath = request.getServletContext().getRealPath("/"); //得到保存的路径  
 	            FileCopyUtils.copy(picture.getBytes(), new File(tomcatPath +"/" +  id));//FileCopyUtils来自org.springframework.util.FileCopyUtils  
