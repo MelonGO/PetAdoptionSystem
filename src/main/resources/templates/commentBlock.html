@@ -9,14 +9,15 @@
 <script type="text/javascript" src="scripts/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="scripts/melon.js"></script>
-<script src="scripts/melon.js"></script>
 </head>
 <body>
 <script>
 $(document).ready(function(){
 	var args = new Object();
-	navi();
 	setAlign();
+	navi();
+	like();
+	page_a();
 	args = GetUrlParms();
 	var value1 = args["msg"];
 	if(value1 == "notLogin"){
@@ -30,44 +31,138 @@ $(document).ready(function(){
 
 var textTitle = "";
 var comIdRegister = 0;
+var nodeType = "";
 
 function comment_submit() {
 	var text = $('#content').val();
-	if(text.split(":").length>1){
-		if(text.split(":")[0] == textTitle){
-			text = text.substring(1+textTitle.length);
-		}
+	if(text == textTitle+":" || text == ""){
+		alert("请输入评论内容!");
+		return false;
 	}
-	$.get('pushcomment', {content : text, fatherid : comIdRegister, petId : $!{petId}}, function(data){
-		/*alert("评论成功!");
-		window.location.reload();*/
-		/*$("body").html(data);*/
-		window.location.href("item?petId=$!{petId}&page=1&msg=success");
-	});
+	else{
+		if(nodeType == "root_comment"){
+			if(text.split(":")[0] == textTitle){
+				text = text.substring(1+textTitle.length);
+			}
+		}
+		else if(nodeType == "leaf_comment"){
+			if(text.split(":")[0] != textTitle){
+				text = textTitle+":"+text;
+			}
+		}
+		else{
+			alert("网页出错请联系网络管理员!");
+			return false;
+		}
+		$.get('pushcomment', {content : text, fatherid : comIdRegister, petId : $!{petId}}, function(data){
+			window.location.href = "item?petId=$!{petId}&page=1&msg=success";
+		});
+	}
 }
 
 function navi(){
 	$(".item_reply").bind("click",function(){
 		var fix = this.parentNode.parentNode.parentNode;
 		var username = $(fix).prev().prev().children().eq(0).children().eq(0).text();
-		comIdRegister = $(fix).parent().eq(0).parent().eq(0).attr("comment_id");
-		textTitle = "回复"+username;
+		var origin = $(fix).parent().eq(0).parent().eq(0); //list_li or leaf_comment_list_li
+		nodeType = $(origin).attr("node-type");
+		if(nodeType == "root_comment"){
+			comIdRegister = $(origin).attr("comment_id");
+		}
+		else if(nodeType == "leaf_comment"){
+			comIdRegister = $(origin).attr("father_id");
+		}
+		else{
+			alert("网页出错请联系网络管理员!");
+			return false;
+		}
+		textTitle = "回复 "+username;
 		$("#content").val(textTitle+":");
 	});
 }
 
+function like(){
+	$(".item_like").bind("click",function(){
+		var fix = this;
+		var supIdRegister = $(fix.parentNode.parentNode.parentNode).parent().eq(0).parent().eq(0).attr("comment_id");
+		var title = "";
+		var num = 0;
+		if($(fix).html()=="赞"){
+			title = "赞"
+			num = 0;
+		}
+		else{
+			title = $(fix).html().split("(")[0];
+			num = $(fix).html().split("(")[1].split(")")[0];
+		}
+		if(title=="已赞"){
+			$.get('like', {like : -1, commentId : supIdRegister}, function(){
+				if(num==1){
+					$(fix).html("赞");
+				}else{
+					$(fix).html("赞("+(Number(num)-1)+")");
+				}
+				$(fix).css({"color":"black"});
+			});
+		}
+		else if(title=="赞"){
+			$.get('like', {like : 1, commentId : supIdRegister}, function(){
+				$(fix).html("已赞("+(Number(num)+1)+")");
+				$(fix).css({"color":"red"});
+			});
+		}
+		else{
+			alert("网页出错请联系网络管理员！");
+			return false;
+		}
+		
+	});
+}
+
+function page_select(){
+	alert('hi');
+}
+function page_a(){
+	$(".page_a").bind("click",function(){
+		var fix = this;
+		var commentId = $(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).attr("comment_id");
+		var page = $(this).attr("page");
+		$.get('moreLeaves', {commentId : commentId, page : page}, function(data){
+			var leaf_comment = fix.parentNode.parentNode.parentNode.parentNode.parentNode;
+			for(var i=0;i<data.length;i++){
+				var leaf_comment_list_li = $(leaf_comment).children().get(i);
+				if($(leaf_comment_list_li).css("display") == "none"){
+					$(leaf_comment_list_li).css({"display":"block"});
+				}
+				$(leaf_comment_list_li).attr({"comment_id":data[i].id});
+				var info_text = $(leaf_comment_list_li).children().eq(1).children().eq(0).children().get(0);
+				$(info_text).children().eq(0).html(data[i].username);
+				$(info_text).children().eq(1).html(data[i].createTime);
+				$(leaf_comment_list_li).children().eq(1).children().eq(1).html(data[i].content);
+				var item_like = $(leaf_comment_list_li).children().eq(1).children().eq(2).children().children().children().get(0);
+				console.log(data[i].replyCommentID);
+				if(data[i].replyCommentID == 1){
+					$(item_like).html("已赞("+data[i].support+")");
+					$(item_like).css({"color":"red"});
+				}
+				else{
+					$(item_like).html("赞("+data[i].support+")");
+					$(item_like).css({"color":"black"});
+				}
+			}
+			for(var i=data.length;i<5;i++){
+				console.log($(leaf_comment).children().get(i));
+				$(leaf_comment).children().eq(i).css({"display":"none"});
+			}
+		});
+	});
+}
 
 function setAlign(){
 	$('.comment_center').css({
 		"left" : ($(window).width()-$('.comment_center').outerWidth())/2+"px"
 	});
 }
-
-function like(){
-	
-	
-}
-
 
 </script>
 <div class="pet_display_wrap">
@@ -90,7 +185,7 @@ function like(){
 </div>
 <div class="comment_banner">
 <h4>
-评论($commentCount)条
+评论($!{commentCount})条
 </h4>
 </div>
 <div class="comment_action_wrap">
@@ -106,10 +201,9 @@ function like(){
 <hr class="sep"/>
 </div>
 <div class="comment_center">
-#set($rootid=-1)
-#foreach($comment in $rootCommentList)
-#set($rootid=$comment.id)
-<div class="list_li" node-type="root_comment" comment_id="$comment.id">
+#set($loop=0)
+#foreach($listItem in $commentList)
+<div class="list_li" node-type="root_comment" comment_id="$listItem.get(0).id">
 <div class="avatar" style="float: left;">
 <a class="avatar">
 <img style="display: block;" alt="avatar" src="images\avatar001.jpg" />
@@ -118,26 +212,43 @@ function like(){
 <div class="list_con" style="margin-left: 90px; padding: 0px;">
 <div class="comment_info">
 <p class="info_text">
-<span class="user_name">$comment.username</span>
-<span class="comment_time">$comment.createTime</span>
+<span class="user_name">$listItem.get(0).username</span>
+<span class="comment_time">$!{listItem.get(0).createTime}</span>
 </p>
 </div>
 <div class="comment_text">
-$comment.content
+$listItem.get(0).content
 </div>
 <div class="func_area" style=" margin-top: 10px; padding-right: 10px;">
 <div class="actions" style="float: right;">
-<span class="item_span"><a class="item_like">赞($comment.support)</a></span>
+<span class="item_span">
+#set($isSup=-1)
+#foreach($support in $supportList.get($loop))
+#if($!{support.commentId} == $!{listItem.get(0).id})
+#set($isSup=1)
+#break
+#end
+#end
+#if($isSup==1)
+<a class="item_like" style="color: #FF0000;">已赞($listItem.get(0).support)</a></span>
+#set($isSup=-1)
+#else
+<a class="item_like">赞#if($listItem.get(0).support!=0)($listItem.get(0).support)#end</a></span>
+#end
 <span class="item_span"><a class="item_reply" href="#content">回复</a></span>
 </div>
 <div style="clear: both;"></div>
 </div>
 #set($hasLeafCom=-1)
-<div class="leaf_comment">
-#foreach($leafcom in $leafCommentList)
-#if($leafcom.fatherCommentID == $rootid)
+#if(${listItem.size()}>=2)
 #set($hasLeafCom=1)
+#end
+<div class="leaf_comment">
+#foreach($leafcom in $listItem)
+#if($leafcom.fatherCommentID != 0)
 <div class="leaf_comment_list_li" node-type="leaf_comment" comment_id="$leafcom.id" father_id="$rootid">
+<div class="take_space"></div>
+<div class="list_con">
 <div class="comment_info">
 <p class="info_text">
 <span class="user_name">$leafcom.username</span>
@@ -149,37 +260,104 @@ $leafcom.content
 </div>
 <div class="func_area" style=" margin-top: 10px; padding-right: 10px; padding-bottom: 10px;">
 <div class="actions" style="float: right;">
-<span class="item_span"><a class="item_like">赞($leafcom.support)</a></span>
-<span class="item_span"><a class="item_reply">回复</a></span>
+<span class="item_span">
+#foreach($support in $supportList.get($loop))
+#if($!{support.commentId} == $!{leafcom.id})
+#set($isSup = 1)
+#end
+#end
+#if($isSup==1)
+<a class="item_like" style="color: #FF0000;">已赞($leafcom.support)</a>
+#set($isSup=-1)
+#else
+<a class="item_like">赞#if($leafcom.support!=0)($leafcom.support)#end</a>
+#end
+</span>
+<span class="item_span"><a class="item_reply" href="#content">回复</a></span>
 </div>
 <div style="clear: both;"></div>
 </div>
 </div>
+</div>
 #end
 #end
+<div class="pageSelect">
+<nav class="Page navigation">
+<ul class="pagination">
+#if(${pages.size()}>0)
+#set($mindex=${loop} + 1)
+#set($pageAmount=${pages.get($mindex).get(3)})
+#if(${pages.get($mindex).get(1)} > 1)
+<li><a class="page_a" href="javascript:void(0);" aria-label="First" page="1">
+<span aria-hidden="true">首页</span></a></li>
+#end
+
+#if(${pages.get($mindex).get(0)} >= 1)
+<li><a class="page_a" href="javascript:void(0);" aria-label="Previous" page="${pages.get($mindex).get(0)}">
+<span aria-hidden="true">上一页</span></a></li>
+#end
+
+#if($pageAmount>1)
+#foreach($page in ${pages.get($mindex)})
+#if(${velocityCount}>4)
+<li #if(${pages.get($mindex).get(1)} == $page) class="active" #end><a href="javascript:void(0);" onclick="page_select()" page="{$page}">$!{page}</a></li>
+#end
+#end
+#end
+
+#if(${pages.get($mindex).get(2)}<= $pageAmount)
+<li><a class="page_a" href="javascript:void(0);" aria-label="Next" page="${pages.get($mindex).get(2)}">
+<span aria-hidden="true">下一页</span></a></li>
+#end
+
+#if($pageAmount >= 5)
+<li><a class="page_a" href="javascript:void(0);" aria-label="Last" page="${pageAmount}">
+<span aria-hidden="true">尾页</span></a></li>
+#end
+#end
+</ul>
+</nav>
+</div>
 </div>
 </div>
 #if($hasLeafCom==-1)
 <hr class="sep"/>
 #end
 </div>
+#set($loop = ${loop} + 1)
 #end
 <div class="pageSelect">
 <nav aria-label="Page navigation">
 <ul class="pagination">
-
-#if($previous >= 1)
-<li><a href="item?petId=$!{petId}&page=$!{previous}" aria-label="Previous"> 
-<span aria-hidden="true">&laquo;</span></a></li> 
+#if(${pages.size()}>0)
+#set($pageAmount=${pages.get(0).get(3)})
+#if(${pages.get(0).get(1)} > 1)
+<li><a href="item?petId=$!{petId}&page=1" aria-label="First">
+<span aria-hidden="true">首页</span></a></li>
 #end
 
-#foreach($page in $pages)
-<li #if($current == $page) class="active" #end><a href="item?petId=$!{petId}&page=$!{page}">$!{page}</a></li>
+#if(${pages.get(0).get(0)} >= 1)
+<li><a href="item?petId=$!{petId}&page=$!{pages.get(0).get(0)} " aria-label="Previous">
+<span aria-hidden="true">上一页</span></a></li>
 #end
 
-#if($next <= $pageAmount)
-<li><a href="item?petId=$!{petId}&page=$!{next}" aria-label="Next">
-<span aria-hidden="true">&raquo;</span></a></li>
+#if($pageAmount>1)
+#foreach($page in ${pages.get(0)})
+#if(${velocityCount}>4)
+<li #if(${pages.get(0).get(1)} == $page) class="active" #end><a href="item?petId=$!{petId}&page=$!{page}">$!{page}</a></li>
+#end
+#end
+#end
+
+#if(${pages.get(0).get(2)}<= $pageAmount)
+<li><a href="item?petId=$!{petId}&page=$!{pages.get(0).get(2)}" aria-label="Next">
+<span aria-hidden="true">下一页</span></a></li>
+#end
+
+#if($pageAmount >= 5)
+<li><a href="item?petId=$!{petId}&page=$!{pageAmount}" aria-label="Last">
+<span aria-hidden="true">尾页</span></a></li>
+#end
 #end
 </ul>
 </nav>
