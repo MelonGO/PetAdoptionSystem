@@ -17,7 +17,7 @@ $(document).ready(function(){
 	setAlign();
 	navi();
 	like();
-	page_a();
+	$(".page_a").bind("click",click_bind);
 	args = GetUrlParms();
 	var value1 = args["msg"];
 	if(value1 == "notLogin"){
@@ -119,42 +119,70 @@ function like(){
 	});
 }
 
-function page_select(){
-	alert('hi');
-}
-function page_a(){
-	$(".page_a").bind("click",function(){
-		var fix = this;
-		var commentId = $(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).attr("comment_id");
-		var page = $(this).attr("page");
-		$.get('moreLeaves', {commentId : commentId, page : page}, function(data){
-			var leaf_comment = fix.parentNode.parentNode.parentNode.parentNode.parentNode;
-			for(var i=0;i<data.length;i++){
-				var leaf_comment_list_li = $(leaf_comment).children().get(i);
-				if($(leaf_comment_list_li).css("display") == "none"){
-					$(leaf_comment_list_li).css({"display":"block"});
-				}
-				$(leaf_comment_list_li).attr({"comment_id":data[i].id});
-				var info_text = $(leaf_comment_list_li).children().eq(1).children().eq(0).children().get(0);
-				$(info_text).children().eq(0).html(data[i].username);
-				$(info_text).children().eq(1).html(data[i].createTime);
-				$(leaf_comment_list_li).children().eq(1).children().eq(1).html(data[i].content);
-				var item_like = $(leaf_comment_list_li).children().eq(1).children().eq(2).children().children().children().get(0);
-				console.log(data[i].replyCommentID);
-				if(data[i].replyCommentID == 1){
-					$(item_like).html("已赞("+data[i].support+")");
-					$(item_like).css({"color":"red"});
-				}
-				else{
-					$(item_like).html("赞("+data[i].support+")");
-					$(item_like).css({"color":"black"});
-				}
+function click_bind(){
+	var fix = this;
+	var commentId = $(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).attr("comment_id");
+	var page = $(this).attr("page");
+	$.get('moreLeaves', {commentId : commentId, page : page}, function(data){
+		var leaf_comment = fix.parentNode.parentNode.parentNode.parentNode.parentNode;
+		for(var i=0;i<data.length-1;i++){
+			var leaf_comment_list_li = $(leaf_comment).children().get(i);
+			if($(leaf_comment_list_li).css("display") == "none"){
+				$(leaf_comment_list_li).css({"display":"block"});
 			}
-			for(var i=data.length;i<5;i++){
-				console.log($(leaf_comment).children().get(i));
-				$(leaf_comment).children().eq(i).css({"display":"none"});
+			$(leaf_comment_list_li).attr({"comment_id":data[i].id});
+			var info_text = $(leaf_comment_list_li).children().eq(1).children().eq(0).children().get(0);
+			$(info_text).children().eq(0).html(data[i].username);
+			$(info_text).children().eq(1).html(data[i].createTime);
+			$(leaf_comment_list_li).children().eq(1).children().eq(1).html(data[i].content);
+			var item_like = $(leaf_comment_list_li).children().eq(1).children().eq(2).children().children().children().get(0);
+			if(data[i].replyCommentID == 1){
+				$(item_like).html("已赞("+data[i].support+")");
+				$(item_like).css({"color":"red"});
 			}
-		});
+			else{
+				$(item_like).html("赞("+data[i].support+")");
+				$(item_like).css({"color":"black"});
+			}
+		}
+		for(var i=data.length-1;i<5;i++){
+			$(leaf_comment).children().eq(i).css({"display":"none"});
+		}
+		var pagination = fix.parentNode.parentNode;
+		$(pagination).empty();
+		$(data[data.length-1].content.split(';')).each(function(index,s){
+			var direct = s.split(':')[0];
+			var page = s.split(':')[1];
+			switch(direct)
+			{
+			case "首页":
+				$(pagination).append('<li><a class="page_' + commentId  + '" href="javascript:void(0);" aria-label="First" page="1">'
+				+'<span aria-hidden="true">首页</span></a></li>');
+				break;
+			case "上一页":
+				$(pagination).append('<li><a class="page_' + commentId  + '" href="javascript:void(0);" aria-label="Previous" page="' + page + '">'
+			    +'<span aria-hidden="true">上一页</span></a></li>');
+				break;
+			case "下一页":
+				$(pagination).append('<li><a class="page_' + commentId  + '" href="javascript:void(0);" aria-label="Next" page="' + page + '">'
+			    +'<span aria-hidden="true">下一页</span></a></li>');
+				break;
+			case "尾页":
+			    $(pagination).append('<li><a class="page_' + commentId  + '" href="javascript:void(0);" aria-label="Last" page="' + page + '">'
+				+'<span aria-hidden="true">下一页</span></a></li>');
+			    break;
+			case "页码":
+				$(pagination).append('<li><a class="page_' + commentId  + '" href="javascript:void(0);" aria-label="Page" page="' + page + '">'
+				+'<span aria-hidden="true">' + page + '</span></a></li>');
+				break;
+			case "当前页":
+				$(pagination).append('<li class="active"><a class="page_' + commentId  + '" href="javascript:void(0);" aria-label="Current" page="' + page + '">'
+				+'<span aria-hidden="true">' + page + '</span></a></li>');
+				break;
+			}
+		})
+		var selector = "page_" + commentId;
+		$("."+selector).on("click",click_bind);
 	});
 }
 
@@ -300,7 +328,7 @@ $leafcom.content
 #if($pageAmount>1)
 #foreach($page in ${pages.get($mindex)})
 #if(${velocityCount}>4)
-<li #if(${pages.get($mindex).get(1)} == $page) class="active" #end><a href="javascript:void(0);" onclick="page_select()" page="{$page}">$!{page}</a></li>
+<li #if(${pages.get($mindex).get(1)} == $page) class="active" #end><a class="page_a" href="javascript:void(0);" page="${page}">$!{page}</a></li>
 #end
 #end
 #end
@@ -310,7 +338,7 @@ $leafcom.content
 <span aria-hidden="true">下一页</span></a></li>
 #end
 
-#if($pageAmount >= 5)
+#if($pageAmount >= 5 && ${pages.get($mindex).get(1)} < $pageAmount)
 <li><a class="page_a" href="javascript:void(0);" aria-label="Last" page="${pageAmount}">
 <span aria-hidden="true">尾页</span></a></li>
 #end
@@ -354,7 +382,7 @@ $leafcom.content
 <span aria-hidden="true">下一页</span></a></li>
 #end
 
-#if($pageAmount >= 5)
+#if($pageAmount >= 5 && ${pages.get(0).get(1)}<$pageAmount)
 <li><a href="item?petId=$!{petId}&page=$!{pageAmount}" aria-label="Last">
 <span aria-hidden="true">尾页</span></a></li>
 #end

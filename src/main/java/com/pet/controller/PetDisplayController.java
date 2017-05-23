@@ -84,7 +84,7 @@ public class PetDisplayController {
 				List<Comment> commentListItem = new ArrayList<Comment>();/*用以存放一条根评论及其一页的评论*/
 				commentListItem.add(c);
 				commentIdListSup.add(c.getId());
-				pages.add(HavePages.getMyPages(1, commentService.getLeafCommentsCountByFatherId(c.getId())));
+				pages.add(HavePages.getMyPages(page, commentService.getLeafCommentsCountByFatherId(c.getId())));
 				for(Comment cs: commentService.selectLeafCommentByPage(c.getId(), 0)){
 					commentListItem.add(cs);
 					commentIdListSup.add(cs.getId());
@@ -141,6 +141,35 @@ public class PetDisplayController {
 	@RequestMapping(path = {"moreLeaves"})
 	@ResponseBody
 	public List<Comment> getMoreLeafComments(HttpSession session, @RequestParam(value = "commentId") int commentId, @RequestParam(value = "page") int page){
+		List<Integer> pages = HavePages.getMyPages(page, commentService.getLeafCommentsCountByFatherId(commentId));
+		String pagesOrder = "";
+		int currentPage = pages.get(1).intValue();
+		int pageAmount = pages.get(3).intValue();
+		if(currentPage>1){
+			pagesOrder += "首页:1;";
+		}
+		if(pages.get(0).intValue()>0){
+			pagesOrder += "上一页:"+pages.get(0).intValue()+";";
+		}
+		for(int i=4;i<pages.size();i++){
+			if(pages.get(i).intValue()==currentPage){
+				pagesOrder += "当前页:"+currentPage+";";
+			}
+			else{
+				pagesOrder += "页码:"+pages.get(i).intValue()+";";
+			}
+		}
+		if(pages.get(2).intValue()<=pageAmount){
+			pagesOrder += "下一页:"+pages.get(2).intValue()+";";
+		}
+		if(pageAmount>5 && currentPage<pageAmount){
+			pagesOrder += "尾页:"+pageAmount;
+		}
+		if(pagesOrder.substring(pagesOrder.length()-1).equals(";")){
+			pagesOrder = pagesOrder.substring(0, pagesOrder.length()-1);
+		}
+		Comment delivery = new Comment();
+		delivery.setContent(pagesOrder);
 		List<Comment> leafCommentList = commentService.selectLeafCommentByPage(commentId, (page-1)*5);
 		for(Comment c : leafCommentList){
 			if(session.getAttribute("user")==null){
@@ -156,6 +185,7 @@ public class PetDisplayController {
 				}
 			}
 		}
+		leafCommentList.add(delivery);
 		return leafCommentList;
 	}
 }
