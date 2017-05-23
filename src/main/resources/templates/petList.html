@@ -43,6 +43,8 @@ $(document).ready(function(){
 							<td>$kv.key.sex</td>
 							<td>$kv.key.price</td>
 							<td>
+								<button type="button" onclick="location.href='item?petId=$kv.key.id'"
+									class="btn btn-primary">评论</button>
 								#if($kv.value == "notAdopt")
 								<button type="button" onclick="location.href='wantAdopt?petId=$kv.key.id'"
 									class="btn btn-warning">我要领养</button>
