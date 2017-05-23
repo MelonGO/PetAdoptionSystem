@@ -7,21 +7,14 @@
 			<h1 class="font-big mh">
             	领养管理
         	</h1>
-			<table class="table waiter-list">
+			<table id="table_adopt" class="table waiter-list">
 				<thead>
 					<tr>
 						<th>宠物种类</th>
-						<th>宠物年龄</th>
 						<th>宠物名字</th>
-						<th>宠物性别</th>
-						<th>宠物价格</th>
 						<th>申请人用户名</th>
-						<th>申请人性别</th>
-						<th>申请人真实姓名</th>
-						<th>申请人地址</th>
-						<th>申请人电话</th>
 						<th>申请时间</th>
-						<th>申请状态</th>
+						<th>状态</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -33,15 +26,8 @@
 					#set($userInfo = $userList.get($index)) 
 					#set($recInfo = $recInfoList.get($index)) 
 					<td>$pet.type</td>
-					<td>$pet.age</td>
 					<td>$pet.name</td>
-					<td>$pet.sex</td>
-					<td>$pet.price</td>
 					<td>$userInfo.name</td>
-					<td>$userInfo.sex</td>
-					<td>$recInfo.realName</td>
-					<td>$recInfo.address</td>
-					<td>$recInfo.phone</td>
 					<td>$adoption.createTime</td>
 					#if($adoption.state == 0)
 					<td>未审核</td>
@@ -50,7 +36,16 @@
 					#else
 					<td>已通过</td>
 					#end
+					<td class="tdhidden">$pet.age</td>
+					<td class="tdhidden">$pet.sex</td>
+					<td class="tdhidden">$pet.price</td>
+					<td class="tdhidden">$userInfo.sex</td>
+					<td class="tdhidden">$recInfo.realName</td>
+					<td class="tdhidden">$recInfo.address</td>
+					<td class="tdhidden">$recInfo.phone</td>
 					<td>
+					<button type="button" data-toggle="modal" data-target="#adoptionShowModal" 
+							class="btn btn-info btnAdoptionShow">查看</button>
 					<button type="button" onclick='setAdoptionId($adoption.id)' 
                     		class="btn btn-warning" data-toggle="modal" data-target="#audit"
                     		#if($adoption.state != 0 ) style="display:none" #end>审核</button>
@@ -86,6 +81,71 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="adoptionShowModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<div id="c">       
+	            		<div class="row">
+				        	<p class=".col-md-4">宠物种类：</p>
+		                	<p class=".col-md-8" id="adoptionShowPetType">
+						</div>       		
+	            		<div class="row">
+	            			<p class=".col-md-4">宠物名称：</p>
+							<p class=".col-md-8" id="adoptionShowPetName">
+						</div>		            
+						<div class="row">
+							<p class=".col-md-4">宠物年龄：</p>
+			            	<p class=".col-md-8" id="adoptionShowPetAge">
+						</div>					
+				        <div class="row">
+							<p class=".col-md-4">宠物性别：</p>
+			            	<p class=".col-md-8" id="adoptionShowPetSex">
+						</div>		
+						<div class="row">
+							<p class=".col-md-4">宠物价格：</p>
+			            	<p class=".col-md-8" id="adoptionShowPetPrice">
+						</div>	
+       					<div class="row">
+	       					<p class=".col-md-4">用户名：</p>
+			                <p class=".col-md-8" id="adoptionShowUserName">
+						</div>
+		            	<div class="row">
+		            		<p class=".col-md-4">真实姓名：</p>
+		            		<p class=".col-md-8" id="adoptionShowUserRealName">
+			            </div>
+				        <div class="row">
+							<p class=".col-md-4">用户性别：</p>
+		                	<p class=".col-md-8" id="adoptionShowUserSex"></div>
+						<div class="row">
+							<p class=".col-md-4">用户地址：</p>
+		                	<p class=".col-md-8" id="adoptionShowAddress">
+		                </div>     
+		                <div class="row">
+							<p class=".col-md-4">用户电话：</p>
+		                	<p class=".col-md-8" id="adoptionShowPhone">
+		                </div>     
+		                <div class="row">
+							<p class=".col-md-4">创建时间：</p>
+		                	<p class=".col-md-8" id="adoptionShowCreateTime">
+		                </div>     
+		                <div class="row">
+							<p class=".col-md-4">状态：</p>
+		                	<p class=".col-md-8" id="adoptionShowState">
+		                </div>     
+	            	</div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
 
 <script type="text/javascript">
 var adoptionId;

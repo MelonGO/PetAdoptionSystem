@@ -7,18 +7,12 @@
 			<h1 class="font-big mh">
             	回收管理
         	</h1>
-			<table class="table waiter-list">
+			<table id="table_recycle_manage" class="table waiter-list">
 				<thead>
 					<tr>
 						<th>宠物种类</th>
-						<th>宠物年龄</th>
 						<th>宠物名字</th>
-						<th>宠物性别</th>
-						<th>宠物价格</th>
 						<th>申请人用户名</th>
-						<th>申请人性别</th>
-						<th>申请人地址</th>
-						<th>手机号码</th>
 						<th>申请时间</th>
 						<th>是否为助养</th>
 						<th>申请状态</th>
@@ -32,14 +26,8 @@
 					#set($pet = $petList.get($index)) 
 					#set($userInfo = $userList.get($index)) 
 					<td>$pet.type</td>
-					<td>$pet.age</td>
 					<td>$pet.name</td>
-					<td>$pet.sex</td>
-					<td>$pet.price</td>
 					<td>$userInfo.name</td>
-					<td>$userInfo.sex</td>
-					<td>$recycle.address</td>
-					<td>$recycle.phone</td>
 					<td>$recycle.createTime</td>
 					#if($recycle.sponsorship == 0)
 					<td>否</td>
@@ -59,7 +47,15 @@
 					#elseif($recycle.state == 3)
 					<td>已送回</td>
 					#end
+					<td class="tdhidden">$pet.age</td>
+					<td class="tdhidden">$pet.sex</td>
+					<td class="tdhidden">$pet.price</td>
+					<td class="tdhidden">$userInfo.sex</td>
+					<td class="tdhidden">$recycle.address</td>
+					<td class="tdhidden">$recycle.phone</td>
 					<td>
+					<button type="button" data-toggle="modal" data-target="#recycleManageShowModal" 
+							class="btn btn-info recycleManageShow">查看</button>
 					#if($recycle.state == 0)
 					<button type="button" onclick='setRecycleId($recycle.id)'
                     		class="btn btn-warning" data-toggle="modal" data-target="#audit">审核</button>
@@ -98,6 +94,71 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="recycleManageShowModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<div id="c">       
+	            		<div class="row">
+				        	<p class=".col-md-4">宠物种类：</p>
+		                	<p class=".col-md-8" id="recycleShowPetType">
+						</div>       		
+	            		<div class="row">
+	            			<p class=".col-md-4">宠物名称：</p>
+							<p class=".col-md-8" id="recycleShowPetName">
+						</div>		            
+						<div class="row">
+							<p class=".col-md-4">宠物年龄：</p>
+			            	<p class=".col-md-8" id="recycleShowPetAge">
+						</div>					
+				        <div class="row">
+							<p class=".col-md-4">宠物性别：</p>
+			            	<p class=".col-md-8" id="recycleShowPetSex">
+						</div>		
+						<div class="row">
+							<p class=".col-md-4">宠物价格：</p>
+			            	<p class=".col-md-8" id="recycleShowPetPrice">
+						</div>	
+       					<div class="row">
+	       					<p class=".col-md-4">用户名：</p>
+			                <p class=".col-md-8" id="recycleShowUserName">
+						</div>
+				        <div class="row">
+							<p class=".col-md-4">用户性别：</p>
+		                	<p class=".col-md-8" id="recycleShowUserSex"></div>
+						<div class="row">
+							<p class=".col-md-4">用户地址：</p>
+		                	<p class=".col-md-8" id="recycleShowAddress">
+		                </div>     
+		                <div class="row">
+							<p class=".col-md-4">用户电话：</p>
+		                	<p class=".col-md-8" id="recycleShowPhone">
+		                </div>     
+		                <div class="row">
+							<p class=".col-md-4">是否为助养：</p>
+		                	<p class=".col-md-8" id="recycleShowSponsorship">
+		                </div>     
+		                <div class="row">
+							<p class=".col-md-4">申请时间：</p>
+		                	<p class=".col-md-8" id="recycleShowApplyTime">
+		                </div>     
+		                <div class="row">
+							<p class=".col-md-4">状态：</p>
+		                	<p class=".col-md-8" id="recycleShowState">
+		                </div>     
+	            	</div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
 
 <script type="text/javascript">
 var recycleId;

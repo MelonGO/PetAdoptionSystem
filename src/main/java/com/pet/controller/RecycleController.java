@@ -163,6 +163,10 @@ public class RecycleController {
 		
 		recycleService.updateRecycle(recycle);
 		
+		Adoption adoption = adoptInfoService.findByPetId(recycle.getPetId());
+		adoption.setState(3);
+		adoptInfoService.updateAdoption("state", adoption);
+		
 		return "审核成功";
 	}
 	
