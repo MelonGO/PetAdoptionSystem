@@ -27,8 +27,7 @@ public class RecycleService {
 		
 		recycleDao.addRecycle(recycle);
 		msgMap.put("msg", "success");
-		return msgMap;
-			
+		return msgMap;	
 	}
 	
 	public List<Recycle> findUserRecycle(int userId) {

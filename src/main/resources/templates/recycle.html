@@ -76,7 +76,7 @@
 						<td class="tdhidden">$r.key.money</td>
 						<td class="tdhidden">$r.key.createTime</td>
 						<td>审核通过，等待支付</td>
-						<td>
+						<td><button type="button" data-toggle="modal" data-target="#recycleShowModal" class="btn btn-info btnRecycleShow" >查看</button>
 							<button type="button" onclick="recyclePay($r.key.id)" data-toggle="modal"  data-target="" class="btn btn-warning btnRecyclePay" >付款</button>
 						</td>
 						#end

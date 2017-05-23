@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.pet.dao.MessageDAO;
 import com.pet.model.Message;
 
+import tools.MsgSend;
+
 @Service
 public class MessageService {
 	
@@ -34,6 +36,11 @@ public class MessageService {
 	
 	public void updateMessage(Message message){	
 		messageDao.updateMessage(message.getId());
+	}
+	
+	public void sendMessage(String username,String msgContent,String targetUsername,String type ){	
+		MsgSend ms=new MsgSend();			
+		ms.sendMsg(username, msgContent,targetUsername,type);
 	}
 	
 	public int delMsg(String id){	
